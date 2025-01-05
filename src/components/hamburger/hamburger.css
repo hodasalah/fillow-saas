@@ -13,7 +13,7 @@
 .hamburger {
 	display: inline-block;
 	cursor: pointer;
-	transition: all 0.3s ease-in-out;
+	transition: all 0.2s ease-in-out;
 	width: 1.625rem;
 	left: 0;
 	top: 0;
@@ -26,8 +26,8 @@
 	margin-top: 0.375rem;
 	margin-bottom: 0.375rem;
 	margin-right: auto;
-	-webkit-transition: all 0.3s ease-in-out;
-	transition: all 0.3s ease-in-out;
+	-webkit-transition: all 0.2s ease-in-out;
+	transition: all 0.2s ease-in-out;
 }
 .hamburger .line:nth-child(1),
 .hamburger .line:nth-child(2) {

@@ -8,6 +8,33 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
+const items = [
+	{ icon: faSearch },
+	{
+		icon: faMoon,
+	},
+	{
+		icon: faStar,
+		num: 76,
+		bg: 'bg-[#ffa7d7]',
+	},
+	{
+		icon: faBell,
+		num: 12,
+		bg: 'bg-[#ffbf00]',
+	},
+	{
+		icon: faEnvelope,
+		num: 2,
+		bg: 'bg-[#fc2e53]',
+	},
+	{
+		icon: faShoppingBag,
+		num: 4,
+		bg: 'bg-[#09bd3c]',
+	},
+];
+
 const HeaderContent = () => {
 	return (
 		<header className='relative flex items-center pl-[5rem] pr-[1.875rem] h-full'>
@@ -16,73 +43,61 @@ const HeaderContent = () => {
 					Dashboard
 				</div>
 				<div
-					className='nav-links duration-500 md:static 
-                        absolute md:min-h-fit min-h-[60vh] 
-                        left-0 top-[-100%] md:w-auto  w-full 
+					className='nav-links duration-500 
+                          w-full 
                         flex items-center px-5 '
 				>
-					<ul
-						className='header-right flex md:flex-row flex-col 
-                           md:items-center  gap-4'
-					>
-						<li className='h-full flex items-center text-[1.25rem]  gap-2'>
-							<div className='relative flex items-stretch w-full flex-wrap search-area rounded-[50%]'>
-								<input
-									type='text'
-									className='form-control relative flex-auto w-[1%]  h-[3rem] border-[#eee] border-r-0 rounded-tl-[3.125rem] rounded-bl-[3.125rem] min-w-[3.125rem] flex justify-center font-[400] text-[.825rem] items-center text-[--bs-body-color] leading-6 focus:border-[#eee] px-[1.25rem] py-[0.3125rem] focus:outline-none'
-									placeholder='Search here...'
-								/>
+					<ul className='header-right w-full flex sm:flex-row md:items-center gap-4  sm:justify-end justify-normal'>
+						{items.map((item, index) => {
+							return item.icon === faSearch ? (
+								<li
+									key={'faSearch'}
+									className='h-full flex items-center text-[1.25rem] gap-2'
+								>
+									<div className='relative flex items-stretch w-full flex-wrap search-area rounded-[50%]'>
+										<input
+											type='text'
+											className='form-control relative flex-auto w-[1%]  h-[3rem] border-[#eee] border-r-0 rounded-tl-[3.125rem] rounded-bl-[3.125rem] min-w-[3.125rem] flex justify-center font-[400] text-[.825rem] items-center text-[--bs-body-color] leading-6 focus:border-[#eee] px-[1.25rem] py-[0.3125rem] focus:outline-none'
+											placeholder='Search here...'
+										/>
 
-								<span className='input-group-text ml-[-1px] rounded-tl-none rounded-bl-none h-[3rem] rounded-[3.125rem] bg-white py-0 px-[1.25rem] border-[#e9e2f8] flex items-center justify-center text-[--bs-body-color]'>
-									<FontAwesomeIcon
-										icon={faSearch}
-									></FontAwesomeIcon>
-								</span>
-							</div>
-						</li>
-						<li className='text-[--text-gray] h-full flex items-center p-[0.9375rem]  text-[1.25rem] '>
-							<FontAwesomeIcon icon={faMoon}></FontAwesomeIcon>
-						</li>
-						<li className='text-[--text-gray] h-full flex items-center   text-[1.25rem] '>
-							<div className='relative p-[0.9375rem] rounded-[.625rem]'>
-								<FontAwesomeIcon
-									icon={faStar}
-								></FontAwesomeIcon>
-								<span className='absolute bg-pink-300 text-white text-[0.675rem] font-medium me-2 w-[1.2rem] h-[1.2rem] leading-[1rem] text-center p-[.1rem] rounded-full dark:bg-pink-900 dark:text-pink-300 top-[8px] right-[-1px]'>
-									76
-								</span>
-							</div>
-						</li>
-						<li className='text-[--text-gray] h-full flex items-center  text-[1.25rem] '>
-							<div className='relative p-[0.9375rem] rounded-[.625rem]'>
-								<FontAwesomeIcon
-									icon={faBell}
-								></FontAwesomeIcon>
-								<span className='absolute bg-yellow-300 text-white text-[0.675rem] font-medium me-2 w-[1.2rem] h-[1.2rem] leading-[1rem] rounded-full dark:bg-yellow-900 dark:text-yellow-300 top-[8px] right-[-1px] text-center p-[.1rem]'>
-									12
-								</span>
-							</div>
-						</li>
-						<li className='text-[--text-gray] h-full flex items-center  text-[1.25rem] '>
-							<div className='relative p-[0.9375rem] rounded-[.625rem]'>
-								<FontAwesomeIcon
-									icon={faEnvelope}
-								></FontAwesomeIcon>
-								<span className='absolute bg-red-600 text-white text-[0.675rem] font-medium me-2 w-[1.2rem] h-[1.2rem] leading-[1rem] rounded-full dark:bg-yellow-900 dark:text-yellow-300 top-[8px] right-[-1px] text-center p-[.1rem]'>
-									12
-								</span>
-							</div>
-						</li>
-						<li className='text-[--text-gray] h-full flex items-center  text-[1.25rem] '>
-							<div className='relative p-[0.9375rem] rounded-[.625rem]'>
-								<FontAwesomeIcon
-									icon={faShoppingBag}
-								></FontAwesomeIcon>
-								<span className='absolute bg-green-600 text-white text-[0.675rem] font-medium me-2 w-[1.2rem] h-[1.2rem] leading-[1rem] rounded-full dark:bg-yellow-900  top-[8px] right-[-1px] text-center p-[.1rem]'>
-									12
-								</span>
-							</div>
-						</li>
+										<span className='input-group-text ml-[-1px] rounded-tl-none rounded-bl-none h-[3rem] rounded-[3.125rem] bg-white py-0 px-[1.25rem] border-[#e9e2f8] flex items-center justify-center text-[--bs-body-color]'>
+											<FontAwesomeIcon
+												icon={item.icon}
+											></FontAwesomeIcon>
+										</span>
+									</div>
+								</li>
+							) : item.icon === faMoon ? (
+								<li
+									className='text-[--text-gray] h-full flex items-center  text-[1.25rem] '
+									key={'faMoon'}
+								>
+									<div className='relative p-[0.9375rem] rounded-[.625rem]'>
+										<FontAwesomeIcon
+											icon={faMoon}
+										></FontAwesomeIcon>
+									</div>
+								</li>
+							) : (
+								<li
+									className='text-[--text-gray] h-full flex items-center text-[1.25rem] '
+									key={index}
+								>
+									<div className='relative p-[0.9375rem] rounded-[.625rem]'>
+										<FontAwesomeIcon
+											icon={item.icon}
+										></FontAwesomeIcon>
+										<span
+											className={`absolute  text-white ${item.bg} text-[0.675rem] font-medium me-2 w-[1.2rem] h-[1.2rem] leading-[1rem] text-center p-[.1rem] rounded-full  top-[8px] right-[-1px] `}
+										>
+											{item.num}
+										</span>
+									</div>
+								</li>
+							);
+						})}
+
 						<li className='text-[--text-gray] relative h-full flex items-center'>
 							<div className='flex items-center h-full'>
 								<img

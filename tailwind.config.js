@@ -1,6 +1,8 @@
 /** @type {import('tailwindcss').Config} */
 export default {
 	content: ['./src/**/*.{html,ts,tsx,js,jsx}'],
+	
+
 	theme: {
 		extend: {
 			colors: {
@@ -31,12 +33,11 @@ export default {
 				card: 'var(--card)',
 				'nav-headbg': 'var(--nav-headbg)',
 				'sidebar-bg': 'var(--sidebar-bg)',
-				'headerbg': 'var(--headerbg)',
+				headerbg: 'var(--headerbg)',
 			},
 			fontFamily: {
 				'font-family-base': 'var(--font-family-base)',
 			},
-			
 		},
 	},
 	plugins: [],

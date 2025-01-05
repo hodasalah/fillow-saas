@@ -60,6 +60,16 @@
 	--dz-side-copyright: block;
 }
 
+@media only screen and (max-width: 768px) {
+	body[data-sidebar-style='mini'] {
+		--dz-sidebar-width: 6rem !important;
+		--dz-sidebar-pos: absolute;
+		--dz-side-nav-padding: 1.125rem 0.875rem;
+		--dz-side-info: none;
+		--dz-side-copyright: none;
+	}
+}
+
 *,
 *::before,
 *::after {
@@ -134,7 +144,6 @@ body>* {
 	width: 19.75rem;
 	border-radius: 50%;
 }
-
 
 @media only screen and (max-width: 87.5rem) {
 	.nav-header .logo-abbr {

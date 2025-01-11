@@ -4,30 +4,28 @@ const options = {
 	series: [
 		{
 			name: 'Net Profit',
-			data: [20, 40, 20, 30, 50, 40, 60],
-			//radius: 12,
+			data: [100, 300, 100, 400, 200, 400],
+			//radius: 30,
 		},
 	],
 	chart: {
 		type: 'line',
-		height: 250,
+		height: 50,
+		width: 100,
 		toolbar: {
 			show: false,
 		},
-	},
-	plotOptions: {
-		bar: {
-			horizontal: false,
-			columnWidth: '70%',
-			endingShape: 'rounded',
+		zoom: {
+			enabled: false,
+		},
+		sparkline: {
+			enabled: true,
 		},
 	},
-	colors: ['#886CC0'],
+
+	colors: ['var(--primary)'],
 	dataLabels: {
 		enabled: false,
-	},
-	markers: {
-		shape: 'circle',
 	},
 
 	legend: {
@@ -35,74 +33,98 @@ const options = {
 	},
 	stroke: {
 		show: true,
-		width: 10,
+		width: 6,
 		curve: 'smooth',
 		colors: ['var(--primary)'],
 	},
 
 	grid: {
-		borderColor: 'var(--border)',
-		show: true,
-		xaxis: {
-			lines: {
-				show: true,
+		show: false,
+		borderColor: '#eee',
+		padding: {
+			top: 0,
+			right: 0,
+			bottom: 0,
+			left: 0,
+		},
+	},
+	states: {
+		normal: {
+			filter: {
+				type: 'none',
+				value: 0,
 			},
 		},
-		yaxis: {
-			lines: {
-				show: false,
+		hover: {
+			filter: {
+				type: 'none',
+				value: 0,
+			},
+		},
+		active: {
+			allowMultipleDataPointsSelection: false,
+			filter: {
+				type: 'none',
+				value: 0,
 			},
 		},
 	},
 	xaxis: {
-		categories: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
+		categories: ['Jan', 'feb', 'Mar', 'Apr', 'May'],
+		axisBorder: {
+			show: false,
+		},
+		axisTicks: {
+			show: false,
+		},
 		labels: {
+			show: false,
 			style: {
-				colors: '#7E7F80',
-				fontSize: '13px',
-				fontFamily: 'Poppins',
-				fontWeight: 100,
-				cssClass: 'apexcharts-xaxis-label',
+				fontSize: '12px',
 			},
 		},
 		crosshairs: {
 			show: false,
+			position: 'front',
+			stroke: {
+				width: 1,
+				dashArray: 3,
+			},
+		},
+		tooltip: {
+			enabled: true,
+			formatter: undefined,
+			offsetY: 0,
+			style: {
+				fontSize: '12px',
+			},
 		},
 	},
 	yaxis: {
-		show: true,
-		labels: {
-			offsetX: -15,
-			style: {
-				colors: '#7E7F80',
-				fontSize: '14px',
-				fontFamily: 'Poppins',
-				fontWeight: 100,
-			},
-			formatter: function (y) {
-				return y.toFixed(0) + 'k';
-			},
-		},
+		show: false,
 	},
 	fill: {
 		opacity: 1,
-		colors: '#FAC7B6',
+		colors: '#FB3E7A',
 	},
 	tooltip: {
+		enabled: false,
+		style: {
+			fontSize: '12px',
+		},
 		y: {
 			formatter: function (val) {
-				return '$ ' + val + ' hundred';
+				return '$' + val + ' thousands';
 			},
 		},
 	},
 };
+
 const LineChart = () => {
 	return (
-		<div
-			id='data-chart'
-			className='min-h-[315px] relative m-auto'
-		>
+		<div className='m-auto w-[100px]'>
 			<Chart
+				id='newCustomers'
 				options={options}
 				series={options.series}
 				type='line'

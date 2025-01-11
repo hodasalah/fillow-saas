@@ -1,6 +1,6 @@
 const GradiantCard = () => {
 	return (
-		<div className='gradiant-bg w-full h-full  relative mb-[1.8r75rem] transition-all border-0 border-transparent rounded-[0.625rem] shadow-[0rem 0.3125rem 0.3125rem 0rem rgba(82, 63, 105, 0.05)]'>
+		<div className='gradiant-bg w-full relative mb-[1.8r75rem] transition-all border-0 border-transparent rounded-[0.625rem] shadow-[0rem 0.3125rem 0.3125rem 0rem rgba(82, 63, 105, 0.05)] py-2 h-fit'>
 			<div className='p-[2rem] grid grid-cols-12 lg:gap-8  gap-4'>
 				<div className='sm:col-span-7 col-span-12 sm:px-[30px]'>
 					<h1 className='relative mb-0 sm:text-[2rem] text-[1.6rem] font-bold text-white'>
@@ -10,7 +10,7 @@ const GradiantCard = () => {
 						Let Fillow manage your project automatically with our
 						best AI systems{' '}
 					</span>
-					<button className='font-medium bg-white text-black rounded-[2rem] py-[0.635rem] px-[1.2rem] text-[1rem] hover:bg-[var(--bg-dark)] hover:text-white'>
+					<button className='font-medium bg-white text-black rounded-[2rem] py-[0.635rem] px-[1.2rem] text-[1rem] hover:bg-[var(--primary-hover)] hover:text-white'>
 						Try Free Now
 					</button>
 				</div>

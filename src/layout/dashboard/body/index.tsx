@@ -17,7 +17,7 @@ const BodyContent = () => {
 			} bg-body-bg text-[0.875rem]  min-h-[calc(100vh-7.7rem)]  pt-[--dz-header-height]`}
 		>
 			<div className='pl-[1.875rem] pr-[1.875rem] pt-[1.875rem]'>
-				<div className='grid grid-cols-1 xl:grid-cols-2  gap-4 xl:gap-8  w-full'>
+				<div className='grid grid-cols-1 xl:grid-cols-2  gap-4 xl:gap-8 w-full'>
 					<GradiantCard />
 					<TotalClients/>
 				</div>

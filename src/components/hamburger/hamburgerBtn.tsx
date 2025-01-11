@@ -10,7 +10,7 @@ const HamburgerBtn = ({ OnBtnClick }: { OnBtnClick: () => void }) => {
 		const body = document.querySelector('body');
 		const handleResize = () => {
 			if (body) {
-				if (body.offsetWidth >= 768) {
+				if (body.offsetWidth >= 768 && !isActive ) {
 					body.setAttribute('data-sidebar-style', 'full');
 				} else {
 					body.setAttribute('data-sidebar-style', 'mini');

@@ -7,6 +7,7 @@ import {
 	faStar,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useAppSelector } from '../../../../hooks/hooks';
 
 const items = [
 	{ icon: faSearch },
@@ -36,10 +37,15 @@ const items = [
 ];
 
 const HeaderContent = () => {
+	const isActive = useAppSelector((state) => state.activeSidebar.isActive);
 	return (
-		<header className='relative flex items-center pl-[5rem] pr-[1.875rem] h-full'>
+		<header
+			className={`relative flex items-center ${
+				isActive ? 'pl-1' : 'pl-1 md:pl-[5rem]'
+			} pr-[1.875rem] h-full`}
+		>
 			<nav className='flex justify-between items-center w-full'>
-				<div className='font-bold  text-[1.25rem] text-[--text-dark] '>
+				<div className='font-bold text-[1.25rem] text-[--text-dark] '>
 					Dashboard
 				</div>
 				<div
@@ -47,12 +53,12 @@ const HeaderContent = () => {
                           w-full 
                         flex items-center px-5 '
 				>
-					<ul className='header-right w-full flex sm:flex-row md:items-center gap-4  sm:justify-end justify-normal'>
+					<ul className='header-right w-full flex sm:flex-row justify-normal md:items-center gap-4  sm:justify-end'>
 						{items.map((item, index) => {
 							return item.icon === faSearch ? (
 								<li
 									key={'faSearch'}
-									className='h-full flex items-center text-[1.25rem] gap-2'
+									className='hidden sm:flex h-full items-center text-[1.25rem] gap-2'
 								>
 									<div className='relative flex items-stretch w-full flex-wrap search-area rounded-[50%]'>
 										<input

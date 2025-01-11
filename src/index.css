@@ -145,6 +145,45 @@ body>* {
 	border-radius: 50%;
 }
 
+.gradiant-bg {
+	background: linear-gradient(212.43deg,
+			var(--primary) 19.43%,
+			var(--rgba-primary-5) 87.63%);
+	;
+}
+
+.movedelement {
+	animation: movedelement 10s linear infinite;
+}
+
+
+@keyframes movedelement {
+	0% {
+		-webkit-transform: translate(0);
+		transform: translate(0);
+	}
+
+	25% {
+		-webkit-transform: translate(10px, 10px);
+		transform: translate(10px, 10px);
+	}
+
+	50% {
+		-webkit-transform: translate(5px, 5px);
+		transform: translate(5px, 5px);
+	}
+
+	75% {
+		-webkit-transform: translate(10px, -5px);
+		transform: translate(10px, -5px);
+	}
+
+	100% {
+		-webkit-transform: translate(0);
+		transform: translate(0);
+	}
+}
+
 @media only screen and (max-width: 87.5rem) {
 	.nav-header .logo-abbr {
 		max-width: 2.8125rem;

@@ -29,7 +29,8 @@ const options = {
 			breakpoint: 1600,
 			options: {
 				chart: {
-					//width: 100,
+					width: 150,
+					height: '100%',
 				},
 				legend: {
 					position: 'bottom',
@@ -55,7 +56,8 @@ const options = {
 	plotOptions: {
 		bar: {
 			horizontal: false,
-			columnWidth: '30%',
+			columnWidth: '20%',
+			barHeight: '80%',
 			colors: {
 				backgroundBarColors: [
 					'#ECECEC',
@@ -67,7 +69,7 @@ const options = {
 			},
 		},
 	},
-	colors: ['#ECECEC', '#886CC0', '#886CC0'],
+	colors: ['#ECECEC', '#886CC0', '#6128d180'],
 	xaxis: {
 		show: false,
 		axisBorder: {
@@ -117,7 +119,7 @@ const StackedBarChart = () => {
 	return (
 		<div
 			id='data-chart'
-			className='min-h-[315px] relative m-auto'
+			className='relative m-auto'
 		>
 			<Chart
 				options={options}

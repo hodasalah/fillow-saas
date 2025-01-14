@@ -5,7 +5,9 @@ import NewCustomerLineChart from '../../../components/chart/NewCustomerLineChart
 import Radial from '../../../components/chart/Radial';
 import StackedBarChart from '../../../components/chart/StackedBarChart';
 import { useAppSelector } from '../../../hooks/hooks';
+import DognutArea from './dognutArea';
 import GradiantCard from './gradiantCard';
+import ProjectStatistics from './projectStatistics';
 import TotalClients from './TotalClients';
 
 const BodyContent = () => {
@@ -19,15 +21,14 @@ const BodyContent = () => {
 			<div className='pl-[1.875rem] pr-[1.875rem] pt-[1.875rem]'>
 				<div className='grid grid-cols-1 xl:grid-cols-2  gap-4 xl:gap-8 w-full'>
 					<GradiantCard />
-					<TotalClients/>
+					<TotalClients />
 				</div>
-				<Barchart />
-				<LineChart />
-				DASHBOARD
-				<StackedBarChart />
-				<NewCustomerLineChart />
-				<Radial />
-				<EmailChart />
+				{/* second row */}
+				<div className='grid grid-cols-1 xl:grid-cols-2 gap-4 xl:gap-8 w-full'>
+					<ProjectStatistics />
+					<DognutArea />
+				</div>
+				
 			</div>
 		</div>
 	);

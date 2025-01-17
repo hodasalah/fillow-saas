@@ -4,7 +4,7 @@ import Chart from 'react-apexcharts';
 
 const labels = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-const options:ApexOptions = {
+const options: ApexOptions = {
 	series: [
 		{
 			name: 'Running',
@@ -34,7 +34,7 @@ const options:ApexOptions = {
 	states: {
 		hover: {
 			filter: {
-				type: 'none'
+				type: 'none',
 			},
 		},
 	},
@@ -150,6 +150,7 @@ const Barchart = () => {
 				options={options}
 				series={options.series}
 				type='bar'
+				height={300}
 			/>
 		</div>
 	);

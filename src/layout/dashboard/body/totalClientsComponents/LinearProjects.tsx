@@ -1,6 +1,8 @@
+import { ApexOptions } from 'apexcharts';
 import Chart from 'react-apexcharts';
+
 const LinearProjects = () => {
-	const options = {
+	const options: ApexOptions = {
 		series: [
 			{
 				name: 'Net Profit',
@@ -9,7 +11,7 @@ const LinearProjects = () => {
 			},
 		],
 		chart: {
-			type: 'line',
+			type: 'line' as const,
 			height: 50,
 			width: 80,
 			toolbar: {
@@ -37,7 +39,6 @@ const LinearProjects = () => {
 			curve: 'smooth',
 			colors: ['var(--primary)'],
 		},
-
 		grid: {
 			show: false,
 			borderColor: '#eee',
@@ -49,23 +50,15 @@ const LinearProjects = () => {
 			},
 		},
 		states: {
-			normal: {
-				filter: {
-					type: 'none',
-					value: 0,
-				},
-			},
 			hover: {
 				filter: {
 					type: 'none',
-					value: 0,
 				},
 			},
 			active: {
 				allowMultipleDataPointsSelection: false,
 				filter: {
 					type: 'none',
-					value: 0,
 				},
 			},
 		},
@@ -105,7 +98,8 @@ const LinearProjects = () => {
 		},
 		fill: {
 			opacity: 1,
-			colors: '#FB3E7A',
+
+			colors: ['#FB3E7A'],
 		},
 		tooltip: {
 			enabled: false,
@@ -114,7 +108,7 @@ const LinearProjects = () => {
 			},
 			y: {
 				formatter: function (val) {
-					return '$' + val + ' thousands';
+					return val + ' thousands';
 				},
 			},
 		},
@@ -141,10 +135,9 @@ const LinearProjects = () => {
 				options={options}
 				type='line'
 				series={options.series}
-				style={{ width: '80px', minHeight: '50px' }}
+				width={80}
 			/>
 		</div>
 	);
 };
-
 export default LinearProjects;

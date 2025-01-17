@@ -1,9 +1,10 @@
 // import chart components from chart.js
+import { ApexOptions } from 'apexcharts';
 import Chart from 'react-apexcharts';
 
 const labels = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-const options = {
+const options:ApexOptions = {
 	series: [
 		{
 			name: 'Running',
@@ -27,45 +28,36 @@ const options = {
 		bar: {
 			horizontal: false,
 			columnWidth: '57%',
-			endingShape: 'rounded',
 			borderRadius: 8,
 		},
 	},
 	states: {
 		hover: {
-			filter: 'none',
+			filter: {
+				type: 'none'
+			},
 		},
 	},
 	colors: ['#FFA26D', '#FF5ED2'],
 	dataLabels: {
 		enabled: false,
 	},
-	title: {
-		text: 'ApexChart BarChart Data',
-		position: 'top',
-		align: 'center',
-		style: {
-			fontSize: '18px',
-			fontWeight: 'bold',
-			fontFamily: 'poppins',
-			color: '#788',
-		},
-	},
-	legend: {
-		position: 'top',
-		horizontalAlign: 'center',
-		offsetX: 40,
-	},
 	markers: {
-		width: 18,
-		height: 18,
-		strokeWidth: 10,
-		strokeColor: '#fff',
-		fillColors: undefined,
-		radius: 12,
-	shape:'circle'
+		shape: 'circle',
 	},
 
+	legend: {
+		show: false,
+		fontSize: '12px',
+		labels: {
+			colors: '#000000',
+		},
+		markers: {
+			size: 18,
+			strokeWidth: 10,
+			fillColors: undefined,
+		},
+	},
 	responsive: [
 		{
 			breakpoint: 768,
@@ -102,7 +94,7 @@ const options = {
 				colors: '#787878',
 				fontSize: '13px',
 				fontFamily: 'poppins',
-				fontWeight: 100,
+				fontWeight: 400,
 				cssClass: 'apexcharts-xaxis-label',
 			},
 		},
@@ -120,7 +112,7 @@ const options = {
 				colors: '#787878',
 				fontSize: '13px',
 				fontFamily: 'poppins',
-				fontWeight: 100,
+				fontWeight: 400,
 				cssClass: 'apexcharts-xaxis-label',
 			},
 		},
@@ -141,7 +133,7 @@ const options = {
 	},
 	tooltip: {
 		y: {
-			formatter: function (val: number) {
+			formatter: function (val) {
 				return '$ ' + val + ' thousands';
 			},
 		},

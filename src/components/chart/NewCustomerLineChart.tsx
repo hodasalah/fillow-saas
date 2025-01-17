@@ -1,5 +1,7 @@
 import Chart from 'react-apexcharts';
-const options = {
+import { ApexOptions } from 'apexcharts';
+
+const options : ApexOptions = {
 	series: [
 		{
 			name: 'Net Profit',
@@ -48,23 +50,15 @@ const options = {
 		},
 	},
 	states: {
-		normal: {
-			filter: {
-				type: 'none',
-				value: 0,
-			},
-		},
 		hover: {
 			filter: {
 				type: 'none',
-				value: 0,
 			},
 		},
 		active: {
 			allowMultipleDataPointsSelection: false,
 			filter: {
 				type: 'none',
-				value: 0,
 			},
 		},
 	},
@@ -104,7 +98,7 @@ const options = {
 	},
 	fill: {
 		opacity: 1,
-		colors: '#FB3E7A',
+		colors: ['#FB3E7A'],
 	},
 	tooltip: {
 		enabled: false,
@@ -129,6 +123,7 @@ const NewCustomerLineChart = () => {
 				options={options}
 				series={options.series}
 				type='line'
+				width={100}
 			/>
 		</div>
 	);

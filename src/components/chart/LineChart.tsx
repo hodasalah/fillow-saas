@@ -1,6 +1,7 @@
+import { ApexOptions } from 'apexcharts';
 import Chart from 'react-apexcharts';
 
-const options = {
+const options: ApexOptions = {
 	series: [
 		{
 			name: 'Net Profit',
@@ -122,12 +123,13 @@ const options = {
 
 const LineChart = () => {
 	return (
-		<div className='m-auto w-[100px]'>
+		<div className='m-auto '>
 			<Chart
 				id='newCustomers'
 				options={options}
 				series={options.series}
 				type='line'
+				width={100}
 			/>
 		</div>
 	);

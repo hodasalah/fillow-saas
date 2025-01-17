@@ -1,6 +1,7 @@
 import Chart from 'react-apexcharts';
+import { ApexOptions } from 'apexcharts';
 
-const options = {
+const options: ApexOptions = {
 	series: [70],
 	chart: {
 		type: 'radialBar',
@@ -64,7 +65,7 @@ const options = {
         }, */
 	fill: {
 		type: 'gradient',
-		colors: '#FF63E6',
+		colors: ['#FF63E6'],
 		gradient: {
 			shade: 'white',
 			shadeIntensity: 0.15,
@@ -76,7 +77,6 @@ const options = {
 	},
 	labels: ['Average Results'],
 };
-
 const Radial = () => {
 	return (
 		<div

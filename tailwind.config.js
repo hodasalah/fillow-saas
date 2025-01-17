@@ -36,7 +36,7 @@ export default {
 				headerbg: 'var(--headerbg)',
 			},
 			fontFamily: {
-				'font-family-base': 'var(--font-family-base)',
+				'Poppins': ['Poppins', 'sans-serif'],
 			},
 		},
 	},

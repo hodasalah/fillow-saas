@@ -1,6 +1,7 @@
+import { ApexOptions } from 'apexcharts';
 import Chart from 'react-apexcharts';
 
-const options = {
+const options: ApexOptions = {
 	series: [27, 11, 22, 15, 25],
 	chart: {
 		type: 'donut',
@@ -15,7 +16,7 @@ const options = {
 	colors: ['var(--primary)', '#26E023', '#61CFF1', '#FFDA7C', '#FF86B1'],
 	legend: {
 		position: 'bottom',
-		show: false,
+		show: true,
 	},
 	responsive: [
 		{

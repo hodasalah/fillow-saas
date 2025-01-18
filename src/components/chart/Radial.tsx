@@ -1,5 +1,5 @@
-import Chart from 'react-apexcharts';
 import { ApexOptions } from 'apexcharts';
+import Chart from 'react-apexcharts';
 
 const options: ApexOptions = {
 	series: [70],
@@ -81,12 +81,14 @@ const Radial = () => {
 	return (
 		<div
 			id='data-chart'
-			className='min-h-[315px] relative m-auto'
+			className='relative m-auto'
 		>
 			<Chart
 				options={options}
 				series={options.series}
 				type='radialBar'
+				height={300}
+				width={230}
 			/>
 		</div>
 	);

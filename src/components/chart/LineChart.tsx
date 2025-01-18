@@ -5,28 +5,30 @@ const options: ApexOptions = {
 	series: [
 		{
 			name: 'Net Profit',
-			data: [100, 300, 100, 400, 200, 400],
-			//radius: 30,
+			data: [20, 40, 20, 30, 50, 40, 60],
+			//radius: 12,
 		},
 	],
 	chart: {
 		type: 'line',
-		height: 50,
-		width: 100,
+		height: 250,
 		toolbar: {
 			show: false,
 		},
-		zoom: {
-			enabled: false,
-		},
-		sparkline: {
-			enabled: true,
+	},
+	plotOptions: {
+		bar: {
+			horizontal: false,
+			columnWidth: '70%',
+			endingShape: 'rounded',
 		},
 	},
-
-	colors: ['var(--primary)'],
+	colors: ['#886CC0'],
 	dataLabels: {
 		enabled: false,
+	},
+	markers: {
+		shape: 'circle',
 	},
 
 	legend: {
@@ -34,88 +36,63 @@ const options: ApexOptions = {
 	},
 	stroke: {
 		show: true,
-		width: 6,
+		width: 10,
 		curve: 'smooth',
 		colors: ['var(--primary)'],
 	},
 
 	grid: {
-		show: false,
-		borderColor: '#eee',
-		padding: {
-			top: 0,
-			right: 0,
-			bottom: 0,
-			left: 0,
-		},
-	},
-	states: {
-		normal: {
-			filter: {
-				type: 'none',
-				value: 0,
+		borderColor: 'var(--border)',
+		show: true,
+		xaxis: {
+			lines: {
+				show: true,
 			},
 		},
-		hover: {
-			filter: {
-				type: 'none',
-				value: 0,
-			},
-		},
-		active: {
-			allowMultipleDataPointsSelection: false,
-			filter: {
-				type: 'none',
-				value: 0,
+		yaxis: {
+			lines: {
+				show: false,
 			},
 		},
 	},
 	xaxis: {
-		categories: ['Jan', 'feb', 'Mar', 'Apr', 'May'],
-		axisBorder: {
-			show: false,
-		},
-		axisTicks: {
-			show: false,
-		},
+		categories: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
 		labels: {
-			show: false,
 			style: {
-				fontSize: '12px',
+				colors: '#7E7F80',
+				fontSize: '13px',
+				fontFamily: 'Poppins',
+				fontWeight: 100,
+				cssClass: 'apexcharts-xaxis-label',
 			},
 		},
 		crosshairs: {
 			show: false,
-			position: 'front',
-			stroke: {
-				width: 1,
-				dashArray: 3,
-			},
-		},
-		tooltip: {
-			enabled: true,
-			formatter: undefined,
-			offsetY: 0,
-			style: {
-				fontSize: '12px',
-			},
 		},
 	},
 	yaxis: {
-		show: false,
+		show: true,
+		labels: {
+			offsetX: -15,
+			style: {
+				colors: '#7E7F80',
+				fontSize: '14px',
+				fontFamily: 'Poppins',
+				fontWeight: 100,
+			},
+			formatter: function (y) {
+				return y.toFixed(0) + 'k';
+			},
+		},
 	},
 	fill: {
 		opacity: 1,
-		colors: '#FB3E7A',
+		colors: ['#FAC7B6'],
 	},
 	tooltip: {
-		enabled: false,
-		style: {
-			fontSize: '12px',
-		},
 		y: {
 			formatter: function (val) {
-				return '$' + val + ' thousands';
+				return '$ ' + val + ' hundred';
 			},
 		},
 	},
@@ -123,13 +100,12 @@ const options: ApexOptions = {
 
 const LineChart = () => {
 	return (
-		<div className='m-auto '>
+		<div className='relative w-full h-full'>
 			<Chart
-				id='newCustomers'
 				options={options}
 				series={options.series}
 				type='line'
-				width={100}
+				height={250}
 			/>
 		</div>
 	);

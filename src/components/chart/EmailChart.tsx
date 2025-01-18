@@ -41,7 +41,7 @@ const EmailChart = () => {
 	return (
 		<div
 			id='data-chart'
-			className='min-h-[315px] relative m-auto'
+			className='relative m-auto'
 		>
 			<Chart
 				options={options}

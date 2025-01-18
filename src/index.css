@@ -115,6 +115,9 @@ body>* {
 	scrollbar-width: thin;
 	scrollbar-color: rgba(111, 133, 147, 00.9375rem) rgba(226, 66, 18, 0);
 }
+svg{
+	display: inline-block;
+}
 
 .brand-logo {
 	display: flex;

@@ -1,9 +1,10 @@
 import { useAppSelector } from '../../../hooks/hooks';
+import CompleteProject from './completeProject';
 import DognutArea from './dognutArea';
+import EmailCategories from './emailCategories';
 import GradiantCard from './gradiantCard';
 import ProjectStatistics from './projectStatistics';
-import TotalClients from './TotalClients';
-
+import TotalClients from './totalClientsComponents/index';
 const BodyContent = () => {
 	const isActive = useAppSelector((state) => state.activeSidebar.isActive);
 	return (
@@ -21,6 +22,11 @@ const BodyContent = () => {
 				<div className='grid grid-cols-1 xl:grid-cols-2 gap-4 xl:gap-8 w-full mb-8'>
 					<ProjectStatistics />
 					<DognutArea />
+				</div>
+				{/* third row */}
+				<div className='grid grid-cols-1 xl:grid-cols-2 gap-4 xl:gap-8 w-full mb-8'>
+					<CompleteProject />
+					<EmailCategories />
 				</div>
 			</div>
 		</div>

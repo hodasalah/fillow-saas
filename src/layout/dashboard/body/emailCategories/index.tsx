@@ -1,3 +1,4 @@
+import { PrimaryOutlineBtn } from '../../../../components/buttons';
 import Card from '../../../../components/Card';
 import EmailChart from '../../../../components/chart/EmailChart';
 import BlueRectDot from '../../../../components/svgs/rectDots/BlueRectDot';
@@ -40,7 +41,7 @@ const EmailCategories = () => {
 		},
 	];
 	return (
-		<div>
+		<div className='w-full h-fit'>
 			<Card>
 				<div className='w-full p-[1.875rem] pb-0'>
 					<div className='mb-4 '>
@@ -77,9 +78,7 @@ const EmailCategories = () => {
 						})}
 					</div>
 					<div className='py-5'>
-						<button className='w-full border-[1px] border-[var(--primary)] rounded-full h-12 text-center text-[var(--primary)] hover:bg-[var(--primary)] hover:text-white transition-all duration-300'>
-							Update Progress
-						</button>
+						<PrimaryOutlineBtn>Update Progress</PrimaryOutlineBtn>
 					</div>
 				</div>
 			</Card>

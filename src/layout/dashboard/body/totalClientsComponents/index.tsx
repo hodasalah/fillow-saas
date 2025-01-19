@@ -1,4 +1,3 @@
-
 import Card from '../../../../components/Card';
 import Linear from './Linear';
 import LinearProjects from './LinearProjects';
@@ -8,8 +7,8 @@ import Stacked from './Stacked';
 const index = () => {
 	return (
 		<div
-			className='w-full h-full  relative mb-[1.8r75rem] transition-all border-0 border-transparent
-    grid grid-cols-12  gap-4 fit-content-height '
+			className='w-full h-full elative transition-all border-0 border-transparent
+    grid grid-cols-12 gap-4 '
 		>
 			<Card>
 				<Stacked />

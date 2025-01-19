@@ -14,7 +14,7 @@ const CompleteProject = () => {
 		},
 	];
 	return (
-		<div>
+		<div className='w-full'>
 			<Card>
 				<div className='w-full p-[1.875rem] pb-0'>
 					<div className='flex w-full justify-between items-center mb-4 '>

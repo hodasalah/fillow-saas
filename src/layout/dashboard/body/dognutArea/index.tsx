@@ -18,7 +18,7 @@ const DognutArea = () => {
 		},
 	];
 	return (
-		<div className='w-full'>
+		<div className='w-full h-fit'>
 			<Card>
 				<div className='flex justify-between items-center p-[1.875rem]'>
 					<div className='max-w-full w-[50%]'>

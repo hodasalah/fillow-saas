@@ -26,7 +26,7 @@ const ProjectStatistics = () => {
 	];
 
 	return (
-		<div className=''>
+		<div className='w-full'>
 			<Card>
 				<div className='w-full p-[1.875rem]'>
 					{/* First Row */}

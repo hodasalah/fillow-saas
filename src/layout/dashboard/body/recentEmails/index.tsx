@@ -1,5 +1,4 @@
 import { PrimaryOutlineBtn } from '../../../../components/buttons';
-import Card from '../../../../components/Card';
 const RecentEmails = () => {
 	const emailsData = [
 		{
@@ -51,11 +50,11 @@ const RecentEmails = () => {
 	];
 	return (
 		<div className='w-full'>
-			<Card>
+			<div className='bg-white rounded-lg shadow-sm'>
 				<div className='p-[1.875rem] pb-0 w-full'>
 					{/* header */}
-					<div className='flex w-full justify-between items-center mb-4 '>
-						<div className='mb-4 '>
+					<div className='flex w-full justify-between items-center mb-4 px-[1.875rem] pt-[1.5rem]'>
+						<div className=''>
 							<h4 className='mb-0 text-xl font-semibold text-[var(--text-dark)] capitalize mt-0'>
 								Recent Emails
 							</h4>
@@ -68,15 +67,36 @@ const RecentEmails = () => {
 						</div>
 					</div>
 					{/* emails */}
-					<div className=''>
-						<div className='flex items-center justify-between'>
-							{/* image+ email message col */}
-
-							{/* pinned button col */}
-						</div>
+					<div className='px-0 pt-2'>
+						{emailsData.length > 0 &&
+							emailsData.map((email) => (
+								<div className=' border-b-[0.0625rem] border-b-[var(--rgba-primary-1)]'>
+									<div className='py-[.9375rem] px-[1.8625rem]flex items-center justify-between'>
+										{/* image + data */}
+										<div className=' flex items-center gap-4'>
+											<div>
+												<img
+													className='rounded-full w-12 h-12'
+													src={email.profileImage}
+													alt={email.name}
+												/>
+											</div>
+											<div>
+												<h4 className='leading-[1.5] font-[500] text-[1.125rem] text-[var(--text-dark)]'>
+													{email.title}
+												</h4>
+												<p className='leading-[1.8] text-[var(--text-dark)]'>
+													{email.body}
+												</p>
+											</div>
+										</div>
+										{/* pin mark btn */}
+									</div>
+								</div>
+							))}
 					</div>
 				</div>
-			</Card>
+			</div>
 		</div>
 	);
 };

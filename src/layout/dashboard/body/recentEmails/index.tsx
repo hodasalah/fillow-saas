@@ -76,7 +76,7 @@ const RecentEmails = () => {
 									<div className='w-ful py-[.9375rem] px-[1.8625rem] flex items-center justify-between gap-[3rem]'>
 										{/* image + data */}
 										<div className='w-full flex items-center'>
-											<div className="w-[3rem] h-[3rem] leading-[3rem] rounded-[50%] text-[1.5rem] ">
+											<div className="w-[5rem] h-[3rem] leading-[3rem] rounded-[50%] text-[1.5rem] overflow-hidden">
 												<img
 													className='block w-full h-full object-cover'
 													src={email.profileImage}

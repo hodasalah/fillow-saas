@@ -1,12 +1,23 @@
-import {
-	faFile,
-	faImage,
-	faThumbTack,
-} from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { PrimaryOutlineBtn } from '../../../../components/buttons';
+import EmailItem from './EmailItem';
+
+interface EmailFile {
+	name: string;
+	type: 'file' | 'image';
+}
+
+interface Email {
+	name: string;
+	email: string;
+	title: string;
+	body: string;
+	profileImage: string;
+	files: EmailFile[];
+	pinned: boolean;
+}
+
 const RecentEmails = () => {
-	const emailsData = [
+	const emailsData: Email[] = [
 		{
 			name: 'John Doe',
 			email: 'john@gmail.com',
@@ -18,7 +29,7 @@ const RecentEmails = () => {
 			pinned: true,
 		},
 		{
-			name: 'Jeny Mag',
+			name: 'Jenny Mag',
 			email: 'jeny@gmail.com',
 			title: 'Lorem ipsum dolor sit amet',
 			body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.',
@@ -34,7 +45,7 @@ const RecentEmails = () => {
 			pinned: true,
 		},
 		{
-			name: 'Goarge Mike',
+			name: 'George Mike',
 			email: 'george@gmail.com',
 			title: 'Lorem ipsum dolor sit amet',
 			body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.',
@@ -44,7 +55,7 @@ const RecentEmails = () => {
 			pinned: false,
 		},
 		{
-			name: 'Jesica Doe',
+			name: 'Jessica Doe',
 			email: 'jessica@gmail.com',
 			title: 'Lorem ipsum dolor sit amet',
 			body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.',
@@ -80,94 +91,10 @@ const RecentEmails = () => {
 					<div className='px-0 pt-2'>
 						{emailsData.length > 0 &&
 							emailsData.map((email) => (
-								<div className='w-full border-b-[0.0625rem] border-b-[var(--rgba-primary-1)]'>
-									<div className='w-ful py-[.9375rem] px-[1.8625rem] flex items-center justify-between gap-[3rem]'>
-										{/* image + data */}
-										<div className='w-full flex items-center'>
-											<div className='w-[5rem] h-[3rem] leading-[3rem] rounded-[50%] text-[1.5rem] overflow-hidden'>
-												<img
-													className='block w-full h-full object-cover'
-													src={email.profileImage}
-													alt={email.name}
-												/>
-											</div>
-											<div className='ml-4'>
-												<h4 className='leading-[1.5] font-[500] text-[1.125rem] text-[var(--text-dark)]'>
-													{email.title}
-												</h4>
-												<p className='leading-[1.8] text-[var(--text-dark)]'>
-													{email.body}
-												</p>
-											</div>
-										</div>
-										{/* pin mark btn */}
-										<div className='max-w-full flex items-center justify-end'>
-											<button className='w-[3rem] h-[3rem] border-[0.0625rem] border-[var(--primary)] leading-[3rem] text-[var(--primary)] rounded-full flex justify-center items-center text-[1.375rem] hover:bg-[var(--primary)] hover:text-white transition-all duration-300 '>
-												<FontAwesomeIcon
-													icon={faThumbTack}
-												/>
-											</button>
-										</div>
-									</div>
-									{email.files.length > 0 && (
-										<div className='flex items-center gap-2 mt-2 px-[1.8625rem]'>
-											{email.files.length > 2
-												? email.files
-														.slice(0, 2)
-														.map((file, index) => (
-															<div
-																key={index}
-																className='py-3 px-9 rounded-full border-[1px] border-[var(--primary)] bg-transparent text-[var(--primary)] text-[0.875rem]'
-															>
-																{file.type ===
-																'image' ? (
-																	<>
-																		<FontAwesomeIcon
-																			className='ml-1'
-																			icon={
-																				faImage
-																			}
-																		/>{' '}
-																		{
-																			file.name
-																		}
-																	</>
-																) : (
-																	<>
-																		<FontAwesomeIcon
-																			className='ml-1'
-																			icon={
-																				faFile
-																			}
-																		/>{' '}
-																		{
-																			file.name
-																		}
-																	</>
-																)}
-															</div>
-														))
-												: email.files.map(
-														(file, index) => (
-															<div
-																key={index}
-																className='py-3 px-9 rounded-full border-[1px] border-[var(--primary)] bg-transparent text-[var(--primary)] text-[0.875rem]'
-															>
-																{file}
-															</div>
-														),
-												  )}
-										</div>
-									)}
-									{email.files.length > 2 && (
-										<div className='py-[.9375rem] px-[1.8625rem]'>
-											<button className='capitalize mt-2 py-3 px-8 rounded-full bg-[var(--rgba-primary-1)] text-[var(--primary)] text-[0.875rem]'>
-												view {email.files.length - 2}{' '}
-												more files
-											</button>
-										</div>
-									)}
-								</div>
+								<EmailItem
+									key={email.name}
+									email={email}
+								/>
 							))}
 					</div>
 				</div>

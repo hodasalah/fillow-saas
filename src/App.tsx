@@ -1,4 +1,6 @@
 import Dashboard from './layout/dashboard';
+import Loading from './components/Loading';
+
 
 {
 	/* <FontAwesomeIcon icon={faHouse} />
@@ -11,6 +13,7 @@ import Dashboard from './layout/dashboard';
 const App = () => {
 	return (
 		<div className='overflow-hidden  transition-all duration-300 ease-in'>
+			<Loading />
 			<Dashboard />
 		</div>
 	);

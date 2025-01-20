@@ -1,16 +1,20 @@
 import { configureStore } from '@reduxjs/toolkit';
 import counterReducer from './slices/counterSlice';
 import sidebarReducer from './slices/sidebarSlice';
+import loadingReducer from './slices/loadingSlice';
+
 
 export const store = configureStore({
 	reducer: {
-    counter: counterReducer,
-    activeSidebar: sidebarReducer,
-    // Add other reducers here if needed. For example:
-    // posts: postsReducer,
-    // comments: commentsReducer,
-    // users: usersReducer,
-  },
+		counter: counterReducer,
+		activeSidebar: sidebarReducer,
+		loading: loadingReducer,
+
+		// Add other reducers here if needed. For example:
+		// posts: postsReducer,
+		// comments: commentsReducer,
+		// users: usersReducer,
+	},
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

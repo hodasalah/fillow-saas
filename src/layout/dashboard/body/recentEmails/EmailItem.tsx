@@ -1,12 +1,18 @@
-import { memo } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
 	faFile,
 	faImage,
 	faThumbTack,
 } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { memo } from 'react';
+import { Email } from './index';
 
-const EmailItem = ({ email }) => {
+interface EmailItemProps {
+	email: Email;
+	onBtnClick: (id: string, email: Email) => void;
+}
+
+const EmailItem = ({ email, onBtnClick }: EmailItemProps) => {
 	return (
 		<div
 			key={email.name}
@@ -33,7 +39,14 @@ const EmailItem = ({ email }) => {
 				</div>
 				{/* pin mark btn */}
 				<div className='max-w-full flex items-center justify-end'>
-					<button className='w-[3rem] h-[3rem] border-[0.0625rem] border-[var(--primary)] leading-[3rem] text-[var(--primary)] rounded-full flex justify-center items-center text-[1.375rem] hover:bg-[var(--primary)] hover:text-white transition-all duration-300 '>
+					<button
+						className={`w-[3rem] h-[3rem] border-[0.0625rem] border-[var(--primary)] leading-[3rem] ${
+							email.pinned
+								? 'bg-[var(--primary)] text-white'
+								: 'text-[var(--primary)] bg-transparent'
+						} rounded-[0.635rem] justify-center items-center text-[1.375rem] transition-all duration-300 `}
+						onClick={() => onBtnClick(email.id, email)}
+					>
 						<FontAwesomeIcon icon={faThumbTack} />
 					</button>
 				</div>

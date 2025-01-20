@@ -1,4 +1,7 @@
+import { useCallback, useEffect, useState } from 'react';
 import { PrimaryOutlineBtn } from '../../../../components/buttons';
+import { useAppDispatch } from '../../../../hooks/hooks';
+import { setLoading } from '../../../../store/slices/loadingSlice';
 import EmailItem from './EmailItem';
 
 interface EmailFile {
@@ -6,7 +9,8 @@ interface EmailFile {
 	type: 'file' | 'image';
 }
 
-interface Email {
+export interface Email {
+	id: string;
 	name: string;
 	email: string;
 	title: string;
@@ -17,58 +21,46 @@ interface Email {
 }
 
 const RecentEmails = () => {
-	const emailsData: Email[] = [
-		{
-			name: 'John Doe',
-			email: 'john@gmail.com',
-			title: 'Lorem ipsum dolor sit amet',
-			body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.',
-			profileImage:
-				'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1180&q=80',
-			files: [],
-			pinned: true,
-		},
-		{
-			name: 'Jenny Mag',
-			email: 'jeny@gmail.com',
-			title: 'Lorem ipsum dolor sit amet',
-			body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.',
-			profileImage:
-				'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=3744&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+	const [emails, setEmails] = useState<Email[]>([]);
+	const [error, setError] = useState<string | null>(null);
 
-			files: [
-				{ name: 'Master_file.fig', type: 'file' },
-				{ name: 'CoverPreview.jpg', type: 'image' },
-				{ name: 'CoverPreview3.jpg', type: 'image' },
-				{ name: 'Master_file2.fig', type: 'file' },
-			],
-			pinned: true,
-		},
-		{
-			name: 'George Mike',
-			email: 'george@gmail.com',
-			title: 'Lorem ipsum dolor sit amet',
-			body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.',
-			profileImage:
-				'https://images.unsplash.com/photo-1640960543409-dbe56ccc30e2?q=80&w=2725&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-			files: [],
-			pinned: false,
-		},
-		{
-			name: 'Jessica Doe',
-			email: 'jessica@gmail.com',
-			title: 'Lorem ipsum dolor sit amet',
-			body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.',
-			profileImage:
-				'https://images.unsplash.com/photo-1586297135537-94bc9ba060aa?q=80&w=3880&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-			files: [
-				{ name: 'file1.fig', type: 'file' },
-				{ name: 'CoverPreview5.jpg', type: 'image' },
-				{ name: 'CoverPreview8.jpg', type: 'image' },
-			],
-			pinned: false,
-		},
-	];
+	const dispatch = useAppDispatch();
+	const fetchEmails = useCallback(async () => {
+		dispatch(setLoading(true));
+		setError(null);
+		try {
+			const response = await fetch('/datas/emails.json');
+			if (!response.ok) {
+				throw new Error('Failed to fetch emails');
+			}
+			const data = await response.json();
+			dispatch(setLoading(false));
+			setEmails(data.emailsData);
+		} catch (error) {
+			console.error('Error fetching emails:', error);
+			setError('Failed to fetch emails Please try again later.');
+		} finally {
+			dispatch(setLoading(false));
+		}
+	}, [dispatch]);
+
+	useEffect(() => {
+		fetchEmails();
+	}, []);
+
+	const handleRetry = () => {
+		fetchEmails();
+	};
+	const handlePinnedEmail = (id: string) => {
+		const email = emails.find((email) => email.id === id);
+		const updatedEmails = emails.map((email) =>
+			email.id === id ? { ...email, pinned: !email.pinned } : email,
+		);
+		if (email) {
+			setEmails([...updatedEmails]);
+		}
+	};
+	console.log(emails);
 	return (
 		<div className='w-full'>
 			<div className='bg-white rounded-lg shadow-sm'>
@@ -87,13 +79,26 @@ const RecentEmails = () => {
 							<PrimaryOutlineBtn>View More</PrimaryOutlineBtn>
 						</div>
 					</div>
+					{error && (
+						<div className='p-4 text-center bg-red-100'>
+							<p className='text-red-500'>{error}</p>
+							<button
+								onClick={handleRetry}
+								className='mt-2 px-4 py-2 bg-[var(--primary)] text-white rounded-md'
+							>
+								Retry
+							</button>
+						</div>
+					)}
+
 					{/* emails */}
 					<div className='px-0 pt-2'>
-						{emailsData.length > 0 &&
-							emailsData.map((email) => (
+						{emails.length > 0 &&
+							emails.map((email: Email) => (
 								<EmailItem
-									key={email.name}
+									key={email.id}
 									email={email}
+									onBtnClick={handlePinnedEmail}
 								/>
 							))}
 					</div>
@@ -102,5 +107,4 @@ const RecentEmails = () => {
 		</div>
 	);
 };
-
 export default RecentEmails;

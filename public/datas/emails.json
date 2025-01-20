@@ -1,0 +1,74 @@
+{
+	"emailsData": [
+		{
+			"id": "rtoeeinnxtsgam,alapapaa,mshsydbdfjfifl",
+			"name": "John Doe",
+			"email": "john@gmail.com",
+			"title": "Lorem ipsum dolor sit amet",
+			"body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.",
+			"profileImage": "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1180&q=80",
+			"files": [],
+			"pinned": true
+		},
+		{
+			"id": "rtoysdmfmfnfhhf wwsgsssd,manfaosdpgiseg",
+			"name": "Jenny Mag",
+			"email": "jeny@gmail.com",
+			"title": "Lorem ipsum dolor sit amet",
+			"body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.",
+			"profileImage": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=3744&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+			"files": [
+				{
+					"name": "Master_file.fig",
+					"type": "file"
+				},
+				{
+					"name": "CoverPreview.jpg",
+					"type": "image"
+				},
+				{
+					"name": "CoverPreview3.jpg",
+					"type": "image"
+				},
+				{
+					"name": "Master_file2.fig",
+					"type": "file"
+				}
+			],
+			"pinned": true
+		},
+		{
+			"id": "rtkskkskkkfuussdhbxbASTSsd",
+			"name": "George Mike",
+			"email": "george@gmail.com",
+			"title": "Lorem ipsum dolor sit amet",
+			"body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.",
+			"profileImage": "https://images.unsplash.com/photo-1640960543409-dbe56ccc30e2?q=80&w=2725&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+			"files": [],
+			"pinned": false
+		},
+		{
+			"id": "ryycuvsxncsfdfawfsfblfbsdf",
+			"name": "Jessica Doe",
+			"email": "jessica@gmail.com",
+			"title": "Lorem ipsum dolor sit amet",
+			"body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.",
+			"profileImage": "https://images.unsplash.com/photo-1586297135537-94bc9ba060aa?q=80&w=3880&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+			"files": [
+				{
+					"name": "file1.fig",
+					"type": "file"
+				},
+				{
+					"name": "CoverPreview5.jpg",
+					"type": "image"
+				},
+				{
+					"name": "CoverPreview8.jpg",
+					"type": "image"
+				}
+			],
+			"pinned": false
+		}
+	]
+}

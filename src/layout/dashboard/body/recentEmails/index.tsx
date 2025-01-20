@@ -46,10 +46,24 @@ const RecentEmails = () => {
 
 	useEffect(() => {
 		fetchEmails();
-	}, []);
+	}, [fetchEmails]);
 
-	const handleRetry = () => {
-		fetchEmails();
+	const MAX_RETRIES = 3;
+	const [retryCount, setRetryCount] = useState(0);
+
+	const handleRetry = async () => {
+		if (retryCount >= MAX_RETRIES) {
+			setError('Maximum retry attempts reached. Please try again later.');
+			return;
+		}
+		setRetryCount((prev) => prev + 1);
+		setError(null);
+		try {
+			await fetchEmails();
+		} catch (error) {
+			console.error('Retry attempt failed:', error);
+			setError('Retry attempt failed. Please try again later.');
+		}
 	};
 	const handlePinnedEmail = (id: string) => {
 		const email = emails.find((email) => email.id === id);
@@ -60,7 +74,6 @@ const RecentEmails = () => {
 			setEmails([...updatedEmails]);
 		}
 	};
-	console.log(emails);
 	return (
 		<div className='w-full'>
 			<div className='bg-white rounded-lg shadow-sm'>
@@ -83,7 +96,7 @@ const RecentEmails = () => {
 						<div className='p-4 text-center bg-red-100'>
 							<p className='text-red-500'>{error}</p>
 							<button
-								onClick={handleRetry}
+								onClick={() => handleRetry()}
 								className='mt-2 px-4 py-2 bg-[var(--primary)] text-white rounded-md'
 							>
 								Retry

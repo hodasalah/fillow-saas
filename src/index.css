@@ -115,7 +115,8 @@ body>* {
 	scrollbar-width: thin;
 	scrollbar-color: rgba(111, 133, 147, 00.9375rem) rgba(226, 66, 18, 0);
 }
-svg{
+
+svg {
 	display: inline-block;
 }
 
@@ -164,6 +165,22 @@ svg{
 
 .translate3d {
 	transform: translate3d(0, 22px, 0);
+}
+
+.progress-animated {
+	animation-duration: 5s;
+	animation-name: myanimation;
+	transition: all 5s ease 0s
+}
+
+@keyframes myanimation {
+	0% {
+		width: 0%;
+	}
+
+	100% {
+		width: 100%;
+	}
 }
 
 .movedelement {

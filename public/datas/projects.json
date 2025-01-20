@@ -1,0 +1,44 @@
+{
+	"projects": [
+		{
+			"name": "Big Wind",
+			"description": "Optimization Dashboard Page for indexing in Google",
+			"category": "creative Agency",
+			"tags": [
+				{
+					"name": "SEO",
+					"color": "#FFBF00",
+					"bg": "#fff9e6"
+				},
+				{
+					"name": "Marketing",
+					"color": "#FC2E53",
+					"bg": "#ffedf0"
+				}
+			],
+			"completedTasks": 12,
+			"dueDate": "2025-01-10",
+			"image": "src/assets/bigwind.jpg"
+		},
+		{
+			"name": "Circle Hunt",
+			"description": "Redesign Landing Page Website for Company Profile",
+			"category": "Software Company",
+			"tags": [
+				{
+					"name": "UI/UX",
+					"color": "var(--primary)",
+					"bg": "var(--rgba-primary-1)"
+				},
+				{
+					"name": "Web Design",
+					"color": "#FC2E53",
+					"bg": "#ffedf0"
+				}
+			],
+			"completedTasks": 15,
+			"dueDate": "2025-02-15",
+			"image": "src/assets/circlehunt.jpg"
+		}
+	]
+}

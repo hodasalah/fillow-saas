@@ -1,9 +1,27 @@
 import { useCallback, useEffect, useState } from 'react';
+import { PrimaryOutlineBtn } from '../../../../components/buttons';
 import Card from '../../../../components/Card';
 import { useAppDispatch } from '../../../../hooks/hooks';
 import { setLoading } from '../../../../store/slices/loadingSlice';
 import ProjectItem from './ProjectItem';
 
+export interface Project {
+	id: number;
+	name: string;
+	category: string;
+	description: string;
+	image: string;
+	tags: Tag[];
+	progress: number;
+	deadline: string;
+
+	// Add other project properties here
+}
+export interface Tag {
+	name: string;
+	color: string;
+	bg: string;
+}
 const ImportantProjects = () => {
 	const [projects, setProjects] = useState<Project[]>([]);
 	const [error, setError] = useState<string | null>(null);
@@ -32,11 +50,10 @@ const ImportantProjects = () => {
 		fetchProjects();
 	}, []);
 
-	
-  const MAX_RETRIES = 3;
-  const [retryCount, setRetryCount] = useState(0);
+	const MAX_RETRIES = 3;
+	const [retryCount, setRetryCount] = useState(0);
 
-  const handleRetry = async () => {
+	const handleRetry = async () => {
 		if (retryCount >= MAX_RETRIES) {
 			setError('Maximum retry attempts reached. Please try again later.');
 			return;
@@ -49,7 +66,7 @@ const ImportantProjects = () => {
 			console.error('Retry attempt failed:', error);
 			setError('Retry attempt failed. Please try again later.');
 		}
-  };
+	};
 	return (
 		<div>
 			<Card>
@@ -76,8 +93,19 @@ const ImportantProjects = () => {
 					)}
 					{/* projects */}
 					<div className='pt-3 pb-0'>
-            <ProjectItem />
-          </div>
+						{projects.map((project) => (
+							<ProjectItem
+								key={project.id}
+								project={project}
+							/>
+						))}
+					</div>
+					{/* Pin Other Projects btn */}
+					<div className='mt-4'>
+						<PrimaryOutlineBtn>
+							Pin Other Projects
+						</PrimaryOutlineBtn>
+					</div>
 				</div>
 			</Card>
 		</div>

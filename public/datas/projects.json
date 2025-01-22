@@ -16,9 +16,9 @@
 					"bg": "#ffedf0"
 				}
 			],
-			"completedTasks": 12,
-			"dueDate": "2025-01-10",
-			"image": "src/assets/bigwind.jpg"
+			"progress": 12,
+			"deadline": "2025-01-10",
+			"image": "/assets/big-wind.png"
 		},
 		{
 			"name": "Circle Hunt",
@@ -36,9 +36,9 @@
 					"bg": "#ffedf0"
 				}
 			],
-			"completedTasks": 15,
-			"dueDate": "2025-02-15",
-			"image": "src/assets/circlehunt.jpg"
+			"progress": 15,
+			"deadline": "2025-02-15",
+			"image": "/assets/circle-hunt.png"
 		}
 	]
 }

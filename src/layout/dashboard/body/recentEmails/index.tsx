@@ -105,6 +105,7 @@ const RecentEmails = () => {
 					)}
 
 					{/* emails */}
+
 					<div className='px-0 pt-2'>
 						{emails.length > 0 &&
 							emails.map((email: Email) => (

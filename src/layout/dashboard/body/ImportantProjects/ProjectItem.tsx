@@ -54,7 +54,7 @@ const ProjectItem: FC<ProjectItemProps> = memo(({ project }) => {
 			) : null}
 			<div className='my-3'>
 				{/* progress bar */}
-				<ProgressBar />
+				<ProgressBar progress={project.progress} />
 				<div className='flex items-end mt-3 justify-between mb-1'>
 					<p className='mb-0'>
 						<strong className='text-[var(--text-dark)] mr-2'>

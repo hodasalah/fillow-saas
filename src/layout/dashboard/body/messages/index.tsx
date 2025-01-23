@@ -1,7 +1,64 @@
+import { useCallback, useEffect, useState } from 'react';
 import { PrimaryBtn } from '../../../../components/buttons';
-import DropdownDelEditBtn from '../../../../components/dropdownDelEditBtn';
+import { useAppDispatch } from '../../../../hooks/hooks';
+import { setLoading } from '../../../../store/slices/loadingSlice';
+import MessageItem from './MessageItem';
+
+
+export interface Message {
+	id:string;
+	profileImage: string;
+	name: string;
+	lastMessage: string;
+	lastMessageTime: string;
+	active: boolean;
+}
+
 
 const Messages = () => {
+	const [messages, setMessages] = useState<Message[]>([]);
+	const [error, setError] = useState<string | null>(null);
+	const [retryCount, setRetryCount] = useState(0);
+	const MAX_RETRIES = 3;
+	const dispatch = useAppDispatch();
+
+	const fetchMessages = useCallback(async () => {
+		dispatch(setLoading(true));
+		setError(null);
+		try {
+			const response = await fetch('/datas/messages.json');
+			if (!response.ok) {
+				throw new Error('Failed to fetch messages');
+			}
+			const data = await response.json();
+			dispatch(setLoading(false));
+			setMessages(data.messages);
+		} catch (error) {
+			console.error('Error fetching messages:', error);
+			setError('Failed to fetch messages Please try again later.');
+		} finally {
+			dispatch(setLoading(false));
+		}
+	}, [dispatch]);
+	// handle retry button click when fetch fails
+	const handleRetry = async () => {
+		if (retryCount >= MAX_RETRIES) {
+			setError('Maximum retry attempts reached. Please try again later.');
+			return;
+		}
+		setRetryCount((prev) => prev + 1);
+		setError(null);
+		try {
+			await fetchMessages();
+		} catch (error) {
+			console.error('Retry attempt failed:', error);
+			setError('Retry attempt failed. Please try again later.');
+		}
+	};
+	useEffect(() => {
+		fetchMessages();
+	}, []);
+
 	return (
 		<div className='w-full shadow-custom-shadow'>
 			<div className='bg-white rounded-lg shadow-sm'>
@@ -20,54 +77,28 @@ const Messages = () => {
 							<PrimaryBtn>add New Message</PrimaryBtn>
 						</div>
 					</div>
-					{/* {error && (
-					<div className='p-4 text-center bg-red-100'>
-						<p className='text-red-500'>{error}</p>
-						<button
-							onClick={() => handleRetry()}
-							className='mt-2 px-4 py-2 bg-[var(--primary)] text-white rounded-md'
-						>
-							Retry
-						</button>
-					</div>
-				)} */}
+					{error && (
+						<div className='p-4 text-center bg-red-100'>
+							<p className='text-red-500'>{error}</p>
+							<button
+								onClick={() => handleRetry()}
+								className='mt-2 px-4 py-2 bg-[var(--primary)] text-white rounded-md'
+							>
+								Retry
+							</button>
+						</div>
+					)}
 
 					{/* messages */}
 
 					<div className='px-0 pt-2'>
-						<div className='relative flex justify-between items-center border-b-[0.0625rem] border-[var(--border)] px-[1.85rem] py-[0.950rem]'>
-							<div className='flex items-center w-full'>
-								<div className='h-12 w-12 relative inline-block active after:content-[""] after:h-[.9rem] after:w-[.9rem] after:absolute after:bottom-0 after:right-[-0.3125rem] after:rounded-[50%] after:bg-[#09BD3C]'>
-									<img
-										className='h-full w-full rounded-[50%] object-cover'
-										src='images/profile/small/pic6.jpg'
-										alt=''
-									/>
-								</div>
-								<div className='ml-4 w-full'>
-									<a href='app-profile.html'>
-										<h5 className='mb-1 leading-6 text-[var(--text-dark)] font-semibold'>
-											Maren Rosser
-										</h5>
-									</a>
-									<div className='flex justify-between'>
-										<p className='mr-auto mb-0 leading-[1.8] text-[var(--text-dark)]'>
-											Hei, dont forget to clear server
-											cache!
-										</p>
-										<small className='mr-6'>
-											25min ago
-										</small>
-									</div>
-								</div>
-							</div>
-							<DropdownDelEditBtn
-								links={[
-									{ name: 'Edit', id: '1' },
-									{ name: 'Delete', id: '2' },
-								]}
-							/>
-						</div>
+						{messages.length > 0 &&
+							messages.map((message) => (
+								<MessageItem
+									key={message.id}
+									message={message}
+								/>
+							))}
 					</div>
 				</div>
 			</div>

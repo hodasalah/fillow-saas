@@ -14,16 +14,14 @@ interface EmailItemProps {
 
 const EmailItem = ({ email, onBtnClick }: EmailItemProps) => {
 	return (
-		<div
-			className='w-full [&:not(:last-child)]:border-b-[0.0625rem]  [&:not(:last-child)]:border-(var(--border))'
-		>
+		<div className='w-full [&:not(:last-child)]:border-b-[0.0625rem]  [&:not(:last-child)]:border-(var(--border))'>
 			<div className='w-ful py-[.9375rem] px-[1.8625rem] flex items-center justify-between gap-[3rem]'>
 				{/* image + data */}
 				<div className='w-full flex items-center'>
 					<div className='w-[5rem] h-[3rem] leading-[3rem] rounded-[50%] text-[1.5rem] overflow-hidden'>
 						<img
 							className='block w-full h-full object-cover'
-							src={email.profileImage}
+							src={email.profileImage || '/assets/fallback.png'}
 							alt={email.name}
 						/>
 					</div>

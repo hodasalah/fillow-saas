@@ -60,7 +60,7 @@ const Messages = () => {
 	}, []);
 
 	return (
-		<div className='w-full shadow-custom-shadow'>
+		<div className='w-full shadow-custom-shadow mb-10'>
 			<div className='bg-white rounded-lg shadow-sm'>
 				<div className='py-[1.875rem] pb-0 w-full'>
 					{/* header */}

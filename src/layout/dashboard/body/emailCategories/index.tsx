@@ -41,7 +41,7 @@ const EmailCategories = () => {
 		},
 	];
 	return (
-		<div className='w-full h-fit'>
+		<div className='w-full h-fit shadow-custom-shadow'>
 			<Card>
 				<div className='w-full p-[1.875rem] pb-0'>
 					<div className='mb-4 '>

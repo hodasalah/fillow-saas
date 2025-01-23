@@ -15,7 +15,6 @@ interface EmailItemProps {
 const EmailItem = ({ email, onBtnClick }: EmailItemProps) => {
 	return (
 		<div
-			key={email.name}
 			className='w-full [&:not(:last-child)]:border-b-[0.0625rem]  [&:not(:last-child)]:border-(var(--border))'
 		>
 			<div className='w-ful py-[.9375rem] px-[1.8625rem] flex items-center justify-between gap-[3rem]'>

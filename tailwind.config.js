@@ -1,7 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
 	content: ['./src/**/*.{html,ts,tsx,js,jsx}'],
-	
 
 	theme: {
 		extend: {
@@ -36,7 +35,13 @@ export default {
 				headerbg: 'var(--headerbg)',
 			},
 			fontFamily: {
-				'Poppins': ['Poppins', 'sans-serif'],
+				Poppins: ['Poppins', 'sans-serif'],
+			},
+			boxShadow: {
+				'custom-shadow':
+					'0rem 0.3125rem 0.3125rem 0rem rgba(82, 63, 105, 0.05)',
+				'primary-btn':
+					'0rem 0.3125rem 0.3125rem 0rem var(--rgba-primary-1)',
 			},
 		},
 	},

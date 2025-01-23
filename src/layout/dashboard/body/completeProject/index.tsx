@@ -14,7 +14,7 @@ const CompleteProject = () => {
 		},
 	];
 	return (
-		<div className='w-full'>
+		<div className='w-full shadow-custom-shadow'>
 			<Card>
 				<div className='w-full p-[1.875rem] pb-0'>
 					<div className='flex w-full justify-between items-center mb-4 '>

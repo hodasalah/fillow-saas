@@ -8,7 +8,7 @@ const index = () => {
 	return (
 		<div
 			className='w-full relative transition-all border-0 border-transparent
-    grid grid-cols-12 auto-rows-max gap-4 '
+    grid grid-cols-12 auto-rows-max gap-4 shadow-custom-shadow'
 		>
 			<Card>
 				<Stacked />

@@ -4,6 +4,7 @@ import DognutArea from './dognutArea';
 import EmailCategories from './emailCategories';
 import GradiantCard from './gradiantCard';
 import ImportantProjects from './ImportantProjects';
+import Messages from './messages';
 import ProjectStatistics from './projectStatistics';
 import RecentEmails from './recentEmails/index';
 import TotalClients from './totalClientsComponents';
@@ -31,11 +32,11 @@ const BodyContent = () => {
 						<DognutArea />
 						<EmailCategories />
 						<ImportantProjects />
+						<Messages />
 					</div>
 				</div>
 			</div>
 		</div>
 	);
 };
-
 export default BodyContent;

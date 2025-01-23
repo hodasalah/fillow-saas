@@ -23,6 +23,7 @@ export interface Email {
 const RecentEmails = () => {
 	const [emails, setEmails] = useState<Email[]>([]);
 	const [error, setError] = useState<string | null>(null);
+	console.log(emails);
 
 	const dispatch = useAppDispatch();
 	const fetchEmails = useCallback(async () => {
@@ -75,7 +76,7 @@ const RecentEmails = () => {
 		}
 	};
 	return (
-		<div className='w-full'>
+		<div className='w-full shadow-custom-shadow'>
 			<div className='bg-white rounded-lg shadow-sm'>
 				<div className='py-[1.875rem] pb-0 w-full'>
 					{/* header */}

@@ -1,0 +1,42 @@
+{
+	"messages": [
+		{
+			"id": "rtoysdmfmfnfhhf-wwsgsssd,manfaosdpgiseg",
+			"name": "John Doe",
+			"email": "john@gmail.com",
+			"lastMessage": "Hei, dont forget to clear server cache!",
+			"profileImage": "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1180&q=80",
+			"active": true,
+			"lastMessageTime": 1737648801478
+		},
+		{
+			"id": "rtoysdmfmfnfhhfoiugb wwsgsssd,manfaosdpgiseg",
+			"name": "Jenny Mag",
+			"email": "jeny@gmail.com",
+
+			"lastMessage": "I remember that project due is tomorrow.",
+			"profileImage": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=3744&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+
+			"active": true,
+			"lastMessageTime": 1737546461475
+		},
+		{
+			"id": "rtkskkskkkfuuuutfppppvssdhbxbASTSsd",
+			"name": "George Mike",
+			"email": "george@gmail.com",
+			"lastMessage": "I will be late for the meeting.",
+			"profileImage": "https://images.unsplash.com/photo-1640960543409-dbe56ccc30e2?q=80&w=2725&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+			"active": false,
+			"lastMessageTime": 1458879635336
+		},
+		{
+			"id": "ryycuvsxncsfdfawfsfblfbsdf",
+			"name": "Jessica Doe",
+			"email": "jessica@gmail.com",
+			"lastMessage": "Maybe we should schedule that meeting",
+			"profileImage": "https://images.unsplash.com/photo-1586297135537-94bc9ba060aa?q=80&w=3880&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+			"active": false,
+			"lastMessageTime": 1737648801478
+		}
+	]
+}

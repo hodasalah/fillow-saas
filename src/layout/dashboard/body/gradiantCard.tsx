@@ -10,15 +10,20 @@ const GradiantCard = () => {
 						Let Fillow manage your project automatically with our
 						best AI systems{' '}
 					</span>
-					<button className='font-medium bg-white text-black rounded-[2rem] py-[0.635rem] px-[1.2rem] text-[1rem] hover:bg-[var(--primary-hover)] hover:text-white'>
+					<button
+						role='button'
+						aria-label='Try Free Demo'
+						className='font-medium bg-white text-black rounded-[2rem] py-[0.635rem] px-[1.2rem] text-[1rem] hover:bg-[var(--primary-hover)] hover:text-white'
+					>
 						Try Free Now
 					</button>
 				</div>
 				<div className='sm:col-span-5 hidden sm:block'>
 					<img
-						src='/src/assets/chart.png'
-						className='movedelement w-full relative h-full transform scale-[1.1] max-w-[100%] max-h-[100%] '
+						src='/assets/chart.png'
+						className='movedelement  relative transform scale-[1.1] max-w-[100%] max-h-[100%] '
 						alt='chart'
+						aria-hidden='true'
 					/>
 				</div>
 			</div>

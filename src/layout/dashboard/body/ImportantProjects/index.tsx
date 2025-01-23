@@ -68,7 +68,7 @@ const ImportantProjects = () => {
 		}
 	};
 	return (
-		<div>
+		<div className='w-full shadow-custom-shadow'>
 			<Card>
 				<div className='w-full p-[1.875rem]'>
 					<div className=''>

@@ -1,4 +1,4 @@
-import Card from '../../../../components/Card';
+import Card from '../../../../../components/Card';
 import Linear from './Linear';
 import LinearProjects from './LinearProjects';
 import Progress from './Progress';

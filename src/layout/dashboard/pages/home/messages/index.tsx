@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
-import { PrimaryBtn } from '../../../../components/buttons';
-import { useAppDispatch } from '../../../../hooks/hooks';
-import { setLoading } from '../../../../store/slices/loadingSlice';
+import { PrimaryBtn } from '../../../../../components/buttons';
+import { useAppDispatch } from '../../../../../hooks/hooks';
+import { setLoading } from '../../../../../store/slices/loadingSlice';
 import MessageItem from './MessageItem';
 
 export interface Message {

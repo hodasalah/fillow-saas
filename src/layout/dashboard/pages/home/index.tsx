@@ -1,4 +1,4 @@
-import { useAppSelector } from '../../../hooks/hooks';
+import { useAppSelector } from '../../../../hooks/hooks';
 import CompleteProject from './completeProject';
 import DognutArea from './dognutArea';
 import EmailCategories from './emailCategories';
@@ -9,7 +9,7 @@ import ProjectStatistics from './projectStatistics';
 import RecentEmails from './recentEmails/index';
 import TotalClients from './totalClientsComponents';
 
-const BodyContent = () => {
+const DashboardHome = () => {
 	const isActive = useAppSelector((state) => state.activeSidebar.isActive);
 	return (
 		<div
@@ -39,4 +39,4 @@ const BodyContent = () => {
 		</div>
 	);
 };
-export default BodyContent;
+export default DashboardHome;

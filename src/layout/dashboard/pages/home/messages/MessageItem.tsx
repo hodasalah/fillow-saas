@@ -1,6 +1,6 @@
 import { formatDistanceToNow } from 'date-fns';
 import { Message } from '.';
-import DropdownDelEditBtn from '../../../../components/dropdownDelEditBtn';
+import DropdownDelEditBtn from '../../../../../components/dropdownDelEditBtn';
 
 const MessageItem = ({ message }: { message: Message }) => {
 	const getProfileImageClasses = (isActive: boolean) => {

@@ -1,8 +1,8 @@
 import { FC, memo } from 'react';
 
 import { Project } from '.';
-import DropdownDelEditBtn from '../../../../components/dropdownDelEditBtn';
-import ProgressBar from '../../../../components/ProgressBar';
+import DropdownDelEditBtn from '../../../../../components/dropdownDelEditBtn';
+import ProgressBar from '../../../../../components/ProgressBar';
 import ProjectTag from './ProjectTag';
 
 const dropdownMenuLinks = [

@@ -1,6 +1,6 @@
 import { faCaretUp } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import StackedBarChart from '../../../../components/chart/StackedBarChart';
+import StackedBarChart from '../../../../../components/chart/StackedBarChart';
 
 const Stacked = () => {
 	return (

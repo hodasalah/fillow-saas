@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
-import { PrimaryOutlineBtn } from '../../../../components/buttons';
-import { useAppDispatch } from '../../../../hooks/hooks';
-import { setLoading } from '../../../../store/slices/loadingSlice';
+import { PrimaryOutlineBtn } from '../../../../../components/buttons';
+import { useAppDispatch } from '../../../../../hooks/hooks';
+import { setLoading } from '../../../../../store/slices/loadingSlice';
 import EmailItem from './EmailItem';
 
 interface EmailFile {

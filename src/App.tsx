@@ -1,6 +1,5 @@
-import Dashboard from './layout/dashboard';
 import Loading from './components/Loading';
-
+import Dashboard from './layout/dashboard';
 
 {
 	/* <FontAwesomeIcon icon={faHouse} />

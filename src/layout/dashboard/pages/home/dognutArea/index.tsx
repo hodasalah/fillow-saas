@@ -1,6 +1,6 @@
-import Card from '../../../../components/Card';
-import Carousel from '../../../../components/carousel/Carousel';
-import Radial from '../../../../components/chart/Radial';
+import Card from '../../../../../components/Card';
+import Carousel from '../../../../../components/carousel/Carousel';
+import Radial from '../../../../../components/chart/Radial';
 
 const DognutArea = () => {
 	const slides = [

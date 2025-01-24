@@ -1,6 +1,6 @@
-import Card from '../../../../components/Card';
-import LineChart from '../../../../components/chart/LineChart';
-import DropdownDelEditBtn from '../../../../components/dropdownDelEditBtn';
+import Card from '../../../../../components/Card';
+import LineChart from '../../../../../components/chart/LineChart';
+import DropdownDelEditBtn from '../../../../../components/dropdownDelEditBtn';
 
 const CompleteProject = () => {
 	const dropdownMenuLinks = [

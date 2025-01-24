@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import Card from '../../../../components/Card';
-import Barchart from '../../../../components/chart/Barchart';
-import DropdownDelEditBtn from '../../../../components/dropdownDelEditBtn';
-import ProgressCircle from '../../../../components/svgs/progressCircle';
-import RedCircle from '../../../../components/svgs/RedCircle';
-import YellowCircle from '../../../../components/svgs/YellowCircle';
+import Card from '../../../../../components/Card';
+import Barchart from '../../../../../components/chart/Barchart';
+import DropdownDelEditBtn from '../../../../../components/dropdownDelEditBtn';
+import ProgressCircle from '../../../../../components/svgs/progressCircle';
+import RedCircle from '../../../../../components/svgs/RedCircle';
+import YellowCircle from '../../../../../components/svgs/YellowCircle';
 
 const ProjectStatistics = () => {
 	const [activeTab, setActiveTab] = useState(0);

@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
-import { PrimaryOutlineBtn } from '../../../../components/buttons';
-import Card from '../../../../components/Card';
-import { useAppDispatch } from '../../../../hooks/hooks';
-import { setLoading } from '../../../../store/slices/loadingSlice';
+import { PrimaryOutlineBtn } from '../../../../../components/buttons';
+import Card from '../../../../../components/Card';
+import { useAppDispatch } from '../../../../../hooks/hooks';
+import { setLoading } from '../../../../../store/slices/loadingSlice';
 import ProjectItem from './ProjectItem';
 
 export interface Project {

@@ -1,7 +1,8 @@
-import BodyContent from './body';
+import { Route, Routes } from 'react-router';
 import Footer from './footer';
 import Header from './header';
 import NavHeader from './navHeader';
+import DashboardHome from './pages/home';
 import Sidebar from './sidebar';
 
 const Dashboard = () => {
@@ -15,7 +16,14 @@ const Dashboard = () => {
 			<Sidebar />
 
 			{/* body-content here */}
-			<BodyContent />
+			{/* routes here [1] dashboard layout */}
+			<Routes>
+				<Route
+					path='/dashboard/dashboard'
+					element={<DashboardHome />}
+				/>
+			</Routes>
+
 			{/* end body-content here */}
 			{/* footer here */}
 			<Footer />

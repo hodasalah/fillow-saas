@@ -4,16 +4,14 @@ import { useAppDispatch } from '../../../../hooks/hooks';
 import { setLoading } from '../../../../store/slices/loadingSlice';
 import MessageItem from './MessageItem';
 
-
 export interface Message {
-	id:string;
+	id: string;
 	profileImage: string;
 	name: string;
 	lastMessage: string;
 	lastMessageTime: string;
 	active: boolean;
 }
-
 
 const Messages = () => {
 	const [messages, setMessages] = useState<Message[]>([]);
@@ -90,7 +88,6 @@ const Messages = () => {
 					)}
 
 					{/* messages */}
-
 					<div className='px-0 pt-2'>
 						{messages.length > 0 &&
 							messages.map((message) => (

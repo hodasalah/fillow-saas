@@ -10,7 +10,7 @@ const NavHeader = () => {
 		<div
 			className={`w-[--dz-sidebar-width] ${
 				isActive ? 'w-[6rem]' : ' '
-			} nav-header fixed inline-block  top-0  h-[--dz-header-height]  transition-all ease-in duration-200 bg-nav-headbg z-40`}
+			} nav-header fixed inline-block  top-0  h-[--dz-header-height]  transition-all ease-in duration-200 bg-nav-headbg z-[1001]`}
 		>
 			<div className='brand-logo'>
 				<MiniLogo />

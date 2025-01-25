@@ -17,9 +17,10 @@ const Dashboard = () => {
 
 			{/* body-content here */}
 			{/* routes here [1] dashboard layout */}
-			<Routes>
+			<Routes >
+				<Route index path="/dashboard" element={<DashboardHome />} />
 				<Route
-					path='/dashboard/dashboard'
+					path='/dashboard'
 					element={<DashboardHome />}
 				/>
 			</Routes>

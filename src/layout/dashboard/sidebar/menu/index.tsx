@@ -1,11 +1,13 @@
 import MetisMenu from '@metismenu/react';
 import MenuItem from './MenuItem';
 import '/node_modules/metismenujs/dist/metismenujs.css';
+import { faChartLine, faCircleInfo, faFileLines, faHeart, faHouse, faTable, faUser } from '@fortawesome/free-solid-svg-icons';
+import {faBootstrap} from '@fortawesome/free-brands-svg-icons';
 
 // import MetisMenu css
 const list = [
 	{
-		icon: 'faHome',
+		icon: faHouse,
 		name: 'Dashboard',
 		link: '/dashboard',
 		hasSubMenu: true,
@@ -19,7 +21,7 @@ const list = [
 		],
 	},
 	{
-		icon: 'faChart',
+		icon: faChartLine,
 		name: 'CMS',
 		link: '/cms',
 		hasSubMenu: true,
@@ -35,7 +37,7 @@ const list = [
 		],
 	},
 	{
-		icon: 'faChart',
+		icon: faCircleInfo,
 		name: 'Apps',
 		link: '/apps',
 		hasSubMenu: true,
@@ -49,7 +51,7 @@ const list = [
 		],
 	},
 	{
-		icon: 'faChart',
+		icon: faChartLine,
 		name: 'Charts',
 		link: '/charts',
 		hasSubMenu: true,
@@ -63,7 +65,7 @@ const list = [
 		],
 	},
 	{
-		icon: 'faChart',
+		icon: faBootstrap,
 		name: 'Bootstrap',
 		link: '/bootstrap',
 		hasSubMenu: true,
@@ -77,7 +79,7 @@ const list = [
 		],
 	},
 	{
-		icon: 'faChart',
+		icon: faHeart,
 		name: 'Plugins',
 		link: '/plugins',
 		hasSubMenu: true,
@@ -91,13 +93,13 @@ const list = [
 		],
 	},
 	{
-		icon: 'faChart',
+		icon: faUser,
 		name: 'Widget',
 		link: '/widget',
 		hasSubMenu: false,
 	},
 	{
-		icon: 'faChart',
+		icon: faFileLines,
 		name: 'Forms',
 		link: '/forms',
 		hasSubMenu: true,
@@ -111,9 +113,9 @@ const list = [
 		],
 	},
 	{
-		icon: 'faChart',
-		name: 'Pages',
-		link: '/pages',
+		icon: faTable,
+		name: 'Table',
+		link: '/table',
 		hasSubMenu: true,
 		submenu: [
 			'Flot',
@@ -128,11 +130,12 @@ const list = [
 
 const MenuList = () => {
 	return (
-		<MetisMenu className='metismenu flex flex-col pt-[0.9375rem]' >
-			{list.map((item) => (
+		<MetisMenu className='metismenu flex flex-col pt-[0.9375rem]'>
+			{list.map((item, index) => (
 				<MenuItem
 					key={item.name}
 					item={item}
+					index={index}
 				/>
 			))}
 		</MetisMenu>

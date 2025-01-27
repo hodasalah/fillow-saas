@@ -119,7 +119,8 @@
   transition: all 0.5s;
 }
 
-.nav-link.active {
+.nav-link.active,
+.submenu-mobile.mm-active .nav-link {
   color: var(--primary);
   font-weight: 600;
 }
@@ -152,14 +153,13 @@
   width: 1rem;
 }
 
-/* .submenu-mobile {
+.submenu-mobile {
   position: absolute;
   width: 11.875rem;
   top: 0;
-  right: -210px;
+  left: 110%;
   background-color: #fff;
   box-shadow: 0rem 0rem 2.5rem 0rem rgba(82, 63, 105, 0.1);
   border-radius: 0.5rem;
-  overflow: visible;
-  z-index: 100002;
-} */
+  z-index: 1002;
+}

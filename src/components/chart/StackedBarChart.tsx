@@ -119,7 +119,7 @@ const StackedBarChart = () => {
 	return (
 		<div
 			id='data-chart'
-			className='relative m-auto'
+			className='relative m-auto '
 		>
 			<Chart
 				options={options}

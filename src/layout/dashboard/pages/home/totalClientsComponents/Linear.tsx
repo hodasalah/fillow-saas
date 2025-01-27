@@ -122,7 +122,7 @@ const options: ApexOptions = {
 };
 const Linear = () => {
 	return (
-		<div className='flex px-5 items-center justify-between gap-4 h-full flex-grow p-[1.875rem]'>
+		<div className='flex px-5 items-center justify-between gap-4 h-full flex-grow p-[1.875rem] flex-wrap'>
 			<div>
 				<div className=''>
 					<h2 className='mb-2  text-[2rem] leading-5 text-[var(--text-dark)] font-bold'>

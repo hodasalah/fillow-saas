@@ -4,8 +4,8 @@ import StackedBarChart from '../../../../../components/chart/StackedBarChart';
 
 const Stacked = () => {
 	return (
-		<div className='w-full flex items-center justify-between px-5 flex-grow'>
-			<div className='w-full flex-grow'>
+		<div className='w-full flex items-center justify-between px-5 flex-grow  flex-wrap'>
+			<div className=' flex-grow'>
 				<h4 className='whitespace-nowrap mb-4 text-[1.125rem] font-bold text-[var(--text-dark)]'>
 					Total Clients
 				</h4>
@@ -25,7 +25,7 @@ const Stacked = () => {
 					</div>
 				</div>
 			</div>
-			<div className='w-full relative'>
+			<div className='relative'>
 				<StackedBarChart />
 			</div>
 		</div>

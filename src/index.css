@@ -43,7 +43,7 @@
 	/* sizes */
 	--dz-sidebar-width: 16.5rem;
 	--dz-header-height: 4.5rem;
-	--dz-sidebar-pos: absolute;
+	--dz-sidebar-pos: fixed;
 	--dz-header-pos: relative;
 	--dz-side-nav-padding: 0.85rem 1.5rem;
 	--dz-side-nav-margin: 0 0;
@@ -59,12 +59,12 @@
 	--dz-side-profile: block;
 	--dz-side-info: block;
 	--dz-side-copyright: block;
+	--dz-sidebar-width-mobile: 6rem;
 }
 
 @media only screen and (max-width: 768px) {
 	body[data-sidebar-style='mini'] {
-		--dz-sidebar-width: 6rem !important;
-		--dz-sidebar-pos: absolute;
+		/*--dz-sidebar-pos: absolute;*/
 		--dz-side-nav-padding: 1.125rem 0.875rem;
 		--dz-side-info: none;
 		--dz-side-copyright: none;
@@ -165,6 +165,15 @@ svg {
 
 .translate3d {
 	transform: translate3d(0, 22px, 0);
+}
+
+.scale5 {
+	transform: scale(1.5);
+	-moz-transform: scale(1.5);
+	-webkit-transform: scale(1.5);
+	-ms-transform: scale(1.5);
+	-o-transform: scale(1.5);
+	display: inline-block;
 }
 
 .progress-animated {

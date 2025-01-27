@@ -10,12 +10,14 @@ import RecentEmails from './recentEmails/index';
 import TotalClients from './totalClientsComponents';
 
 const DashboardHome = () => {
-	const isActive = useAppSelector((state) => state.activeSidebar.isActive);
+	const isOpen = useAppSelector((state) => state.sidebar.isOpen);
 	return (
 		<div
 			className={`overflow-hidden ${
-				isActive ? 'pl-[6rem]' : 'pl-[--dz-sidebar-width]'
-			} bg-body-bg text-[0.875rem]  min-h-[calc(100vh-7.7rem)]  pt-[--dz-header-height]`}
+				isOpen
+					? 'ml-[var(--dz-sidebar-width)]'
+					: 'ml-[var(--dz-sidebar-width-mobile)]'
+			} bg-body-bg text-[0.875rem] min-h-[calc(100vh-7.7rem)]  pt-[--dz-header-height]`}
 		>
 			<div className='pl-[1.875rem] pr-[1.875rem] pt-[1.875rem] '>
 				<div className='grid grid-cols-1 xl:grid-cols-2  gap-4 xl:gap-8  w-full mb-8'>

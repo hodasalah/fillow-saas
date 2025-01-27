@@ -1,0 +1,57 @@
+.side-bar-profile {
+  margin: 21px 0px;
+  width: 100%;
+  display: block;
+}
+
+.profile-wrapper {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, max-content));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.side-bar-profile .side-bar-profile-img img {
+  width: 42px;
+  border-radius: 50%;
+  height: 42px;
+}
+
+.side-bar-profile .side-bar-profile-img {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(to right, #CEA7FF, #ffa7d7);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+
+.bg-gradientf {
+  background: linear-gradient(90deg, #FFA26D 50%, #FFDF6D 102.88%);
+  width: 45%;
+}
+
+.progressbar {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  white-space: nowrap;
+  border-radius: 0.625rem;
+
+}
+
+.sr-only {
+  border: 0;
+  clip: rect(0, 0, 0, 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}

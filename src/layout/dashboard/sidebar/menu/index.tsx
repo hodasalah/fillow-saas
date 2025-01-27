@@ -1,8 +1,22 @@
+import { faBootstrap } from '@fortawesome/free-brands-svg-icons';
+import {
+	faChartLine,
+	faCircleInfo,
+	faFileLines,
+	faHeart,
+	faHouse,
+	faTable,
+	faUser,
+} from '@fortawesome/free-solid-svg-icons';
 import MetisMenu from '@metismenu/react';
+import { useEffect } from 'react';
+import { useAppDispatch } from '../../../../hooks/hooks';
+import {
+	closeSidebar,
+	openSidebar,
+} from '../../../../store/slices/sidebarSlice';
 import MenuItem from './MenuItem';
 import '/node_modules/metismenujs/dist/metismenujs.css';
-import { faChartLine, faCircleInfo, faFileLines, faHeart, faHouse, faTable, faUser } from '@fortawesome/free-solid-svg-icons';
-import {faBootstrap} from '@fortawesome/free-brands-svg-icons';
 
 // import MetisMenu css
 const list = [
@@ -129,8 +143,22 @@ const list = [
 ];
 
 const MenuList = () => {
+	const dispatch = useAppDispatch();
+	useEffect(() => {
+		const handleResize = () => {
+			if (window.innerWidth >= 1024) {
+				dispatch(openSidebar()); // On large screens, ensure sidebar is open
+			} else {
+				dispatch(closeSidebar()); // On small screens, ensure sidebar is closed
+			}
+		};
+		window.addEventListener('resize', handleResize);
+		handleResize(); // Trigger resize handler on component mount
+		return () => window.removeEventListener('resize', handleResize); // Cleanup listener
+	}, [dispatch]);
+
 	return (
-		<MetisMenu className='metismenu flex flex-col pt-[0.9375rem]'>
+		<MetisMenu className='metismenu relative flex flex-col pt-[0.9375rem]'>
 			{list.map((item, index) => (
 				<MenuItem
 					key={item.name}

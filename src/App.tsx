@@ -14,7 +14,7 @@ import Dashboard from './layout/dashboard';
 const App = () => {
 	const login = true;
 	const navigate = useNavigate();
-
+	
 	useEffect(() => {
 		if (login) {
 			navigate('/dashboard');
@@ -22,6 +22,7 @@ const App = () => {
 			console.log('not login');
 		}
 	}, [login]);
+
 	return (
 		<div className='overflow-hidden  transition-all duration-300 ease-in'>
 			<Loading />

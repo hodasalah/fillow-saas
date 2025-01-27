@@ -1,45 +1,20 @@
-import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
-import { setToggleActiveSidebar } from '../../store/slices/sidebarSlice';
+import { toggleSidebar } from '../../store/slices/sidebarSlice';
 import './hamburger.css';
-const HamburgerBtn = ({ OnBtnClick }: { OnBtnClick: () => void }) => {
+const HamburgerBtn = () => {
 	const dispatch = useAppDispatch();
-	const isActive = useAppSelector((state) => state.activeSidebar.isActive);
+	const isOpen = useAppSelector((state) => state.sidebar.isOpen);
+	const handleToggle = () => {
+		dispatch(toggleSidebar());
+	};
 
-	useEffect(() => {
-		const body = document.querySelector('body');
-		const handleResize = () => {
-			if (body) {
-				if (body.offsetWidth >= 768 && !isActive ) {
-					body.setAttribute('data-sidebar-style', 'full');
-				} else {
-					body.setAttribute('data-sidebar-style', 'mini');
-				}
-			}
-		};
-		if (isActive) {
-			body?.setAttribute('data-sidebar-style', 'mini');
-		} else {
-			body?.setAttribute('data-sidebar-style', 'full');
-		}
-
-		window.addEventListener('resize', handleResize);
-		handleResize(); // Initial check
-
-		return () => {
-			window.removeEventListener('resize', handleResize);
-		};
-	}, [isActive]);
 	return (
 		<div className='nav-control'>
 			<div
 				className={`hamburger ${
-					isActive ? 'is-active' : ''
+					isOpen ? '' : 'is-active'
 				} hidden md:block`}
-				onClick={() => {
-					dispatch(setToggleActiveSidebar());
-					OnBtnClick();
-				}}
+				onClick={handleToggle}
 			>
 				<span className='line'></span>
 				<span className='line'></span>

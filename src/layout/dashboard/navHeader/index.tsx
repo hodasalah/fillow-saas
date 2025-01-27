@@ -4,31 +4,28 @@ import { useAppSelector } from '../../../hooks/hooks';
 import MiniLogo from './../../../components/logo/miniLogo';
 
 const NavHeader = () => {
-	const isActive = useAppSelector((state) => state.activeSidebar.isActive);
+	const isOpen = useAppSelector((state) => state.sidebar.isOpen);
+	
 
 	return (
 		<div
-			className={`w-[--dz-sidebar-width] ${
-				isActive ? 'w-[6rem]' : ' '
-			} nav-header fixed inline-block  top-0  h-[--dz-header-height]  transition-all ease-in duration-200 bg-nav-headbg z-[1001]`}
+			className={`${
+				isOpen ? 'w-[16.5rem]' : 'w-[6rem]'
+			} nav-header fixed inline-block  top-0  h-[--dz-header-height]  transition-all  bg-nav-headbg z-[1001]`}
 		>
 			<div className='brand-logo'>
 				<MiniLogo />
-				{!isActive && (
+				{isOpen && (
 					<div
 						className={`${
-							isActive ? 'hidden' : 'block'
-						} hidden  md:block brand-title`}
+							isOpen ? 'block' : 'hidden'
+						}  md:block hidden brand-title`}
 					>
 						<Logo />
 					</div>
 				)}
 			</div>
-			<HamburgerBtn
-				OnBtnClick={() => {
-					console.log('hello');
-				}}
-			/>
+			<HamburgerBtn/>
 		</div>
 	);
 };

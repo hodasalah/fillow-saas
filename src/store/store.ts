@@ -1,13 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
 import counterReducer from './slices/counterSlice';
-import sidebarReducer from './slices/sidebarSlice';
 import loadingReducer from './slices/loadingSlice';
-
+import sidebarReducer from './slices/sidebarSlice';
 
 export const store = configureStore({
 	reducer: {
 		counter: counterReducer,
-		activeSidebar: sidebarReducer,
+		sidebar: sidebarReducer,
 		loading: loadingReducer,
 
 		// Add other reducers here if needed. For example:

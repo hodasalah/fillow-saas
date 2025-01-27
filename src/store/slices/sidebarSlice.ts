@@ -1,33 +1,31 @@
+// src/features/sidebar/sidebarSlice.js
 import { createSlice } from '@reduxjs/toolkit';
 
-// Define a type for the slice state
-interface ActiveState {
-	isActive: boolean;
-}
-
-// Define the initial state using that type
-const initialState: ActiveState = {
-	isActive: false,
+// Initial state for the sidebar (closed by default)
+const initialState = {
+	isOpen: false,
 };
 
-export const ActiveSidebarSlice = createSlice({
-	name: 'activeSidebar',
-	// `createSlice` will infer the state type from the `initialState` argument
+// Create a slice for managing the sidebar state
+const sidebarSlice = createSlice({
+	name: 'sidebar',
 	initialState,
 	reducers: {
-		setToggleActiveSidebar: (state) => {
-			state.isActive = !state.isActive;
+		toggleSidebar: (state) => {
+			state.isOpen = !state.isOpen;
 		},
-		setNotActiveSidebar: (state) => {
-			state.isActive = false;
+		openSidebar: (state) => {
+			state.isOpen = true;
 		},
-		setActiveSidebar: (state) => {
-			state.isActive = true;
+		closeSidebar: (state) => {
+			state.isOpen = false;
 		},
 	},
 });
 
-export const { setActiveSidebar, setToggleActiveSidebar, setNotActiveSidebar } =
-	ActiveSidebarSlice.actions;
+// Export the actions to dispatch them in components
+export const { toggleSidebar, openSidebar, closeSidebar } =
+	sidebarSlice.actions;
 
-export default ActiveSidebarSlice.reducer;
+// Export the reducer to be used in the store
+export default sidebarSlice.reducer;

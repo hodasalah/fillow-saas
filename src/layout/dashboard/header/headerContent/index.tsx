@@ -37,21 +37,19 @@ const items = [
 ];
 
 const HeaderContent = () => {
-	const isActive = useAppSelector((state) => state.activeSidebar.isActive);
+	const isOpen = useAppSelector((state) => state.sidebar.isOpen);
 	return (
 		<header
 			className={`relative flex items-center ${
-				isActive ? 'pl-1' : 'pl-1 md:pl-[5rem]'
-			} pr-[1.875rem] h-full`}
+				!isOpen ? 'pl-1' : 'pl-[21rem]'
+			}  pr-[1.875rem] h-full`}
 		>
 			<nav className='flex justify-between items-center w-full'>
 				<div className='font-bold text-[1.25rem] text-[--text-dark] '>
 					Dashboard
 				</div>
 				<div
-					className='nav-links duration-500 
-                          w-full 
-                        flex items-center px-5 '
+					className='nav-links  w-full flex items-center px-5 '
 				>
 					<ul className='header-right w-full flex sm:flex-row justify-normal md:items-center gap-4  sm:justify-end'>
 						{items.map((item, index) => {

@@ -23,7 +23,7 @@ const CompleteProject = () => {
 						</h4>
 						<DropdownDelEditBtn links={dropdownMenuLinks} />
 					</div>
-					<div className='flex flex-1 w-full'>
+					<div className='flex flex-1 w-full overflow-hidden'>
 						<LineChart />
 					</div>
 				</div>

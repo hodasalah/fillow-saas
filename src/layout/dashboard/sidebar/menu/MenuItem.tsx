@@ -7,18 +7,20 @@ import './MenuItem.css';
 import { MenuItemProps } from '.';
 
 
-const MenuItem: React.FC<MenuItemProps> = ({ item }) => {
+const MenuItem: React.FC<MenuItemProps> = ({ item ,setActiveItem,activeItem}) => {
   
 	useEffect(() => {
-		if (item.name === 'Dashboard') {
+		if (item.id === activeItem) {
 			ref?.current?.classList?.add('mm-active');
+			setActiveItem(item.id)
 		}
-	}, []);
+	}, [item.id],activeItem);
 	const ref = useRef<HTMLLIElement>(null);
 	return (
 		<li
 			className='menuItem'
 			ref={ref}
+			onClick={()=>setActiveItem(item.id)}
 		>
 			<a className={`has-arrow`}>
 				<FontAwesomeIcon icon={item.icon as IconProp} />

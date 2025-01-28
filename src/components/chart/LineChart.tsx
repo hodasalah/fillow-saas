@@ -100,7 +100,7 @@ const options: ApexOptions = {
 
 const LineChart = () => {
 	return (
-		<div className='relative w-full h-full'>
+		<div className='relative w-[500px]'>
 			<Chart
 				options={options}
 				series={options.series}

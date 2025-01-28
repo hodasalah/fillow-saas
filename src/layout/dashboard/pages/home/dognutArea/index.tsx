@@ -20,8 +20,8 @@ const DognutArea = () => {
 	return (
 		<div className='w-full h-fit shadow-custom-shadow'>
 			<Card>
-				<div className='flex justify-between items-center p-[1.875rem]'>
-					<div className='max-w-full w-[50%]'>
+				<div className='flex justify-between items-center p-[1.875rem] flex-wrap'>
+					<div className='w-[100%] xl:w-[50%] lg:w-[100%] md:w-[50%] '>
 						<Carousel autoSlide={false}>
 							{slides.map((s) => (
 								<div
@@ -38,7 +38,7 @@ const DognutArea = () => {
 							))}
 						</Carousel>
 					</div>
-					<div className='flex flex-col justify-center items-center h-fit w-[50%]'>
+					<div className='flex flex-col justify-center items-center h-fit  w-[100%] xl:w-[50%] lg:w-[100%] md:w-[50%]  '>
 						<Radial />
 						<span className='text-center block text-lg font-bold'>
 							On Progress{' '}

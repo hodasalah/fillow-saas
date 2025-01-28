@@ -12,7 +12,6 @@ const MiniMenuItem: React.FC<{
 			className={`flex flex-col my-[5px] mx-0 pr-[5px] transition-all duration-300 ease-in-out ${
 				location.pathname === submenuItem.link ? 'mm-active' : ''
 			}`}
-			key={submenuItem.title}
 		>
 			<NavLink
 				to={submenuItem.link}

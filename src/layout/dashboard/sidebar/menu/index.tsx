@@ -11,7 +11,8 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import MetisMenu from '@metismenu/react';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
 import {
 	closeSidebar,
@@ -24,6 +25,7 @@ import '/node_modules/metismenujs/dist/metismenujs.css';
 
 export interface MenuItemProps {
 	item: {
+		id: string;
 		icon: IconDefinition;
 
 		name: string;
@@ -36,140 +38,143 @@ export interface MenuItemProps {
 	};
 
 	index: number;
+	setActiveItem: (id: string) => void;
 }
 
 // import MetisMenu css
 const list = [
 	{
+		id: uuidv4(),
 		icon: faHouse,
 		name: 'Dashboard',
-		link: '/dashboard',
 		hasSubMenu: true,
 		submenu: [
-			{ title: 'Dashboard', link: '/dashboard' },
-			{ title: 'Project', link: '/project' },
-			{ title: 'Contacts', link: '/contacts' },
-			{ title: 'Kanban', link: '/kanban' },
-			{ title: 'Calendar', link: '/calendar' },
-			{ title: 'Messages', link: '/messages' },
+			{ id: uuidv4(), title: 'Dashboard', link: '/dashboard' },
+			{ id: uuidv4(), title: 'Project', link: '/project' },
+			{ id: uuidv4(), title: 'Contacts', link: '/contacts' },
+			{ id: uuidv4(), title: 'Kanban', link: '/kanban' },
+			{ id: uuidv4(), title: 'Calendar', link: '/calendar' },
+			{ id: uuidv4(), title: 'Messages', link: '/messages' },
 		],
 	},
 	{
+		id: uuidv4(),
 		icon: faChartLine,
 		name: 'CMS',
-		link: '/cms',
 		hasSubMenu: true,
 		submenu: [
-			{ title: 'Content', link: '/content' },
-			{ title: 'Add Content', link: '/add-content' },
-			{ title: 'Menus', link: '/menus' },
-			{ title: 'Email Template', link: '/email-template' },
-			{ title: 'Add Email', link: '/add-email' },
-			{ title: 'Blog', link: '/blog' },
-			{ title: 'Add Blog', link: '/add-blog' },
-			{ title: 'Blog Category', link: '/blog-category' },
+			{ id: uuidv4(), title: 'Content', link: '/content' },
+			{ id: uuidv4(), title: 'Add Content', link: '/add-content' },
+			{ id: uuidv4(), title: 'Menus', link: '/menus' },
+			{ id: uuidv4(), title: 'Email Template', link: '/email-template' },
+			{ id: uuidv4(), title: 'Add Email', link: '/add-email' },
+			{ id: uuidv4(), title: 'Blog', link: '/blog' },
+			{ id: uuidv4(), title: 'Add Blog', link: '/add-blog' },
+			{ id: uuidv4(), title: 'Blog Category', link: '/blog-category' },
 		],
 	},
 	{
+		id: uuidv4(),
 		icon: faCircleInfo,
 		name: 'Apps',
-		link: '/apps',
 		hasSubMenu: true,
 		submenu: [
-			{ title: 'Profile', link: '/profile' },
-			{ title: 'Edit Profile', link: '/edit-profile' },
-			{ title: 'Post Details', link: '/post-details' },
-			{ title: 'Email', link: '/email' },
-			{ title: 'Calendar', link: '/calendar' },
-			{ title: 'Shop', link: '/shop' },
+			{ id: uuidv4(), title: 'Profile', link: '/profile' },
+			{ id: uuidv4(), title: 'Edit Profile', link: '/edit-profile' },
+			{ id: uuidv4(), title: 'Post Details', link: '/post-details' },
+			{ id: uuidv4(), title: 'Email', link: '/email' },
+			{ id: uuidv4(), title: 'Calendar', link: '/calendar' },
+			{ id: uuidv4(), title: 'Shop', link: '/shop' },
 		],
 	},
 	{
+		id: uuidv4(),
 		icon: faChartLine,
 		name: 'Charts',
-		link: '/charts',
 		hasSubMenu: true,
 		submenu: [
-			{ title: 'Chart', link: '/chart' },
-			{ title: 'Chart 2', link: '/chart2' },
-			{ title: 'Chart 3', link: '/chart3' },
+			{ id: uuidv4(), title: 'Chart', link: '/chart' },
+			{ id: uuidv4(), title: 'Chart 2', link: '/chart2' },
+			{ id: uuidv4(), title: 'Chart 3', link: '/chart3' },
 		],
 	},
 	{
+		id: uuidv4(),
 		icon: faBootstrap,
 		name: 'Bootstrap',
-		link: '/bootstrap',
 		hasSubMenu: true,
 		submenu: [
-			{ title: 'Bootstrap', link: '/bootstrap' },
-			{ title: 'Bootstrap 2', link: '/bootstrap2' },
-			{ title: 'Bootstrap 3', link: '/bootstrap3' },
+			{ id: uuidv4(), title: 'Bootstrap', link: '/bootstrap' },
+			{ id: uuidv4(), title: 'Bootstrap 2', link: '/bootstrap2' },
+			{ id: uuidv4(), title: 'Bootstrap 3', link: '/bootstrap3' },
 		],
 	},
 	{
+		id: uuidv4(),
 		icon: faHeart,
 		name: 'Plugins',
-		link: '/plugins',
 		hasSubMenu: true,
 		submenu: [
-			{ title: 'plugin-1', link: '/plugin-1' },
-			{ title: 'plugin-2', link: '/plugin-2' },
-			{ title: 'plugin-3', link: '/plugin-3' },
+			{ id: uuidv4(), title: 'plugin-1', link: '/plugin-1' },
+			{ id: uuidv4(), title: 'plugin-2', link: '/plugin-2' },
+			{ id: uuidv4(), title: 'plugin-3', link: '/plugin-3' },
 		],
 	},
 	{
+		id: uuidv4(),
 		icon: faUser,
 		name: 'Widget',
-		link: '/widget',
 		hasSubMenu: true,
 		submenu: [
-			{ title: 'Edit Profile', link: '/edit-profile' },
-			{ title: 'signOut', link: '/signout' },
+			{ id: uuidv4(), title: 'Edit Profile', link: '/edit-profile' },
+			{ id: uuidv4(), title: 'signOut', link: '/signout' },
 		],
 	},
 	{
+		id: uuidv4(),
 		icon: faFileLines,
 		name: 'Forms',
-		link: '/forms',
 		hasSubMenu: true,
 		submenu: [
-			{ title: 'Form Elements', link: '/form-elements' },
-			{ title: 'Form Layouts', link: '/form-layouts' },
-			{ title: 'Form Validation', link: '/form-validation' },
-			{ title: 'Form Advanced', link: '/form-advanced' },
+			{ id: uuidv4(), title: 'Form Elements', link: '/form-elements' },
+			{ id: uuidv4(), title: 'Form Layouts', link: '/form-layouts' },
+			{
+				id: uuidv4(),
+				title: 'Form Validation',
+				link: '/form-validation',
+			},
+			{ id: uuidv4(), title: 'Form Advanced', link: '/form-advanced' },
 		],
 	},
 	{
+		id: uuidv4(),
 		icon: faTable,
 		name: 'Table',
-		link: '/table',
 		hasSubMenu: true,
 		submenu: [
-			{ title: 'Table Elements', link: '/table-elements' },
-			{ title: 'Table Data', link: '/table-data' },
+			{ id: uuidv4(), title: 'Table Elements', link: '/table-elements' },
+			{ id: uuidv4(), title: 'Table Data', link: '/table-data' },
 		],
 	},
 ];
-
+console.log(list)
 const MenuList = () => {
 	const dispatch = useAppDispatch();
 	const isOpen = useAppSelector((state) => state.sidebar.isOpen);
 	// active link in mini sidebar
-	const [activeIndex, setActiveIndex] = useState<number | null>(0);
+	const [activeItem, setActiveItem] = useState<string | null>(list[0].id);
 	// open dropdown menu in mini sidebar
-	const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+	const [openDropdown, setOpenDropdown] = useState<string | null>(list[0].id);
+	const dropdownlistRef = useRef<HTMLDivElement>(null);
 
 	// set active link in mini sidebar
-	const handleClick = (index: number) => {
-		setActiveIndex(index);
+	const handleClick = (id: string) => {
+		setActiveItem(id);
 	};
 	// Toggle a specific dropdown by title
-	interface ToggleDropdown {
-		(name: string): void;
-	}
 
-	const toggleDropdown: ToggleDropdown = (name) => {
-		setOpenDropdown((prev) => (prev === name ? null : name));
+	const toggleDropdown = (id: string) => {
+		setOpenDropdown((prev) => (prev === id ? null : id));
 	};
 
 	useEffect(() => {
@@ -185,14 +190,35 @@ const MenuList = () => {
 		return () => window.removeEventListener('resize', handleResize); // Cleanup listener
 	}, [dispatch]);
 
+	useEffect(() => {
+		const closeMenu = (e: MouseEvent) => {
+			if (
+				openDropdown !== null &&
+				dropdownlistRef?.current &&
+				!(dropdownlistRef.current as HTMLElement).contains(
+					e.target as Node,
+				)
+			) {
+				setOpenDropdown(null);
+			}
+		};
+		document.addEventListener('mousedown', closeMenu);
+		return () => {
+			document.removeEventListener('mousedown', closeMenu);
+		};
+	}, [openDropdown]);
+
 	if (isOpen) {
 		return (
 			<MetisMenu className='metismenu relative flex flex-col pt-[0.9375rem]'>
 				{list.map((item, index) => (
 					<MenuItem
-						key={item.name}
+						key={item.id}
 						item={item}
 						index={index}
+						setActiveItem={setActiveItem}
+						activeItem={activeItem}
+					
 					/>
 				))}
 			</MetisMenu>
@@ -200,28 +226,31 @@ const MenuList = () => {
 	}
 	return (
 		<ul className='relative flex flex-col pt-[0.9375rem]'>
-			{list.map((item, index) => (
+			{list.map((item) => (
 				<li
 					className={`menuItemMobile ${
-						activeIndex === index ? 'mm-active' : ''
+						activeItem === item.id ? 'mm-active' : ''
 					}`}
 					onClick={() => {
-						handleClick(index);
-						toggleDropdown(item.name);
+						handleClick(item.id);
+						toggleDropdown(item.id);
 					}}
-					key={item.name}
+					key={item.id}
 				>
 					<a>
 						<FontAwesomeIcon icon={item.icon} />
 					</a>
 
-					{openDropdown === item.name && (
-						<ul className='submenu-mobile flex flex-col transition-all duration-300 ease-in-out py-2 px-0'>
+					{openDropdown === item.id && (
+						<ul
+							className='submenu-mobile flex flex-col transition-all duration-300 ease-in-out py-2 px-0'
+							ref={dropdownlistRef}
+						>
 							{item.hasSubMenu &&
 								item.submenu &&
 								item.submenu.map((submenuItem) => (
 									<MiniMenuItem
-										key={submenuItem.title}
+										key={submenuItem.id}
 										submenuItem={submenuItem}
 									/>
 								))}

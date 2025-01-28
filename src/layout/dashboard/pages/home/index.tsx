@@ -15,9 +15,9 @@ const DashboardHome = () => {
 		<div
 			className={`${
 				isOpen
-					? 'ml-[var(--dz-sidebar-width)]'
-					: 'ml-[var(--dz-sidebar-width-mobile)]'
-			} bg-body-bg text-[0.875rem] min-h-[calc(100vh-7.7rem)]  pt-[--dz-header-height]`}
+					? 'sm:ml-[var(--dz-sidebar-width)]'
+					: 'sm:ml-[var(--dz-sidebar-width-mobile)]'
+			} w-full bg-body-bg text-[0.875rem] min-h-[calc(100vh-7.7rem)]  pt-[--dz-header-height]`}
 		>
 			<div className='pl-[1.875rem] pr-[1.875rem] pt-[1.875rem] '>
 				<div className='grid grid-cols-1 lg:grid-cols-2  gap-4 xl:gap-8  w-full mb-8'>

@@ -15,7 +15,7 @@ const Sidebar = () => {
 
 	return (
 		<aside
-			className={`lg:overflow-auto z-[1001] h-[calc(100vh-4.5rem)] fixed top-[--dz-header-height] bg-sidebar-bg pt-0 border-r-[1px] border-[--border]  transition-all shadow-[0rem_0.9375rem_1.875rem_0rem_rgba(0,0,0,0.1)] ${
+			className={`hidden sm:block lg:overflow-auto z-[1001] h-[calc(100vh-4.5rem)] fixed top-[--dz-header-height] bg-sidebar-bg pt-0 border-r-[1px] border-[--border]  transition-all shadow-[0rem_0.9375rem_1.875rem_0rem_rgba(0,0,0,0.1)] ${
 				isOpen
 					? 'w-[var(--dz-sidebar-width)]'
 					: 'w-[var(--dz-sidebar-width-mobile)]'

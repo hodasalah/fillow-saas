@@ -13,7 +13,7 @@ const HamburgerBtn = () => {
 			<div
 				className={`hamburger ${
 					isOpen ? '' : 'is-active'
-				} hidden md:block`}
+				}  md:block sm:hidden block`}
 				onClick={handleToggle}
 			>
 				<span className='line'></span>

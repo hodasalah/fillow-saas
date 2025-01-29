@@ -38,9 +38,12 @@ const items = [
 
 const HeaderContent = () => {
 	const mode = useAppSelector((state) => state.sidebar.mode);
+	const isMobileView = useAppSelector((state) => state.sidebar.isMobileView);
 	return (
 		<header
-			className={`relative flex items-center ${mode==='wide'?'pl-[21rem]':'pl-1'} pr-1 sm:pr-[1.875rem] h-full`}
+			className={`relative flex items-center ${
+				mode === 'wide' && !isMobileView ? 'pl-[21rem]' : 'pl-1'
+			} pl-1  pr-1 sm:pr-[1.875rem] h-full`}
 		>
 			<nav className='flex justify-between items-center w-full'>
 				<div className='font-bold text-[1.25rem] text-[--text-dark] hidden sm:block'>
@@ -52,7 +55,7 @@ const HeaderContent = () => {
 							return item.icon === faSearch ? (
 								<li
 									key={'faSearch'}
-									className='hidden sm:flex h-full items-center text-[1.25rem] gap-2'
+									className='hidden lg:flex h-full items-center text-[1.25rem] gap-2'
 								>
 									<div className='relative flex items-stretch w-full flex-wrap search-area rounded-[50%]'>
 										<input

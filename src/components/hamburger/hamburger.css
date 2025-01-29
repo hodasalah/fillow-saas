@@ -15,7 +15,6 @@
 	display: inline-block;
 	cursor: pointer;
 	transition: all 0.2s ease-in-out;
-	width: 1.625rem;
 	left: 0;
 	top: 0;
 }
@@ -72,6 +71,15 @@
 	transform: translateY(-4px) translateX(16px) rotate(-45deg);
 }
 
+
+.hamburger.close {
+	border: 1.5px solid var(--primary);
+	padding: .125rem 0.25rem;
+	border-radius: 0.25rem;
+	;
+
+}
+
 .hamburger.close .line:nth-child(1) {
 	transform: rotate(45deg) translate(5px, 5px);
 	background-color: var(--primary);
@@ -89,12 +97,6 @@
 
 @media only screen and (max-width: 47.9375rem) {
 	.nav-control {
-		right: -3rem;
-	}
-}
-
-@media only screen and (max-width: 87.5rem) {
-	.nav-control {
-		right: -3.444rem;
+		right: -2rem;
 	}
 }

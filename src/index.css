@@ -62,15 +62,6 @@
 	--dz-sidebar-width-mobile: 6rem;
 }
 
-@media only screen and (max-width: 768px) {
-	body[data-sidebar-style='mini'] {
-		/*--dz-sidebar-pos: absolute;*/
-		--dz-side-nav-padding: 1.125rem 0.875rem;
-		--dz-side-info: none;
-		--dz-side-copyright: none;
-	}
-}
-
 *,
 *::before,
 *::after {
@@ -79,11 +70,7 @@
 	padding: 0;
 }
 
-@media only screen and (max-width: 100rem) {
-	:root {
-		font-size: 14px;
-	}
-}
+
 
 body {
 	margin: 0;
@@ -221,11 +208,8 @@ svg {
 	}
 }
 
-@media only screen and (max-width: 87.5rem) {
-	.nav-header .logo-abbr {
-		max-width: 2.8125rem;
-	}
-}
+
+
 
 @media only screen and (max-width: 35.9375rem) {
 	.nav-header .logo-abbr {
@@ -234,8 +218,28 @@ svg {
 	}
 }
 
+@media only screen and (max-width: 47.9375rem) {
+	.nav-header {
+		width: 5rem;
+		background-color: transparent;
+	}
+
+	.nav-header .brand-logo {
+		padding-left: 0;
+		padding-right: 0;
+		justify-content: center;
+	}
+}
+@media only screen and (max-width: 87.5rem) {
+	.nav-header .logo-abbr {
+		max-width: 2.8125rem;
+	}
+}
 /* header search area */
 @media only screen and (max-width: 100rem) {
+	:root {
+			font-size: 14px;
+		}
 	.header-right .search-area {
 		width: 15.625rem;
 	}

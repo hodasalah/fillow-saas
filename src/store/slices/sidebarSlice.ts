@@ -1,31 +1,61 @@
-// src/features/sidebar/sidebarSlice.js
-import { createSlice } from '@reduxjs/toolkit';
+/*import { createSlice } from '@reduxjs/toolkit';
 
-// Initial state for the sidebar (closed by default)
-const initialState = {
-	isOpen: false,
-};
-
-// Create a slice for managing the sidebar state
 const sidebarSlice = createSlice({
 	name: 'sidebar',
-	initialState,
+	initialState: { isOpen: true },
 	reducers: {
 		toggleSidebar: (state) => {
 			state.isOpen = !state.isOpen;
 		},
-		openSidebar: (state) => {
-			state.isOpen = true;
-		},
 		closeSidebar: (state) => {
 			state.isOpen = false;
+		},
+		openSidebar: (state) => {
+			state.isOpen = true;
 		},
 	},
 });
 
-// Export the actions to dispatch them in components
-export const { toggleSidebar, openSidebar, closeSidebar } =
+export const { toggleSidebar, closeSidebar, openSidebar } =
 	sidebarSlice.actions;
+export default sidebarSlice.reducer;*/
+// sidebarSlice.ts
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-// Export the reducer to be used in the store
+interface SidebarState {
+	mode: 'wide' | 'mini';
+	isMobileOpen: boolean;
+	isMobileView: boolean;
+}
+
+const initialState: SidebarState = {
+	mode: 'wide',
+	isMobileOpen: false,
+	isMobileView: false,
+};
+
+const sidebarSlice = createSlice({
+	name: 'sidebar',
+	initialState,
+	reducers: {
+		toggleMode: (state) => {
+			state.mode = state.mode === 'wide' ? 'mini' : 'wide';
+		},
+		toggleMobile: (state) => {
+			state.isMobileOpen = !state.isMobileOpen;
+		},
+		closeMobile: (state) => {
+			state.isMobileOpen = false;
+		},
+		setMode: (state, action: PayloadAction<'wide' | 'mini'>) => {
+			state.mode = action.payload;
+		},
+		setMobileView: (state, action: PayloadAction<boolean>) => {
+			state.isMobileView = action.payload;
+		},
+	},
+});
+
+export const { toggleMode, toggleMobile, closeMobile, setMode, setMobileView } =
+	sidebarSlice.actions;
 export default sidebarSlice.reducer;

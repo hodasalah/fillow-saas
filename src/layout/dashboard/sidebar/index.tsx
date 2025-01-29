@@ -1,25 +1,61 @@
-import { useAppSelector } from '../../../hooks/hooks';
+import { useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '../../../hooks/hooks';
+import {
+	closeMobile,
+	setMobileView,
+	setMode,
+} from '../../../store/slices/sidebarSlice';
 import MenuList from './menu';
 import SidebarFooter from './SidebarFooter';
 import SidebarProfile from './sidebarProfile';
 
- /* 
- * @returns sidebar component
- * wide sidebar in large screens with toggle button
- * mini sidebar in medium screens without toggle button
- * hidden sidebar in small screen in left side with open and close button
- */
-
+// Sidebar/index.tsx
 const Sidebar = () => {
-	const isOpen = useAppSelector((state) => state.sidebar.isOpen);
+	const mode = useAppSelector((state) => state.sidebar.mode);
+	const isMobileOpen = useAppSelector((state) => state.sidebar.isMobileOpen);
+	const isMobileView = useAppSelector((state) => state.sidebar.isMobileView);
 
+	const dispatch = useAppDispatch();
+
+	// Resize handler
+	useEffect(() => {
+		const handleResize = () => {
+			const width = window.innerWidth;
+
+			if (width >= 1024) {
+				// Desktop
+				dispatch(setMobileView(false));
+				dispatch(setMode('wide'));
+				dispatch(closeMobile());
+			} else if (width >= 768) {
+				// Tablet
+				dispatch(setMobileView(false));
+				dispatch(setMode('mini'));
+				dispatch(closeMobile());
+			} else {
+				// Mobile
+				dispatch(setMobileView(true));
+				dispatch(setMode('wide'));
+			}
+		};
+
+		window.addEventListener('resize', handleResize);
+		handleResize(); // Initial check
+		return () => window.removeEventListener('resize', handleResize);
+	}, [dispatch]);
 	return (
 		<aside
-			className={`hidden sm:block lg:overflow-auto z-[1001] h-[calc(100vh-4.5rem)] fixed top-[--dz-header-height] bg-sidebar-bg pt-0 border-r-[1px] border-[--border]  transition-all shadow-[0rem_0.9375rem_1.875rem_0rem_rgba(0,0,0,0.1)] ${
-				isOpen
-					? 'w-[var(--dz-sidebar-width)]'
-					: 'w-[var(--dz-sidebar-width-mobile)]'
-			}`}
+			className={`fixed top-[--dz-header-height] h-[calc(100vh-4.5rem)] z-[1001] bg-sidebar-bg border-r-[1px] border-[--border] transition-all duration-300 shadow-[0rem_0.9375rem_1.875rem_0rem_rgba(0,0,0,0.1)]
+        ${
+			isMobileView
+				? isMobileOpen
+					? 'w-sidebar-wide'
+					: 'w-0'
+				: mode === 'wide'
+				? 'w-sidebar-wide'
+				: 'w-sidebar-mini'
+		}
+      `}
 		>
 			<MenuList />
 			<SidebarProfile />
@@ -27,4 +63,5 @@ const Sidebar = () => {
 		</aside>
 	);
 };
+
 export default Sidebar;

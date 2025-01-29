@@ -1,20 +1,16 @@
-import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
-import { toggleSidebar } from '../../store/slices/sidebarSlice';
+import { useAppSelector } from '../../hooks/hooks';
 import './hamburger.css';
-const HamburgerBtn = () => {
-	const dispatch = useAppDispatch();
-	const isOpen = useAppSelector((state) => state.sidebar.isOpen);
-	const handleToggle = () => {
-		dispatch(toggleSidebar());
-	};
+const HamburgerBtn = ({ onHandleClick }: { onHandleClick: () => void }) => {
+	const mode = useAppSelector((state) => state.sidebar.mode);
+	const isMobileOpen = useAppSelector((state) => state.sidebar.isMobileOpen);
 
 	return (
 		<div className='nav-control'>
 			<div
-				className={`hamburger ${
-					isOpen ? '' : 'is-active'
-				}  md:block sm:hidden block`}
-				onClick={handleToggle}
+				className={`hamburger ${mode === 'wide' ? '' : 'is-active'} ${
+					isMobileOpen ? 'close' : ''
+				} block md:hidden lg:block `}
+				onClick={onHandleClick}
 			>
 				<span className='line'></span>
 				<span className='line'></span>

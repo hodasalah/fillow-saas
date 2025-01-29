@@ -9,15 +9,10 @@ import {
 	faUser,
 	IconDefinition,
 } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import MetisMenu from '@metismenu/react';
 import { useEffect, useRef, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
-import {
-	closeSidebar,
-	openSidebar,
-} from '../../../../store/slices/sidebarSlice';
+import { useAppSelector } from '../../../../hooks/hooks';
 import MenuItem from './MenuItem';
 import './MenuItem.css';
 import MiniMenuItem from './MiniMenuItem';
@@ -30,18 +25,19 @@ export interface MenuItemProps {
 
 		name: string;
 
-		link: string;
-
 		hasSubMenu: boolean;
 
 		submenu?: { title: string; link: string }[];
 	};
 
-	index: number;
-	setActiveItem: (id: string) => void;
+	index?: number;
+	activeItem: string;
+	setActiveItem?: (id: string) => void;
+	onItemClick?: (id: string) => void;
+	toggleDropdown?: (id: string) => void;
+	openDropdown?:string | null;
 }
 
-// import MetisMenu css
 const list = [
 	{
 		id: uuidv4(),
@@ -157,39 +153,21 @@ const list = [
 		],
 	},
 ];
-console.log(list)
+
 const MenuList = () => {
-	const dispatch = useAppDispatch();
-	const isOpen = useAppSelector((state) => state.sidebar.isOpen);
+	const mode = useAppSelector((state) => state.sidebar.mode);
+	const isMobileOpen = useAppSelector((state) => state.sidebar.isMobileOpen);
+
 	// active link in mini sidebar
 	const [activeItem, setActiveItem] = useState<string | null>(list[0].id);
-	// open dropdown menu in mini sidebar
-	const [openDropdown, setOpenDropdown] = useState<string | null>(list[0].id);
+	const [openDropdown, setOpenDropdown] = useState<string | null>(null);
 	const dropdownlistRef = useRef<HTMLDivElement>(null);
 
 	// set active link in mini sidebar
 	const handleClick = (id: string) => {
 		setActiveItem(id);
 	};
-	// Toggle a specific dropdown by title
-
-	const toggleDropdown = (id: string) => {
-		setOpenDropdown((prev) => (prev === id ? null : id));
-	};
-
-	useEffect(() => {
-		const handleResize = () => {
-			if (window.innerWidth >= 1024) {
-				dispatch(openSidebar()); // On large screens, ensure sidebar is open
-			} else {
-				dispatch(closeSidebar()); // On small screens, ensure sidebar is closed
-			}
-		};
-		window.addEventListener('resize', handleResize);
-		handleResize(); // Trigger resize handler on component mount
-		return () => window.removeEventListener('resize', handleResize); // Cleanup listener
-	}, [dispatch]);
-
+	// click dropdown when be outside of mini sidebar
 	useEffect(() => {
 		const closeMenu = (e: MouseEvent) => {
 			if (
@@ -207,59 +185,44 @@ const MenuList = () => {
 			document.removeEventListener('mousedown', closeMenu);
 		};
 	}, [openDropdown]);
+	// Toggle a specific dropdown by id
 
-	if (isOpen) {
-		return (
-			<MetisMenu className='metismenu relative flex flex-col pt-[0.9375rem]'>
-				{list.map((item, index) => (
-					<MenuItem
-						key={item.id}
-						item={item}
-						index={index}
-						setActiveItem={setActiveItem}
-						activeItem={activeItem}
-					
-					/>
-				))}
-			</MetisMenu>
-		);
-	}
+	const toggleDropdown = (id: string) => {
+		setOpenDropdown((prev) => (prev === id ? null : id));
+	};
+	const showFullMenu = mode === 'wide' || isMobileOpen;
+
 	return (
-		<ul className='relative flex flex-col pt-[0.9375rem]'>
-			{list.map((item) => (
-				<li
-					className={`menuItemMobile ${
-						activeItem === item.id ? 'mm-active' : ''
-					}`}
-					onClick={() => {
-						handleClick(item.id);
-						toggleDropdown(item.id);
-					}}
-					key={item.id}
-				>
-					<a>
-						<FontAwesomeIcon icon={item.icon} />
-					</a>
-
-					{openDropdown === item.id && (
-						<ul
-							className='submenu-mobile flex flex-col transition-all duration-300 ease-in-out py-2 px-0'
-							ref={dropdownlistRef}
-						>
-							{item.hasSubMenu &&
-								item.submenu &&
-								item.submenu.map((submenuItem) => (
-									<MiniMenuItem
-										key={submenuItem.id}
-										submenuItem={submenuItem}
-									/>
-								))}
-							<div className='absolute left-[-6px] top-[27px] -translate-y-1/2 w-0 h-0 border-t-[6px] border-t-transparent border-b-[6px] border-b-transparent border-r-[6px] border-white'></div>
-						</ul>
-					)}
-				</li>
-			))}
-		</ul>
+		<>
+			{showFullMenu ? (
+				<div className={`overflow-hidden`}>
+					<MetisMenu className='metismenu relative flex flex-col pt-[0.9375rem]'>
+						{list.map((item) => (
+							<MenuItem
+								key={item.id}
+								item={item}
+								setActiveItem={setActiveItem}
+								activeItem={activeItem || ''}
+								toggleDropdown={toggleDropdown}
+							/>
+						))}
+					</MetisMenu>
+				</div>
+			) : (
+				<ul className={` relative flex-col pt-[0.9375rem] `}>
+					{list.map((item) => (
+						<MiniMenuItem
+							key={item.id}
+							item={item}
+							activeItem={activeItem || ''}
+							onItemClick={handleClick}
+							toggleDropdown={toggleDropdown}
+							openDropdown={openDropdown}
+						/>
+					))}
+				</ul>
+			)}
+		</>
 	);
 };
 

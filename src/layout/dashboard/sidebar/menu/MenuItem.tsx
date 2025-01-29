@@ -2,33 +2,32 @@ import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useRef } from 'react';
 import { NavLink } from 'react-router';
-import { useAppSelector } from '../../../../hooks/hooks';
-import './MenuItem.css';
 import { MenuItemProps } from '.';
+import './MenuItem.css';
 
-
-const MenuItem: React.FC<MenuItemProps> = ({ item ,setActiveItem,activeItem}) => {
-  
+const MenuItem: React.FC<MenuItemProps> = ({
+	item,
+	setActiveItem,
+	activeItem,
+}) => {
 	useEffect(() => {
 		if (item.id === activeItem) {
 			ref?.current?.classList?.add('mm-active');
-			setActiveItem(item.id)
+			setActiveItem?.(item.id);
 		}
-	}, [item.id],activeItem);
+	}, [item.id, activeItem, setActiveItem]);
 	const ref = useRef<HTMLLIElement>(null);
 	return (
 		<li
 			className='menuItem'
 			ref={ref}
-			onClick={()=>setActiveItem(item.id)}
+			onClick={() => setActiveItem && setActiveItem(item.id)}
 		>
 			<a className={`has-arrow`}>
 				<FontAwesomeIcon icon={item.icon as IconProp} />
 				<span className=''>{item.name}</span>
 			</a>
-			<ul
-				className='metismenu relative flex flex-col transition-all duration-300 ease-in-out py-2 px-0'
-			>
+			<ul className='metismenu relative flex flex-col transition-all duration-300 ease-in-out py-2 px-0'>
 				{item.hasSubMenu &&
 					item.submenu &&
 					item.submenu.map((submenuItem) => (

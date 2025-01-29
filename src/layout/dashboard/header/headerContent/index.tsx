@@ -37,21 +37,17 @@ const items = [
 ];
 
 const HeaderContent = () => {
-	const isOpen = useAppSelector((state) => state.sidebar.isOpen);
+	const mode = useAppSelector((state) => state.sidebar.mode);
 	return (
 		<header
-			className={`relative flex items-center ${
-				!isOpen ? 'pl-1' : 'pl-[21rem]'
-			}  pr-[1.875rem] h-full`}
+			className={`relative flex items-center ${mode==='wide'?'pl-[21rem]':'pl-1'} pr-1 sm:pr-[1.875rem] h-full`}
 		>
 			<nav className='flex justify-between items-center w-full'>
-				<div className='font-bold text-[1.25rem] text-[--text-dark] '>
+				<div className='font-bold text-[1.25rem] text-[--text-dark] hidden sm:block'>
 					Dashboard
 				</div>
-				<div
-					className='nav-links  w-full flex items-center px-5 '
-				>
-					<ul className='header-right w-full flex sm:flex-row justify-normal md:items-center gap-4  sm:justify-end'>
+				<div className='nav-links w-full flex items-center px-2 sm:px-5'>
+					<ul className='header-right w-full flex  md:items-center  sm:gap-4 justify-end'>
 						{items.map((item, index) => {
 							return item.icon === faSearch ? (
 								<li
@@ -65,7 +61,7 @@ const HeaderContent = () => {
 											placeholder='Search here...'
 										/>
 
-										<span className='input-group-text ml-[-1px] rounded-tl-none rounded-bl-none h-[3rem] rounded-[3.125rem] bg-white py-0 px-[1.25rem] border-[#e9e2f8] flex items-center justify-center text-[--bs-body-color]'>
+										<span className='input-group-text ml-[-1px] rounded-tl-none rounded-bl-none h-[3rem] rounded-[3.125rem] bg-white py-0 px-[0.625rem] sm:px-[1.25rem] border-[#e9e2f8] flex items-center justify-center text-[--bs-body-color]'>
 											<FontAwesomeIcon
 												icon={item.icon}
 											></FontAwesomeIcon>
@@ -74,10 +70,10 @@ const HeaderContent = () => {
 								</li>
 							) : item.icon === faMoon ? (
 								<li
-									className='text-[--text-gray] h-full flex items-center  text-[1.25rem] '
+									className='text-[--text-gray] h-full flex items-center text-[1.125rem] sm:text-[1.25rem] px-[0.25rem] sm:px-[1.25rem]'
 									key={'faMoon'}
 								>
-									<div className='relative p-[0.9375rem] rounded-[.625rem]'>
+									<div className='relative p-[0.625rem] sm:p-[0.9375rem] rounded-[.625rem]'>
 										<FontAwesomeIcon
 											icon={faMoon}
 										></FontAwesomeIcon>
@@ -85,15 +81,15 @@ const HeaderContent = () => {
 								</li>
 							) : (
 								<li
-									className='text-[--text-gray] h-full flex items-center text-[1.25rem] '
+									className='text-[--text-gray] h-full flex items-center text-[1.125rem] sm:text-[1.25rem] px-[0.25rem] sm:px-[1.25rem]'
 									key={index}
 								>
-									<div className='relative p-[0.9375rem] rounded-[.625rem]'>
+									<div className='relative p-[0.625rem] sm:p-[0.9375rem] rounded-[.625rem]'>
 										<FontAwesomeIcon
 											icon={item.icon}
 										></FontAwesomeIcon>
 										<span
-											className={`absolute  text-white ${item.bg} text-[0.675rem] font-medium me-2 w-[1.2rem] h-[1.2rem] leading-[1rem] text-center p-[.1rem] rounded-full  top-[8px] right-[-1px] `}
+											className={`absolute  text-white ${item.bg} text-[0.675rem] font-medium me-2 w-[1.2rem] h-[1.2rem] leading-[1rem] text-center p-[.1rem] rounded-full  sm:top-[8px] sm:right-[-1px] top-0 right-[-0.625rem] `}
 										>
 											{item.num}
 										</span>

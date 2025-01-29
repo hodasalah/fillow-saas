@@ -72,6 +72,21 @@
 	transform: translateY(-4px) translateX(16px) rotate(-45deg);
 }
 
+.hamburger.close .line:nth-child(1) {
+	transform: rotate(45deg) translate(5px, 5px);
+	background-color: var(--primary);
+}
+
+.hamburger.close .line:nth-child(2) {
+	opacity: 0;
+}
+
+.hamburger.close .line:nth-child(3) {
+	transform: rotate(-45deg) translate(5px, -6px);
+	width: 1.625rem;
+	background-color: var(--primary);
+}
+
 @media only screen and (max-width: 47.9375rem) {
 	.nav-control {
 		right: -3rem;

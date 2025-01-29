@@ -43,6 +43,10 @@ export default {
 				'primary-btn':
 					'0rem 0.3125rem 0.3125rem 0rem var(--rgba-primary-1)',
 			},
+			width: {
+				'sidebar-wide': '16.5rem',
+				'sidebar-mini': '6rem',
+			},
 		},
 	},
 	plugins: [],

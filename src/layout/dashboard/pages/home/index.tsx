@@ -10,14 +10,17 @@ import RecentEmails from './recentEmails/index';
 import TotalClients from './totalClientsComponents';
 
 const DashboardHome = () => {
-	const isOpen = useAppSelector((state) => state.sidebar.isOpen);
+	const mode = useAppSelector((state) => state.sidebar.mode);
+	const isMobileView = useAppSelector((state) => state.sidebar.isMobileView);
 	return (
 		<div
-			className={`${
-				isOpen
-					? 'sm:ml-[var(--dz-sidebar-width)]'
-					: 'sm:ml-[var(--dz-sidebar-width-mobile)]'
-			} w-full bg-body-bg text-[0.875rem] min-h-[calc(100vh-7.7rem)]  pt-[--dz-header-height]`}
+			className={`
+				${isMobileView ? 'pl-3' : ''}
+				${
+					mode === 'wide'
+						? 'pl-[var(--dz-sidebar-width)]'
+						: 'pl-[var(--dz-sidebar-width-mobile)]'
+				} w-full  bg-body-bg text-[0.875rem] min-h-[calc(100vh-7.7rem)]  pt-[--dz-header-height]`}
 		>
 			<div className='pl-[1.875rem] pr-[1.875rem] pt-[1.875rem] '>
 				<div className='grid grid-cols-1 lg:grid-cols-2  gap-4 xl:gap-8  w-full mb-8'>

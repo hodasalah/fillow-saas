@@ -15,24 +15,25 @@ const DashboardHome = () => {
 	return (
 		<div
 			className={`
-				${isMobileView ? 'pl-3' : ''}
 				${
-					mode === 'wide'
+					isMobileView
+						? 'px-3'
+						: mode === 'wide'
 						? 'pl-[var(--dz-sidebar-width)]'
 						: 'pl-[var(--dz-sidebar-width-mobile)]'
-				} w-full  bg-body-bg text-[0.875rem] min-h-[calc(100vh-7.7rem)]  pt-[--dz-header-height]`}
+				} w-full bg-body-bg text-[0.875rem] min-h-[calc(100vh-7.7rem)]  pt-[--dz-header-height]`}
 		>
-			<div className='pl-[1.875rem] pr-[1.875rem] pt-[1.875rem] '>
-				<div className='grid grid-cols-1 lg:grid-cols-2  gap-4 xl:gap-8  w-full mb-8'>
+			<div className='md:pl-[1.875rem] md:pr-[1.875rem] pt-[1.875rem]'>
+				<div className='grid grid-cols-1 md:grid-cols-2  gap-4 xl:gap-8  mb-8 margin-auto'>
 					{/* first column */}
-					<div className='flex flex-col xl:gap-8 gap-4'>
+					<div className='flex flex-col xl:gap-8 gap-4 max-w-[600px]'>
 						<GradiantCard />
 						<ProjectStatistics />
 						<CompleteProject />
 						<RecentEmails />
 					</div>
 					{/* second column */}
-					<div className='flex flex-col xl:gap-8 gap-4'>
+					<div className='flex flex-col xl:gap-8 gap-4 max-w-[600px]'>
 						<TotalClients />
 						<DognutArea />
 						<EmailCategories />

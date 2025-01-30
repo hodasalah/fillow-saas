@@ -70,8 +70,6 @@
 	padding: 0;
 }
 
-
-
 body {
 	margin: 0;
 	overflow-x: hidden;
@@ -142,7 +140,6 @@ svg {
 	background: linear-gradient(212.43deg,
 			var(--primary) 19.43%,
 			var(--rgba-primary-5) 87.63%);
-	;
 }
 
 .striped-gradient {
@@ -168,6 +165,8 @@ svg {
 	animation-name: myanimation;
 	transition: all 5s ease 0s
 }
+
+
 
 @keyframes myanimation {
 	0% {
@@ -208,9 +207,6 @@ svg {
 	}
 }
 
-
-
-
 @media only screen and (max-width: 35.9375rem) {
 	.nav-header .logo-abbr {
 		width: 2.1875rem;
@@ -230,16 +226,19 @@ svg {
 		justify-content: center;
 	}
 }
+
 @media only screen and (max-width: 87.5rem) {
 	.nav-header .logo-abbr {
 		max-width: 2.8125rem;
 	}
 }
+
 /* header search area */
 @media only screen and (max-width: 100rem) {
 	:root {
-			font-size: 14px;
-		}
+		font-size: 14px;
+	}
+
 	.header-right .search-area {
 		width: 15.625rem;
 	}

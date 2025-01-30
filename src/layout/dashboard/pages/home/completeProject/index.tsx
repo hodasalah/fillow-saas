@@ -16,14 +16,14 @@ const CompleteProject = () => {
 	return (
 		<div className='w-full shadow-custom-shadow'>
 			<Card>
-				<div className='w-full p-[1.875rem] pb-0'>
-					<div className='flex w-full justify-between items-center mb-4 '>
+				<div className=' p-[1.875rem] pb-0 w-full'>
+					<div className='flex  justify-between items-center mb-4 '>
 						<h4 className='mb-0 text-xl font-semibold text-[var(--text-dark)] capitalize mt-0'>
 							Completion Project Rate
 						</h4>
 						<DropdownDelEditBtn links={dropdownMenuLinks} />
 					</div>
-					<div className='flex flex-1 w-full overflow-hidden'>
+					<div className='flex flex-1  overflow-hidden'>
 						<LineChart />
 					</div>
 				</div>

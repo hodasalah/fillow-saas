@@ -42,15 +42,17 @@ const HeaderContent = () => {
 	return (
 		<header
 			className={`relative flex items-center ${
-				mode === 'wide' && !isMobileView ? 'pl-[21rem]' : 'pl-1'
-			} pl-1  pr-1 sm:pr-[1.875rem] h-full`}
+				mode === 'wide' && !isMobileView
+					? 'pl-[4rem] md:pl-[5rem] '
+					: 'lg:pl-[8rem] md:pl-[1.875rem] sm:pl-[8rem]'
+			} pl-1  pr-1 sm:px-[1.875rem] h-full`}
 		>
-			<nav className='flex justify-between items-center w-full'>
+			<nav className='flex sm:justify-between justify-end items-center w-full'>
 				<div className='font-bold text-[1.25rem] text-[--text-dark] hidden sm:block'>
 					Dashboard
 				</div>
-				<div className='nav-links w-full flex items-center px-2 sm:px-5'>
-					<ul className='header-right w-full flex  md:items-center  sm:gap-4 justify-end'>
+				<div className='nav-links flex items-center px-2 sm:px-5'>
+					<ul className='header-right w-full flex  md:items-center  justify-end'>
 						{items.map((item, index) => {
 							return item.icon === faSearch ? (
 								<li
@@ -73,7 +75,7 @@ const HeaderContent = () => {
 								</li>
 							) : item.icon === faMoon ? (
 								<li
-									className='text-[--text-gray] h-full flex items-center text-[1.125rem] sm:text-[1.25rem] px-[0.25rem] sm:px-[1.25rem]'
+									className='text-[--text-gray] h-full flex items-center text-[1.125rem] sm:text-[1.25rem] px-[0.45rem] sm:px-[1.25rem]'
 									key={'faMoon'}
 								>
 									<div className='relative p-[0.625rem] sm:p-[0.9375rem] rounded-[.625rem]'>
@@ -84,7 +86,7 @@ const HeaderContent = () => {
 								</li>
 							) : (
 								<li
-									className='text-[--text-gray] h-full flex items-center text-[1.125rem] sm:text-[1.25rem] px-[0.25rem] sm:px-[1.25rem]'
+									className='text-[--text-gray] h-full flex items-center text-[1.125rem] sm:text-[1.25rem] px-[0.45rem] sm:px-[1.25rem]'
 									key={index}
 								>
 									<div className='relative p-[0.625rem] sm:p-[0.9375rem] rounded-[.625rem]'>
@@ -101,8 +103,8 @@ const HeaderContent = () => {
 							);
 						})}
 
-						<li className='text-[--text-gray] relative h-full flex items-center'>
-							<div className='flex items-center h-full'>
+						<li className='relative h-full flex items-center w-[3.5rem] '>
+							<div className='flex items-center w-full h-full'>
 								<img
 									src='https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80'
 									alt='profile'

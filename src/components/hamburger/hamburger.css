@@ -73,10 +73,9 @@
 
 
 .hamburger.close {
-	border: 1.5px solid var(--primary);
+	background-color: var(--rgba-primary-2);
 	padding: .125rem 0.25rem;
-	border-radius: 0.25rem;
-	;
+
 
 }
 

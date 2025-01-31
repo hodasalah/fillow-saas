@@ -7,6 +7,7 @@ import {
 	faStar,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import ProfileDropdown from '../../../../components/profileDropdown/ProfileDropdown';
 import { useAppSelector } from '../../../../hooks/hooks';
 
 const items = [
@@ -32,13 +33,14 @@ const items = [
 	{
 		icon: faShoppingBag,
 		num: 4,
-		bg: 'bg-[#09bd3c]',
+		bg: 'bg-[#ffbf00]',
 	},
 ];
 
 const HeaderContent = () => {
 	const mode = useAppSelector((state) => state.sidebar.mode);
 	const isMobileView = useAppSelector((state) => state.sidebar.isMobileView);
+
 	return (
 		<header
 			className={`relative flex items-center ${
@@ -103,14 +105,8 @@ const HeaderContent = () => {
 							);
 						})}
 
-						<li className='relative h-full flex items-center w-[3.5rem] '>
-							<div className='flex items-center w-full h-full'>
-								<img
-									src='https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80'
-									alt='profile'
-									className='w-[3rem] h-[3rem] rounded-[4.25rem]'
-								/>
-							</div>
+						<li className='h-full flex items-center w-[3.5rem]'>
+							<ProfileDropdown />
 						</li>
 					</ul>
 				</div>

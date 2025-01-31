@@ -1,8 +1,9 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { PrimaryBtn } from '../../../../../components/buttons';
 import { useAppDispatch } from '../../../../../hooks/hooks';
 import { setLoading } from '../../../../../store/slices/loadingSlice';
 import MessageItem from './MessageItem';
+import { fetchMessages } from '../../../../../utils/fetchMessages';
 
 export interface Message {
 	id: string;
@@ -19,26 +20,7 @@ const Messages = () => {
 	const [retryCount, setRetryCount] = useState(0);
 	const MAX_RETRIES = 3;
 	const dispatch = useAppDispatch();
-
-	const fetchMessages = useCallback(async () => {
-		dispatch(setLoading(true));
-		setError(null);
-		try {
-			const response = await fetch('/datas/messages.json');
-			if (!response.ok) {
-				throw new Error('Failed to fetch messages');
-			}
-			const data = await response.json();
-			dispatch(setLoading(false));
-			setMessages(data.messages);
-		} catch (error) {
-			console.error('Error fetching messages:', error);
-			setError('Failed to fetch messages Please try again later.');
-		} finally {
-			dispatch(setLoading(false));
-		}
-	}, [dispatch]);
-	// handle retry button click when fetch fails
+	
 	const handleRetry = async () => {
 		if (retryCount >= MAX_RETRIES) {
 			setError('Maximum retry attempts reached. Please try again later.');
@@ -47,16 +29,25 @@ const Messages = () => {
 		setRetryCount((prev) => prev + 1);
 		setError(null);
 		try {
-			await fetchMessages();
+			dispatch(setLoading(true));
+			const data= await fetchMessages();
+			setMessages(data);
+			dispatch(setLoading(false));
 		} catch (error) {
 			console.error('Retry attempt failed:', error);
 			setError('Retry attempt failed. Please try again later.');
 		}
 	};
 	useEffect(() => {
-		fetchMessages();
-	}, []);
-
+		const fetchData = async () => {
+			dispatch(setLoading(true));
+			const messagesData = await fetchMessages();
+			setMessages(messagesData);
+			dispatch(setLoading(false));
+		};
+		fetchData();
+	}, [dispatch]);
+console.log(messages)
 	return (
 		<div className='w-full shadow-custom-shadow mb-10'>
 			<div className='bg-white rounded-lg shadow-sm'>

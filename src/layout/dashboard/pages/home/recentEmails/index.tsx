@@ -1,7 +1,8 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { PrimaryOutlineBtn } from '../../../../../components/buttons';
 import { useAppDispatch } from '../../../../../hooks/hooks';
 import { setLoading } from '../../../../../store/slices/loadingSlice';
+import { fetchEmails } from '../../../../../utils/fetchEmails';
 import EmailItem from './EmailItem';
 
 interface EmailFile {
@@ -23,31 +24,24 @@ export interface Email {
 const RecentEmails = () => {
 	const [emails, setEmails] = useState<Email[]>([]);
 	const [error, setError] = useState<string | null>(null);
-	console.log(emails);
 
 	const dispatch = useAppDispatch();
-	const fetchEmails = useCallback(async () => {
-		dispatch(setLoading(true));
-		setError(null);
-		try {
-			const response = await fetch('/datas/emails.json');
-			if (!response.ok) {
-				throw new Error('Failed to fetch emails');
-			}
-			const data = await response.json();
-			dispatch(setLoading(false));
-			setEmails(data.emailsData);
-		} catch (error) {
-			console.error('Error fetching emails:', error);
-			setError('Failed to fetch emails Please try again later.');
-		} finally {
-			dispatch(setLoading(false));
-		}
-	}, [dispatch]);
 
 	useEffect(() => {
-		fetchEmails();
-	}, [fetchEmails]);
+		const fetchData = async () => {
+			dispatch(setLoading(true));
+			try {
+				const emailsData = await fetchEmails();
+				setEmails(emailsData);
+			} catch (error) {
+				console.error('Failed to fetch emails:', error);
+				setError('Failed to fetch emails. Please try again later.');
+			} finally {
+				dispatch(setLoading(false));
+			}
+		};
+		fetchData();
+	}, [dispatch]);
 
 	const MAX_RETRIES = 3;
 	const [retryCount, setRetryCount] = useState(0);
@@ -60,7 +54,10 @@ const RecentEmails = () => {
 		setRetryCount((prev) => prev + 1);
 		setError(null);
 		try {
-			await fetchEmails();
+			dispatch(setLoading(true));
+			const data = await fetchEmails();
+			setEmails(data);
+			dispatch(setLoading(false));
 		} catch (error) {
 			console.error('Retry attempt failed:', error);
 			setError('Retry attempt failed. Please try again later.');
@@ -78,9 +75,9 @@ const RecentEmails = () => {
 	return (
 		<div className='w-full shadow-custom-shadow'>
 			<div className='bg-white rounded-lg shadow-sm'>
-				<div className='py-[1.875rem] pb-0 w-full'>
+				<div className='py-[1.875rem] pb-0'>
 					{/* header */}
-					<div className='flex w-full justify-between items-center mb-4 px-[1.875rem] pt-[1.5rem]'>
+					<div className='flex justify-between items-center mb-4 px-[1.875rem] pt-[1.5rem]'>
 						<div className=''>
 							<h4 className='mb-0 text-xl font-semibold text-[var(--text-dark)] capitalize mt-0'>
 								Recent Emails
@@ -89,8 +86,10 @@ const RecentEmails = () => {
 								Check your Recent Emails here
 							</span>
 						</div>
-						<div className='w-36 h-12'>
-							<PrimaryOutlineBtn>View More</PrimaryOutlineBtn>
+						<div className='max-w-fit'>
+							<div className='w-36  h-12'>
+								<PrimaryOutlineBtn>View More</PrimaryOutlineBtn>
+							</div>
 						</div>
 					</div>
 					{error && (

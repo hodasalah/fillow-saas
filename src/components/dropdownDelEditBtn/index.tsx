@@ -40,7 +40,7 @@ const DropdownDelEditBtn = ({links}: DropdownDelEditProps) => {
 
   return (
 		<div
-			className='dropdown ms-2 relative'
+			className='ms-2 relative'
 			ref={dropdownMenuRef}
 		>
 			<div

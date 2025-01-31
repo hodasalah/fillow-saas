@@ -15,27 +15,27 @@ interface EmailItemProps {
 const EmailItem = ({ email, onBtnClick }: EmailItemProps) => {
 	return (
 		<div className='w-full [&:not(:last-child)]:border-b-[0.0625rem]  [&:not(:last-child)]:border-(var(--border))'>
-			<div className='w-ful py-[.9375rem] px-[1.8625rem] flex items-center justify-between gap-[3rem]'>
+			<div className='py-[.9375rem] px-[1.8625rem] flex items-center justify-between'>
 				{/* image + data */}
-				<div className='w-full flex items-center'>
-					<div className='w-[5rem] h-[3rem] leading-[3rem] rounded-[50%] text-[1.5rem] overflow-hidden'>
+				<div className='flex items-center'>
+					<div className='flex-shrink-0 w-[3rem] h-[3rem] leading-[3rem] rounded-[50%] text-[1.5rem] overflow-hidden'>
 						<img
 							className='block w-full h-full object-cover'
 							src={email.profileImage || '/assets/fallback.png'}
 							alt={email.name}
 						/>
 					</div>
-					<div className='ml-4'>
-						<h4 className='leading-[1.5] font-[500] text-[1.125rem] text-[var(--text-dark)]'>
+					<div className='pl-4'>
+						<h4 className='leading-[1.5] font-[500] text-[1.125rem] text-[var(--text-dark)] text-wrap'>
 							{email.title}
 						</h4>
-						<p className='leading-[1.8] text-[var(--text-dark)]'>
+						<p className='leading-[1.8] text-[var(--text-dark)] text-wrap'>
 							{email.body}
 						</p>
 					</div>
 				</div>
 				{/* pin mark btn */}
-				<div className='max-w-full flex items-center justify-end'>
+				<div className='flex items-center justify-end'>
 					<button
 						className={`w-[3rem] h-[3rem] border-[0.0625rem] border-[var(--primary)] leading-[3rem] ${
 							email.pinned
@@ -54,7 +54,7 @@ const EmailItem = ({ email, onBtnClick }: EmailItemProps) => {
 						? email.files.slice(0, 2).map((file, index) => (
 								<div
 									key={index}
-									className='cursor-pointer py-3 px-9 rounded-full border-[1px] border-[var(--primary)] bg-transparent text-[var(--primary)] text-[0.875rem]'
+									className='cursor-pointer py-3 md:px-9 px-5 rounded-full border-[1px] border-[var(--primary)] bg-transparent text-[var(--primary)] text-[0.875rem]'
 								>
 									{file.type === 'image' ? (
 										<>

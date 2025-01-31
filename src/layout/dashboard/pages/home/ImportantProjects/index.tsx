@@ -4,9 +4,10 @@ import Card from '../../../../../components/Card';
 import { useAppDispatch } from '../../../../../hooks/hooks';
 import { setLoading } from '../../../../../store/slices/loadingSlice';
 import ProjectItem from './ProjectItem';
+import { v4 as uuidv4 } from 'uuid';
 
 export interface Project {
-	id: number;
+	id: string;
 	name: string;
 	category: string;
 	description: string;
@@ -37,7 +38,7 @@ const ImportantProjects = () => {
 			}
 			const data = await response.json();
 			dispatch(setLoading(false));
-			setProjects(data.projects);
+			setProjects(data.projects.map((project: Project) => ({ ...project, id: uuidv4() })));
 		} catch (error) {
 			console.error('Error fetching projects:', error);
 			setError('Failed to fetch projects Please try again later.');

@@ -20,25 +20,28 @@ const DognutArea = () => {
 	return (
 		<div className='w-full h-fit shadow-custom-shadow'>
 			<Card>
-				<div className='flex justify-between items-center p-[1.875rem] flex-wrap'>
-					<div className='w-[100%] xl:w-[50%] lg:w-[100%] md:w-[50%] '>
-						<Carousel autoSlide={false}>
-							{slides.map((s) => (
-								<div
-									className='min-w-full p-4 pl-0'
-									key={s.title}
-								>
-									<h4 className='leading-8 text-[1.5rem] font-bold mb-4 text-black'>
-										{s.title}
-									</h4>
-									<p className='leading-[1.8] text-black text-[0.875rem] '>
-										{s.text}
-									</p>
-								</div>
-							))}
-						</Carousel>
+				<div className='max-w-full flex justify-between items-center p-[1.875rem] flex-wrap'>
+					<div className='w-full xl:w-[50%] lg:w-[100%] md:w-[100%]'>
+						<div className=' max-w-full'>
+							<Carousel autoSlide={false}>
+								{slides.map((s) => (
+									<div
+										className='min-w-full p-4 pl-4'
+										key={s.title}
+									>
+										<h4 className='max-w-full leading-8 text-[1.5rem] font-bold mb-4 text-black text-wrap'>
+											{s.title}
+										</h4>
+										<p className='max-w-full leading-[1.8] text-black text-[0.875rem] text-wrap'>
+											{s.text}
+										</p>
+									</div>
+								))}
+							</Carousel>
+						</div>
 					</div>
-					<div className='flex flex-col justify-center items-center h-fit  w-[100%] xl:w-[50%] lg:w-[100%] md:w-[50%]  '>
+
+					<div className='flex flex-col justify-center items-center h-fit  w-[100%] xl:w-[50%] lg:w-[100%] md:w-[100%]  '>
 						<Radial />
 						<span className='text-center block text-lg font-bold'>
 							On Progress{' '}

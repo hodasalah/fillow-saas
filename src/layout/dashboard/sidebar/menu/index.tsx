@@ -35,7 +35,7 @@ export interface MenuItemProps {
 	setActiveItem?: (id: string) => void;
 	onItemClick?: (id: string) => void;
 	toggleDropdown?: (id: string) => void;
-	openDropdown?:string | null;
+	openDropdown?: string | null;
 }
 
 const list = [
@@ -193,7 +193,7 @@ const MenuList = () => {
 	const showFullMenu = mode === 'wide' || isMobileOpen;
 
 	return (
-		<>
+		<div>
 			{showFullMenu ? (
 				<div className={`overflow-hidden`}>
 					<MetisMenu className='metismenu relative flex flex-col pt-[0.9375rem]'>
@@ -209,7 +209,7 @@ const MenuList = () => {
 					</MetisMenu>
 				</div>
 			) : (
-				<ul className={` relative flex-col pt-[0.9375rem] `}>
+				<ul className={`relative flex-col pt-[0.9375rem] `}>
 					{list.map((item) => (
 						<MiniMenuItem
 							key={item.id}
@@ -222,7 +222,7 @@ const MenuList = () => {
 					))}
 				</ul>
 			)}
-		</>
+		</div>
 	);
 };
 

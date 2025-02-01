@@ -1,0 +1,159 @@
+{
+	"navigation": [
+		{
+			"title": "Dashboard",
+			"submenus": [
+				"Analytics",
+				"Sales",
+				"Projects",
+				"Users",
+				"Calendar",
+				"Messages"
+			]
+		},
+		{
+			"title": "CMS",
+			"submenus": [
+				"Content Management",
+				"Create Content",
+				"Menus",
+				"Email Templates",
+				"Blog Posts",
+				"Categories"
+			]
+		},
+		{
+			"title": "Apps",
+			"submenus": [
+				"User Profiles",
+				"Edit Profile",
+				"Post Details",
+				"Email Inbox",
+				"Compose Email",
+				"Shop",
+				"Product List",
+				"Orders",
+				"Customers"
+			]
+		},
+		{
+			"title": "Reports",
+			"submenus": [
+				"Sales Report",
+				"Customer Insights",
+				"Traffic Analytics"
+			]
+		},
+		{
+			"title": "Integrations",
+			"submenus": [
+				"Stripe",
+				"PayPal",
+				"Google Analytics",
+				"Slack",
+				"Zapier"
+			]
+		},
+		{
+			"title": "Settings",
+			"submenus": [
+				"General Settings",
+				"Billing",
+				"User Management",
+				"Security"
+			]
+		}
+	],
+	"chat_list": [
+		{ "name": "Alice Johnson", "status": "online" },
+		{
+			"name": "Mark Spencer",
+			"status": "offline",
+			"last_seen": "5 mins ago"
+		},
+		{ "name": "David Reynolds", "status": "online" },
+		{
+			"name": "Sophia Martinez",
+			"status": "offline",
+			"last_seen": "30 mins ago"
+		},
+		{ "name": "James Walker", "status": "online" },
+		{
+			"name": "Emily Carter",
+			"status": "offline",
+			"last_seen": "45 mins ago"
+		}
+	],
+	"notifications": [
+		{
+			"category": "System",
+			"title": "New Feature Released!",
+			"description": "We have introduced a new dark mode for better accessibility.",
+			"time": "Today"
+		},
+		{
+			"category": "Sales",
+			"title": "New Subscription",
+			"description": "John Doe just subscribed to the Pro Plan.",
+			"time": "1 hour ago"
+		},
+		{
+			"category": "Payments",
+			"title": "Invoice Paid",
+			"description": "Invoice #4567 has been successfully paid.",
+			"time": "3 hours ago"
+		}
+	],
+	"notes": [
+		{ "title": "Marketing Strategy Meeting", "date": "Feb 10, 2025" },
+		{ "title": "New Blog Post: AI in SaaS", "date": "Feb 12, 2025" },
+		{ "title": "Client Demo Scheduled", "date": "Feb 15, 2025" }
+	],
+	"related_apps": [
+		"Slack",
+		"Trello",
+		"Google Drive",
+		"Zoom",
+		"Asana",
+		"Figma"
+	],
+	"messages": [
+		{
+			"sender": "Michael Brown",
+			"status": "online",
+			"conversation": [
+				{
+					"text": "Hey, can we schedule a call for tomorrow?",
+					"time": "10:00 AM, Today"
+				},
+				{
+					"text": "Sure, what time works for you?",
+					"time": "10:15 AM, Today"
+				},
+				{ "text": "Let's do 2 PM.", "time": "10:20 AM, Today" },
+				{
+					"text": "Sounds good. I'll send an invite.",
+					"time": "10:25 AM, Today"
+				}
+			]
+		}
+	],
+	"notifications_summary": [
+		{
+			"time_ago": "10 minutes ago",
+			"description": "A new user signed up for the Business Plan."
+		},
+		{
+			"time_ago": "30 minutes ago",
+			"description": "Invoice #7890 has been paid successfully."
+		},
+		{
+			"time_ago": "1 hour ago",
+			"description": "New blog post published: '10 Productivity Tips for Teams'."
+		},
+		{
+			"time_ago": "2 hours ago",
+			"description": "Server maintenance scheduled for 3 AM UTC."
+		}
+	]
+}

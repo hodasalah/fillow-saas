@@ -1,106 +1,95 @@
 import { ApexOptions } from 'apexcharts';
 import Chart from 'react-apexcharts';
 
-const options: ApexOptions = {
-	series: [
-		{
-			name: 'Net Profit',
-			data: [20, 40, 20, 30, 50, 40, 60],
-			//radius: 12,
-		},
-	],
-	chart: {
-		type: 'line',
-		height: 250,
-		toolbar: {
-			show: false,
-		},
-	},
-	plotOptions: {
-		bar: {
-			horizontal: false,
-			columnWidth: '70%',
-			endingShape: 'rounded',
-		},
-	},
-	colors: ['#886CC0'],
-	dataLabels: {
-		enabled: false,
-	},
-	markers: {
-		shape: 'circle',
-	},
+interface ChartData {
+	labels: string[];
+	datasets: Array<{
+		label: string;
+		data: number[];
+		borderColor: string;
+		tension?: number;
+	}>;
+}
 
-	legend: {
-		show: false,
-	},
-	stroke: {
-		show: true,
-		width: 10,
-		curve: 'smooth',
-		colors: ['var(--primary)'],
-	},
+interface LineChartProps {
+	data: ChartData;
+}
 
-	grid: {
-		borderColor: 'var(--border)',
-		show: true,
-		xaxis: {
-			lines: {
-				show: true,
+const LineChart = ({ data }: LineChartProps) => {
+	const options: ApexOptions = {
+		series: [
+			{
+				name: data.datasets[0].label,
+				data: data.datasets[0].data,
 			},
+		],
+		chart: {
+			type: 'line',
+			height: 250,
+			toolbar: { show: false },
+			zoom: { enabled: false },
+		},
+		colors: [data.datasets[0].borderColor],
+		dataLabels: { enabled: false },
+		stroke: {
+			width: 3,
+			curve: 'smooth',
+		},
+		markers: {
+			size: 5,
+			strokeWidth: 0,
+			hover: { size: 7 },
+		},
+		xaxis: {
+			categories: data.labels,
+			labels: {
+				style: {
+					colors: '#7E7F80',
+					fontSize: '12px',
+					fontFamily: 'Poppins',
+				},
+			},
+			axisTicks: { show: false },
+			axisBorder: { show: false },
 		},
 		yaxis: {
-			lines: {
-				show: false,
+			min: 0,
+			max: 100,
+			tickAmount: 5,
+			labels: {
+				style: {
+					colors: '#7E7F80',
+					fontSize: '12px',
+					fontFamily: 'Poppins',
+				},
+				formatter: (value) => `${Math.round(value)}%`,
 			},
 		},
-	},
-	xaxis: {
-		categories: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
-		labels: {
-			style: {
-				colors: '#7E7F80',
-				fontSize: '13px',
-				fontFamily: 'Poppins',
-				fontWeight: 100,
-				cssClass: 'apexcharts-xaxis-label',
-			},
+		grid: {
+			borderColor: 'var(--border)',
+			strokeDashArray: 5,
+			xaxis: { lines: { show: true } },
+			yaxis: { lines: { show: false } },
 		},
-		crosshairs: {
-			show: false,
-		},
-	},
-	yaxis: {
-		show: true,
-		labels: {
-			offsetX: -15,
-			style: {
-				colors: '#7E7F80',
-				fontSize: '14px',
-				fontFamily: 'Poppins',
-				fontWeight: 100,
+		tooltip: {
+			y: {
+				formatter: (value) => `${value}% Completion`,
 			},
-			formatter: function (y) {
-				return y.toFixed(0) + 'k';
-			},
+			marker: { show: false },
 		},
-	},
-	fill: {
-		opacity: 1,
-		colors: ['#FAC7B6'],
-	},
-	tooltip: {
-		y: {
-			formatter: function (val) {
-				return '$ ' + val + ' hundred';
+		responsive: [
+			{
+				breakpoint: 768,
+				options: {
+					chart: { height: 200 },
+					xaxis: { labels: { rotate: -45 } },
+				},
 			},
-		},
-	},
-};
+		],
+	};
 
-const LineChart = () => {
 	return (
-		<div className='relative w-[500px]'>
+		<div className='w-full'>
 			<Chart
 				options={options}
 				series={options.series}
@@ -110,4 +99,5 @@ const LineChart = () => {
 		</div>
 	);
 };
+
 export default LineChart;

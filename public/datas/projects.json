@@ -1,43 +1,81 @@
 {
 	"projects": [
 		{
+			"name": "Website Redesign",
+			"description": "A complete redesign of the website interface with modern aesthetics.",
+			"category": "Web Development",
+			"startDate": "2024-01-01",
+			"endDate": "2024-06-30",
+			"progress": 75,
+			"deadline": "2024-06-30",
+			"targetCompletion": 100,
+			"dataPoints": [
+				{ "date": "2024-01-31", "completion": 15 },
+				{ "date": "2024-02-29", "completion": 30 },
+				{ "date": "2024-03-31", "completion": 55 },
+				{ "date": "2024-04-30", "completion": 75 }
+			],
+			"tags": [
+				{
+					"name": "Development",
+					"color": "#006E91",
+					"background": "#61CFF1"
+				}
+			],
+			"image": "/assets/Solutions.png"
+		},
+		{
 			"name": "Big Wind",
-			"description": "Optimization Dashboard Page for indexing in Google",
-			"category": "creative Agency",
+			"description": "Optimization Dashboard Page for indexing in Google.",
+			"category": "Creative Agency",
+			"startDate": "2024-07-01",
+			"endDate": "2024-12-31",
+			"progress": 12,
+			"deadline": "2025-01-10",
+			"targetCompletion": 100,
+			"dataPoints": [
+				{ "date": "2024-07-31", "completion": 20 },
+				{ "date": "2024-08-31", "completion": 35 }
+			],
 			"tags": [
 				{
 					"name": "SEO",
 					"color": "#FFBF00",
-					"bg": "#fff9e6"
+					"background": "#FFF9E6"
 				},
 				{
 					"name": "Marketing",
 					"color": "#FC2E53",
-					"bg": "#ffedf0"
+					"background": "#FFEDF0"
 				}
 			],
-			"progress": 12,
-			"deadline": "2025-01-10",
 			"image": "/assets/big-wind.png"
 		},
 		{
 			"name": "Circle Hunt",
-			"description": "Redesign Landing Page Website for Company Profile",
+			"description": "Redesign Landing Page Website for Company Profile.",
 			"category": "Software Company",
+			"startDate": "2024-03-01",
+			"endDate": "2024-08-31",
+			"progress": 15,
+			"deadline": "2025-02-15",
+			"targetCompletion": 100,
+			"dataPoints": [
+				{ "date": "2024-03-31", "completion": 30 },
+				{ "date": "2024-04-30", "completion": 50 }
+			],
 			"tags": [
 				{
 					"name": "UI/UX",
 					"color": "var(--primary)",
-					"bg": "var(--rgba-primary-1)"
+					"background": "var(--rgba-primary-1)"
 				},
 				{
 					"name": "Web Design",
 					"color": "#FC2E53",
-					"bg": "#ffedf0"
+					"background": "#FFEDF0"
 				}
 			],
-			"progress": 15,
-			"deadline": "2025-02-15",
 			"image": "/assets/circle-hunt.png"
 		}
 	]

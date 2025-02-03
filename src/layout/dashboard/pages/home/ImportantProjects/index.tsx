@@ -21,7 +21,7 @@ export interface Project {
 export interface Tag {
 	name: string;
 	color: string;
-	bg: string;
+	background: string;
 }
 const ImportantProjects = () => {
 	const [projects, setProjects] = useState<Project[]>([]);

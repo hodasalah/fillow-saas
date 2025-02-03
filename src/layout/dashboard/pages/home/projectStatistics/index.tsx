@@ -1,64 +1,11 @@
 import { useMemo, useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 import Card from '../../../../../components/Card';
-import Barchart from '../../../../../components/chart/Barchart';
-import DropdownDelEditBtn from '../../../../../components/dropdownDelEditBtn';
-import ProgressCircle from '../../../../../components/svgs/progressCircle';
-import RedCircle from '../../../../../components/svgs/RedCircle';
-import YellowCircle from '../../../../../components/svgs/YellowCircle';
-import ToggleSwitch from '../../../../../components/toggleSwitch/ToggleSwitch';
-
-// Types
-type TimePeriod = 'daily' | 'weekly' | 'monthly';
-
-interface StatisticsData {
-	total: number;
-	ongoing: number;
-	unfinished: number;
-	chartData: number[];
-}
-
-interface TabConfig {
-	id: TimePeriod;
-	label: string;
-}
-
-const TABS: TabConfig[] = [
-	{ id: 'monthly', label: 'Monthly' },
-	{ id: 'weekly', label: 'Weekly' },
-	{ id: 'daily', label: 'Daily' },
-];
-
-const DEFAULT_DATA: Record<TimePeriod, StatisticsData> = {
-	monthly: {
-		total: 246,
-		ongoing: 200,
-		unfinished: 46,
-		chartData: [80, 40, 70, 90, 50, 60, 85].map((value) =>
-			Number(value.toFixed(2)),
-		),
-	},
-	weekly: {
-		total: 70,
-		ongoing: 60,
-		unfinished: 10,
-		chartData: [10, 20, 30, 40, 50, 60, 70].map((value) =>
-			Number(value.toFixed(2)),
-		),
-	},
-	daily: {
-		total: 10,
-		ongoing: 8,
-		unfinished: 2,
-		chartData: [1, 2, 3, 4, 5, 6, 7].map((value) =>
-			Number(value.toFixed(2)),
-		),
-	},
-};
-
-const links = [
-	{ id: uuidv4(), name: 'Edit'},
-	{ id: uuidv4(), name: 'Delete'}];
+import ChartSection from './components/ChartSection';
+import { DEFAULT_DATA, links } from './components/constants';
+import EditModal from './components/EditModal';
+import { Header } from './components/Header';
+import { StatisticsOverview } from './components/StatisticsOverview';
+import { StatisticsData, TimePeriod } from './components/types';
 
 const ProjectStatistics = () => {
 	const [data, setData] = useState(DEFAULT_DATA);
@@ -79,7 +26,7 @@ const ProjectStatistics = () => {
 			: 0;
 	}, [activeData]);
 	const formattedChartData = useMemo(() => {
-		return activeData.chartData.map((value) =>
+		return activeData.chartData.map((value: number) =>
 			parseFloat(value.toFixed(2)),
 		); // Adjust the precision as needed
 	}, [activeData]);
@@ -95,6 +42,7 @@ const ProjectStatistics = () => {
 		const dataToEdit = links.find((item) => item.id === id);
 		if (dataToEdit) {
 			setEditedData({ ...activeData });
+
 			setShowEditModal(true);
 		}
 	};
@@ -119,21 +67,84 @@ const ProjectStatistics = () => {
 			}
 		}
 	};
+	const generateChartData = (
+		total: number,
+		ongoing: number,
+		unfinished: number,
+	): number[] => {
+		if (total === 0) return Array(7).fill(1); // Avoid zero issue by setting minimum 1
+
+		// Calculate completed projects
+		const completed = total - (ongoing + unfinished);
+
+		// Create an initial distribution array
+		const rawData = [
+			Math.max(1, Math.round((ongoing / total) * total)),
+			Math.max(1, Math.round((unfinished / total) * total)),
+			Math.max(1, Math.round((completed / total) * total)),
+		];
+
+		// Ensure the sum of rawData does not exceed total due to rounding
+		const sumRaw = rawData.reduce((a, b) => a + b, 0);
+		const diff = total - sumRaw;
+
+		// Adjust the first element to ensure exact total sum
+		rawData[0] += diff;
+
+		// Expand to 7 values by distributing the values proportionally
+		let chartData = new Array(7).fill(0);
+
+		rawData.forEach((value, index) => {
+			for (let i = 0; i < 3; i++) {
+				// Distribute each category into 3 slots
+				const pos = (index * 2 + i) % 7;
+				chartData[pos] += Math.round(value / 3);
+			}
+		});
+
+		// Ensure no zeros in final array
+		chartData = chartData.map((value) => (value === 0 ? 1 : value));
+
+		// Adjust sum to match total exactly
+		const finalSum = chartData.reduce((a, b) => a + b, 0);
+		const finalDiff = total - finalSum;
+
+		if (finalDiff !== 0) {
+			chartData[0] += finalDiff; // Adjust the first value
+		}
+
+		return chartData;
+	};
+
 	const handleSaveEdit = () => {
 		if (editedData) {
 			setData((prev) => ({
 				...prev,
-				[activeTab]: editedData,
+				[activeTab]: {
+					...editedData,
+					chartData: generateChartData(
+						editedData.total,
+						editedData.ongoing,
+						editedData.unfinished,
+					),
+				},
 			}));
 			setShowEditModal(false);
 		}
 	};
-	const handleChange = (
-		key: keyof StatisticsData,
-		value: number | number[],
-	) => {
+
+	const handleChange = (key: keyof StatisticsData, value: number) => {
 		if (editedData) {
-			setEditedData({ ...editedData, [key]: value });
+			const updatedData = { ...editedData, [key]: value };
+
+			// Recalculate chartData dynamically
+			updatedData.chartData = generateChartData(
+				updatedData.total,
+				updatedData.ongoing,
+				updatedData.unfinished,
+			);
+
+			setEditedData(updatedData);
 		}
 	};
 
@@ -141,227 +152,35 @@ const ProjectStatistics = () => {
 		<div className='w-full'>
 			<Card>
 				<div className='w-full p-[1.875rem] space-y-8'>
-					{/* Header Section */}
 					<Header
 						activeTab={activeTab}
 						onTabChange={setActiveTab}
-						onEdit={(id) => handleEdit(id)}
-						onDelete={(id) => handleDelete(id)}
+						onEdit={handleEdit}
+						onDelete={handleDelete}
+						links={links}
 					/>
-
-					{/* Statistics Overview */}
-					<div className='w-full flex flex-1 pt-[1.875rem]'>
-						<div className='flex items-center gap-4 w-full justify-between flex-wrap'>
-							<TotalProjects
-								total={activeData.total}
-								percentage={completionPercentage}
-							/>
-
-							<div className='flex gap-8 flex-wrap'>
-								<StatisticItem
-									value={activeData.ongoing}
-									label='On Going'
-									icon={<YellowCircle />}
-								/>
-								<StatisticItem
-									value={activeData.unfinished}
-									label='Unfinished'
-									icon={<RedCircle />}
-								/>
-							</div>
-						</div>
-					</div>
-
-					{/* Chart Section */}
-					<div className='space-y-6'>
-						<Barchart
-							showOngoing={switchStates.showOngoing}
-							showUnfinished={switchStates.showUnfinished}
-							data={formattedChartData}
-						/>
-
-						<div className='flex items-center gap-7 flex-wrap'>
-							<ToggleSwitch
-								checked={switchStates.showOngoing}
-								onChange={() =>
-									handleToggleChange('showOngoing')
-								}
-								label='Show Ongoing'
-							/>
-							<ToggleSwitch
-								checked={switchStates.showUnfinished}
-								onChange={() =>
-									handleToggleChange('showUnfinished')
-								}
-								label='Show Unfinished'
-							/>
-						</div>
-					</div>
+					<StatisticsOverview
+						total={activeData.total}
+						ongoing={activeData.ongoing}
+						unfinished={activeData.unfinished}
+						completionPercentage={completionPercentage}
+					/>
+					<ChartSection
+						data={formattedChartData}
+						switchStates={switchStates}
+						onToggleChange={handleToggleChange}
+					/>
 				</div>
 			</Card>
-			{/* Edit Modal */}
 			{showEditModal && (
-				<div className='fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-[1003]'>
-					<div className='bg-white p-6 rounded-lg space-y-4 w-[400px]'>
-						<h3 className='text-lg font-semibold'>Edit Data</h3>
-						<div>
-							<label className='block text-sm font-medium'>
-								Total Projects
-							</label>
-							<input
-								type='number'
-								value={editedData?.total || 0}
-								onChange={(e) =>
-									handleChange(
-										'total',
-										Number(e.target.value),
-									)
-								}
-								className='w-full border rounded p-2'
-							/>
-						</div>
-						<div>
-							<label className='block text-sm font-medium'>
-								Ongoing Projects
-							</label>
-							<input
-								type='number'
-								value={editedData?.ongoing || 0}
-								onChange={(e) =>
-									handleChange(
-										'ongoing',
-										Number(e.target.value),
-									)
-								}
-								className='w-full border rounded p-2'
-							/>
-						</div>
-						<div>
-							<label className='block text-sm font-medium'>
-								Unfinished Projects
-							</label>
-							<input
-								type='number'
-								value={editedData?.unfinished || 0}
-								onChange={(e) =>
-									handleChange(
-										'unfinished',
-										Number(e.target.value),
-									)
-								}
-								className='w-full border rounded p-2'
-							/>
-						</div>
-						<div className='flex justify-end gap-4'>
-							<button
-								onClick={() => setShowEditModal(false)}
-								className='px-4 py-2 bg-gray-200 rounded'
-							>
-								Cancel
-							</button>
-							<button
-								onClick={handleSaveEdit}
-								className='px-4 py-2 bg-[var(--primary)] text-white rounded'
-							>
-								Save
-							</button>
-						</div>
-					</div>
-				</div>
+				<EditModal
+					data={editedData}
+					onSave={handleSaveEdit}
+					onClose={() => setShowEditModal(false)}
+					onChange={handleChange}
+				/>
 			)}
 		</div>
 	);
 };
-
-// Sub-components
-const Header = ({
-	activeTab,
-	onTabChange,
-	onEdit,
-	onDelete,
-}: {
-	activeTab: TimePeriod;
-	onTabChange: (tab: TimePeriod) => void;
-	onEdit: (id: string) => void;
-	onDelete: (id: string) => void;
-}) => (
-	<div className='w-full flex justify-between items-center flex-wrap gap-4'>
-		<h4 className='text-xl font-semibold text-text-dark'>
-			Project Statistics
-		</h4>
-		<div className='flex items-center gap-4'>
-			<TabGroup
-				tabs={TABS}
-				activeTab={activeTab}
-				onTabChange={onTabChange}
-			/>
-			<DropdownDelEditBtn links={links} onEditBtn={onEdit} onDeleteBtn={onDelete} />
-		</div>
-	</div>
-);
-
-const TabGroup = ({
-	tabs,
-	activeTab,
-	onTabChange,
-}: {
-	tabs: TabConfig[];
-	activeTab: TimePeriod;
-	onTabChange: (tab: TimePeriod) => void;
-}) => (
-	<div className='bg-primary-100 p-1 rounded-lg flex gap-1'>
-		{tabs.map((tab) => (
-			<button
-				key={tab.id}
-				onClick={() => onTabChange(tab.id)}
-				className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors
-          ${
-				tab.id === activeTab
-					? 'bg-[var(--primary)] text-white'
-					: 'text-secondary-500 hover:text-[var(--primary)]'
-			}`}
-			>
-				{tab.label}
-			</button>
-		))}
-	</div>
-);
-
-const TotalProjects = ({
-	total,
-	percentage,
-}: {
-	total: number;
-	percentage: number;
-}) => (
-	<div className='flex items-center gap-4'>
-		<ProgressCircle
-			percentage={percentage}
-			colour='#886cc0'
-		/>
-		<div>
-			<h2 className='text-2xl font-semibold text-text-dark'>{total}</h2>
-			<p className='text-secondary-500'>Total Projects</p>
-		</div>
-	</div>
-);
-
-const StatisticItem = ({
-	value,
-	label,
-	icon,
-}: {
-	value: number;
-	label: string;
-	icon: React.ReactNode;
-}) => (
-	<div className='flex items-center gap-3'>
-		<div className='mt-1'>{icon}</div>
-		<div>
-			<h4 className='text-2xl font-semibold text-text-dark'>{value}</h4>
-			<p className='text-secondary-500'>{label}</p>
-		</div>
-	</div>
-);
-
 export default ProjectStatistics;

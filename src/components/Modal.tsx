@@ -13,7 +13,7 @@ const Modal: React.FC<ModalProps> = ({
 }) => {
 	return (
 		<div className='fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-[1002]'>
-			<div className='bg-white p-6 rounded-lg shadow-lg w-96'>
+			<div className='bg-white p-6 rounded-lg shadow-lg max-w-md'>
 				<h3 className='text-lg font-semibold'>{title || 'Modal'}</h3>
 				<p className='text-sm text-gray-600 mt-2'>
 					{message || 'Content goes here.'}

@@ -66,7 +66,7 @@ const EditProjectForm: React.FC<EditProjectFormProps> = ({
 
 	return (
 		<div className='fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50'>
-			<div className='bg-white p-6 rounded-lg shadow-lg w-96'>
+			<div className='bg-white p-6 rounded-lg shadow-lg max-w-md'>
 				<h3 className='text-lg font-semibold mb-4'>Edit Project</h3>
 				<form
 					onSubmit={handleSubmit}
@@ -154,10 +154,13 @@ const EditProjectForm: React.FC<EditProjectFormProps> = ({
 						<p className='text-sm font-medium'>
 							Generated Data Points:
 						</p>
-						<ul className='text-xs text-gray-600'>
+						<ul className='text-xs text-(var(--primary)) flex justify-between py-3 gap-4 flex-wrap'>
 							{formData.dataPoints.map((dp, idx) => (
-								<li key={idx}>
-									{dp.date} - {dp.completion}%
+								<li
+									key={idx}
+									className='py-2 px-4 bg-[var(--rgba-primary-1)]'
+								>
+									{dp.date} : <span className='font-semibold text-primary p-2 bg-rgba-primary-3'>{dp.completion}%</span>
 								</li>
 							))}
 						</ul>

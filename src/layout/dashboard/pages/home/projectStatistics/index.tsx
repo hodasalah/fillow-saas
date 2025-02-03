@@ -1,18 +1,20 @@
 import { useMemo, useState } from 'react';
 import Card from '../../../../../components/Card';
+import Modal from '../../../../../components/Modal';
+import { generateChartData } from '../../../../../utils/helpers/generateChartData';
 import ChartSection from './components/ChartSection';
 import { DEFAULT_DATA, links } from './components/constants';
 import EditModal from './components/EditModal';
 import { Header } from './components/Header';
 import { StatisticsOverview } from './components/StatisticsOverview';
 import { StatisticsData, TimePeriod } from './components/types';
-import { generateChartData } from '../../../../../utils/helpers/generateChartData';
 
 const ProjectStatistics = () => {
 	const [data, setData] = useState(DEFAULT_DATA);
 	const [activeTab, setActiveTab] = useState<TimePeriod>('monthly');
 	const [showEditModal, setShowEditModal] = useState(false);
 	const [editedData, setEditedData] = useState<StatisticsData | null>(null);
+	const [showDeleteModal, setShowDeleteModal] = useState(false);
 
 	const [switchStates, setSwitchStates] = useState({
 		showOngoing: true,
@@ -48,27 +50,19 @@ const ProjectStatistics = () => {
 		}
 	};
 
-	const handleDelete = (id: string) => {
-		if (
-			window.confirm(
-				`Are you sure you want to delete data for ${activeTab}?`,
-			)
-		) {
-			const dataTodell = links.find((item) => item.id === id);
-			if (dataTodell) {
-				setData((prev) => ({
-					...prev,
-					[activeTab]: {
-						total: 0,
-						ongoing: 0,
-						unfinished: 0,
-						chartData: [],
-					},
-				}));
-			}
-		}
+	const handleDelete = () => {
+		setData((prev) => ({
+			...prev,
+			[activeTab]: {
+				total: 0,
+				ongoing: 0,
+				unfinished: 0,
+				chartData: [],
+			},
+		}));
+		setShowDeleteModal(false);
 	};
-	
+
 	const handleSaveEdit = () => {
 		if (editedData) {
 			setData((prev) => ({
@@ -107,7 +101,14 @@ const ProjectStatistics = () => {
 						activeTab={activeTab}
 						onTabChange={setActiveTab}
 						onEdit={handleEdit}
-						onDelete={handleDelete}
+						onDelete={(id:string)=>{
+							const dellTab = links.find(
+								(item) => item.id === id,
+							);
+							if(dellTab){
+								setShowDeleteModal(true);
+							}
+						}}
 						links={links}
 					/>
 					<StatisticsOverview
@@ -129,6 +130,15 @@ const ProjectStatistics = () => {
 					onSave={handleSaveEdit}
 					onClose={() => setShowEditModal(false)}
 					onChange={handleChange}
+				/>
+			)}
+			{/* Delete Confirmation Modal */}
+			{showDeleteModal && (
+				<Modal
+					onClose={() => setShowDeleteModal(false)}
+					onConfirm={handleDelete}
+					title={`Delete ${activeTab}`}
+					message={`Are you sure you want to delete data for ${activeTab}?`}
 				/>
 			)}
 		</div>

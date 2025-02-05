@@ -198,33 +198,5 @@
 				}
 			]
 		},
-		{
-			"name": "Dashboard",
-			"notifications": [
-				{
-					"time": "10 minutes ago",
-					"message": "Youtube, a video-sharing website, goes live $500."
-				},
-				{
-					"time": "20 minutes ago",
-					"message": "New order placed #XF-2356.\nQuisque a consequat ante Sit amet magna at volutapt..."
-				},
-				{
-					"time": "30 minutes ago",
-					"message": "john just buy your product Sell $250"
-				},
-				{
-					"time": "15 minutes ago",
-					"message": "StumbleUpon is acquired by eBay."
-				},
-				{
-					"time": "20 minutes ago",
-					"message": "Mashable, a news website and blog, goes live."
-				},
-				{
-					"time": "20 minutes ago",
-					"message": "Mashable, a news website and blog, goes live."
-				}
-			]
-		}
+		
 }

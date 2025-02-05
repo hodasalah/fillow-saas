@@ -1,73 +1,54 @@
-import {
-	faBell,
-	faEnvelope,
-	faMoon,
-	faSearch,
-	faShoppingBag,
-	faStar,
-} from '@fortawesome/free-solid-svg-icons';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import ProfileDropdown from '../../../../components/profileDropdown/ProfileDropdown';
 import { useAppSelector } from '../../../../hooks/hooks';
-import Notifications from './RelatedApps';
-import RelatedApps from './RelatedApps';
 
-export const items = [
-	{ icon: faSearch, action: 'search' },
-	{ icon: faMoon, action: 'toggleTheme' },
-	{
-		icon: faStar,
-		num: 76,
-		bg: 'bg-[#ffa7d7]',
-		action: 'relatedApps',
-		children: (
-			<div className='absolute top-[100%] right-0 mt-2'>
-				<RelatedApps />
-			</div>
-		),
-	},
-	{
-		icon: faBell,
-		num: 12,
-		bg: 'bg-[#ffbf00]',
-		action: 'notifications',
-	},
-	{ icon: faEnvelope, num: 2, bg: 'bg-[#fc2e53]', action: 'messages' },
-	{ icon: faShoppingBag, num: 4, bg: 'bg-[#ffbf00]', action: 'cart' },
-];
+import { items } from './constants';
 
-const HeaderContent = ({ setShowSlider }) => {
+interface HeaderContentProps {
+	setShowSlider: (show: boolean) => void;
+}
+
+const HeaderContent = ({ setShowSlider }: HeaderContentProps) => {
 	const mode = useAppSelector((state) => state.sidebar.mode);
 	const isMobileView = useAppSelector((state) => state.sidebar.isMobileView);
-	const [showRelatedApps, setShowRelatedApps] = useState(false);
+	const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+	const dropdownRefs = useRef<Record<string, HTMLLIElement | null>>({});
 
-	const handleItemClick = (action) => {
+	useEffect(() => {
+		setActiveDropdown(null);
+	}, [mode, isMobileView]);
+	useEffect(() => {
+		if (!activeDropdown) return;
+
+		const handleClickOutside = (event: MouseEvent) => {
+			const dropdownEl = dropdownRefs.current[activeDropdown];
+			if (dropdownEl && !dropdownEl.contains(event.target as Node)) {
+				setActiveDropdown(null);
+			}
+		};
+
+		document.addEventListener('mousedown', handleClickOutside);
+		return () =>
+			document.removeEventListener('mousedown', handleClickOutside);
+	}, [activeDropdown]);
+
+	const handleItemClick = (action: string) => {
+		setActiveDropdown((prev) => (prev === action ? null : action));
+
 		switch (action) {
 			case 'search':
 				console.log('Search clicked');
-				// Implement search action logic here
 				break;
 			case 'toggleTheme':
 				console.log('Toggle theme');
-				// Implement theme toggle logic here
-				break;
-			case 'relatedApps':
-				setShowRelatedApps(!showRelatedApps); // Implement favorites logic here
-				break;
-			case 'notifications':
 				break;
 			case 'messages':
-				console.log('Messages clicked');
 				setShowSlider(true);
-				// Implement messages logic here (e.g., slide in chat box)
-				break;
-			case 'cart':
-				console.log('Cart clicked');
-				// Implement cart logic here
 				break;
 			default:
-				console.log('No action defined');
+				break;
 		}
 	};
 
@@ -85,10 +66,10 @@ const HeaderContent = ({ setShowSlider }) => {
 				</div>
 				<div className='nav-links flex items-center px-2 sm:px-5'>
 					<ul className='header-right w-full flex  md:items-center  justify-end'>
-						{items.map((item, index) => {
+						{items.map((item) => {
 							return item.icon === faSearch ? (
 								<li
-									key={'faSearch'}
+									key={item.action}
 									className='hidden lg:flex h-full items-center text-[1.25rem] gap-2'
 									onClick={() => handleItemClick(item.action)}
 								>
@@ -108,8 +89,11 @@ const HeaderContent = ({ setShowSlider }) => {
 								</li>
 							) : (
 								<li
+									ref={(el) =>
+										(dropdownRefs.current[item.action] = el)
+									}
 									className='relative cursor-pointer text-[--text-gray] h-full flex items-center text-[1.125rem] sm:text-[1.25rem] px-[0.45rem] sm:px-[1.25rem]'
-									key={index}
+									key={item.action}
 									onClick={() => handleItemClick(item.action)}
 								>
 									<div className='relative p-[0.625rem] sm:p-[0.9375rem] rounded-[.625rem]'>
@@ -124,8 +108,7 @@ const HeaderContent = ({ setShowSlider }) => {
 											</span>
 										)}
 									</div>
-									{showRelatedApps &&
-										item.action === 'relatedApps' &&
+									{activeDropdown === item.action &&
 										item.children}
 								</li>
 							);

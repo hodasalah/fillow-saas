@@ -1,46 +1,7 @@
-import {
-	faAngular,
-	faDribbble,
-	faFigma,
-	faInstagram,
-	faLaravel,
-	faReact,
-} from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Card from '../../../../components/Card';
+import { relatedApps } from './constants';
 
-const relatedApps = [
-	{
-		name: 'Angular',
-		image: faAngular,
-		color: '#dd0031',
-	},
-	{
-		name: 'Figma',
-		image: faFigma,
-		color: '#f24e1e',
-	},
-	{
-		name: 'React',
-		image: faReact,
-		color: '#41b883',
-	},
-	{
-		name: 'Dribbble',
-		image: faDribbble,
-		color: '#ea4c89',
-	},
-	{
-		name: 'Instagram',
-		image: faInstagram,
-		color: '#38a1f3',
-	},
-	{
-		name: 'Laravel',
-		image: faLaravel,
-		color: '#00c7b7',
-	},
-];
 const RelatedApps = () => {
 	return (
 		<Card>
@@ -53,7 +14,7 @@ const RelatedApps = () => {
 				<div className='flex flex-wrap'>
 					{relatedApps.map((app) => (
 						<div
-							key={app.name}
+							key={app.id}
 							className='my-4 w-[33.33333%] px-8'
 						>
 							<div className='flex flex-col items-center'>

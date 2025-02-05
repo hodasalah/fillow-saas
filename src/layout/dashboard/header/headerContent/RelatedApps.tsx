@@ -41,7 +41,7 @@ const relatedApps = [
 		color: '#00c7b7',
 	},
 ];
-const Notifications = () => {
+const RelatedApps = () => {
 	return (
 		<Card>
 			<div className='flex flex-col w-[17rem] p-4'>
@@ -76,4 +76,4 @@ const Notifications = () => {
 	);
 };
 
-export default Notifications;
+export default RelatedApps;

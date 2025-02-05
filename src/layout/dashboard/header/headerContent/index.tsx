@@ -10,7 +10,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
 import ProfileDropdown from '../../../../components/profileDropdown/ProfileDropdown';
 import { useAppSelector } from '../../../../hooks/hooks';
-import Notifications from './Notifications';
+import Notifications from './RelatedApps';
+import RelatedApps from './RelatedApps';
 
 export const items = [
 	{ icon: faSearch, action: 'search' },
@@ -22,7 +23,7 @@ export const items = [
 		action: 'relatedApps',
 		children: (
 			<div className='absolute top-[100%] right-0 mt-2'>
-				<Notifications />
+				<RelatedApps />
 			</div>
 		),
 	},
@@ -39,7 +40,7 @@ export const items = [
 const HeaderContent = ({ setShowSlider }) => {
 	const mode = useAppSelector((state) => state.sidebar.mode);
 	const isMobileView = useAppSelector((state) => state.sidebar.isMobileView);
-	const [showNotifications, setShowNotifications] = useState(false);
+	const [showRelatedApps, setShowRelatedApps] = useState(false);
 
 	const handleItemClick = (action) => {
 		switch (action) {
@@ -52,7 +53,7 @@ const HeaderContent = ({ setShowSlider }) => {
 				// Implement theme toggle logic here
 				break;
 			case 'relatedApps':
-				setShowNotifications(!showNotifications); // Implement favorites logic here
+				setShowRelatedApps(!showRelatedApps); // Implement favorites logic here
 				break;
 			case 'notifications':
 				break;
@@ -123,7 +124,7 @@ const HeaderContent = ({ setShowSlider }) => {
 											</span>
 										)}
 									</div>
-									{showNotifications &&
+									{showRelatedApps &&
 										item.action === 'relatedApps' &&
 										item.children}
 								</li>

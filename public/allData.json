@@ -157,3 +157,34 @@
 		}
 	]
 }
+
+/*{
+  "notifications": [
+	{
+	  "icon": "https://example.com/user1.jpg",
+	  "title": "Dr sultads Send you Photo",
+	  "time": "29 July 2020 - 02:26 PM"
+	},
+	{
+	  "icon": "KG",
+	  "title": "Resport created successfully",
+	  "time": "29 July 2020 - 02:26 PM"
+	},
+	{
+	  "icon": "https://example.com/home-icon.png",
+	  "title": "Reminder : Treatment Time!",
+	  "time": "29 July 2020 - 02:26 PM"
+	},
+	{
+	  "icon": "https://example.com/user1.jpg",
+	  "title": "Dr sultads Send you Photo",
+	  "time": "29 July 2020 - 02:26 PM"
+	},
+	{
+	  "icon": "KG",
+	  "title": "Resport created successfully",
+	  "time": "29 July 2020 - 02:26 PM"
+	}
+  ]
+}
+*/

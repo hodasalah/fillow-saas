@@ -1,0 +1,230 @@
+{
+			"name": "Chat List",
+			"categories": [
+				{
+					"letter": "A",
+					"contacts": [
+						{
+							"name": "Archie Parker",
+							"status": "online",
+							"last_seen": null
+						},
+						{
+							"name": "Alfie Mason",
+							"status": "offline",
+							"last_seen": "7 mins ago"
+						},
+						{
+							"name": "AharlieKane",
+							"status": "online",
+							"last_seen": null
+						},
+						{
+							"name": "Athan Jacoby",
+							"status": "offline",
+							"last_seen": "30 mins ago"
+						}
+					]
+				},
+				{
+					"letter": "B",
+					"contacts": [
+						{
+							"name": "Bashid Samim",
+							"status": "offline",
+							"last_seen": "50 mins ago"
+						},
+						{
+							"name": "Breddie Ronan",
+							"status": "online",
+							"last_seen": null
+						}
+					]
+				},
+				{
+					"letter": "C",
+					"contacts": [
+						{
+							"name": "Ceorge Carson",
+							"status": "offline",
+							"last_seen": "7 mins ago"
+						}
+					]
+				},
+				{
+					"letter": "D",
+					"contacts": [
+						{
+							"name": "Darry Parker",
+							"status": "online",
+							"last_seen": null
+						},
+						{
+							"name": "Denry Hunter",
+							"status": "offline",
+							"last_seen": "30 mins ago"
+						}
+					]
+				},
+				{
+					"letter": "J",
+					"contacts": [
+						{
+							"name": "Jack Ronan",
+							"status": "offline",
+							"last_seen": "50 mins ago"
+						},
+						{
+							"name": "Jacob Tucker",
+							"status": "online",
+							"last_seen": null
+						},
+						{
+							"name": "James Logan",
+							"status": "offline",
+							"last_seen": "7 mins ago"
+						},
+						{
+							"name": "Joshua Weston",
+							"status": "online",
+							"last_seen": null
+						}
+					]
+				},
+				{
+					"letter": "O",
+					"contacts": [
+						{
+							"name": "Oliver Acker",
+							"status": "offline",
+							"last_seen": "30 mins ago"
+						},
+						{
+							"name": "Oscar Weston",
+							"status": "offline",
+							"last_seen": "50 mins ago"
+						}
+					]
+				}
+			],
+		{
+			"name": "Chat with Khelesh",
+			"status": "online",
+			"messages": [
+				{
+					"sender": "Khelesh",
+					"time": "8:40 AM, Today",
+					"message": "Hi, how are you samim?"
+				},
+				{
+					"sender": "Samim",
+					"time": "8:55 AM, Today",
+					"message": "Hi Khalid i am good tnx how about you?"
+				},
+				{
+					"sender": "Khelesh",
+					"time": "9:00 AM, Today",
+					"message": "I am good too, thank you for your chat template"
+				},
+				{
+					"sender": "Samim",
+					"time": "9:05 AM, Today",
+					"message": "You are welcome"
+				},
+				{
+					"sender": "Khelesh",
+					"time": "9:07 AM, Today",
+					"message": "I am looking for your next templates"
+				},
+				{
+					"sender": "Samim",
+					"time": "9:10 AM, Today",
+					"message": "Ok, thank you have a good day"
+				},
+				{
+					"sender": "Khelesh",
+					"time": "9:12 AM, Today",
+					"message": "Bye, see you"
+				}
+			]
+		},
+		{
+			"name": "Notifications",
+			"items": [
+				{
+					"category": "Server Status",
+					"code": "KK",
+					"message": "David Nester Birthday",
+					"time": "Today"
+				},
+				{
+					"category": "Social",
+					"code": "RU",
+					"message": "Perfection Simplified\nJame Smith commented on your status",
+					"time": null
+				},
+				{
+					"category": "Server Status",
+					"code": "AU",
+					"message": "AharlieKane\nSami is online",
+					"time": null
+				},
+				{
+					"category": "MO",
+					"code": null,
+					"message": "Athan Jacoby\nNargis left 30 mins ago",
+					"time": null
+				}
+			]
+		},
+		{
+			"name": "Notes",
+			"items": [
+				{
+					"title": "New order placed..",
+					"date": "10 Aug 2020"
+				},
+				{
+					"title": "Youtube, a video-sharing website..",
+					"date": "10 Aug 2020"
+				},
+				{
+					"title": "john just buy your product..",
+					"date": "10 Aug 2020"
+				},
+				{
+					"title": "Athan Jacoby",
+					"date": "10 Aug 2020"
+				}
+			]
+		},
+		{
+			"name": "Dashboard",
+			"notifications": [
+				{
+					"time": "10 minutes ago",
+					"message": "Youtube, a video-sharing website, goes live $500."
+				},
+				{
+					"time": "20 minutes ago",
+					"message": "New order placed #XF-2356.\nQuisque a consequat ante Sit amet magna at volutapt..."
+				},
+				{
+					"time": "30 minutes ago",
+					"message": "john just buy your product Sell $250"
+				},
+				{
+					"time": "15 minutes ago",
+					"message": "StumbleUpon is acquired by eBay."
+				},
+				{
+					"time": "20 minutes ago",
+					"message": "Mashable, a news website and blog, goes live."
+				},
+				{
+					"time": "20 minutes ago",
+					"message": "Mashable, a news website and blog, goes live."
+				}
+			]
+		}
+}

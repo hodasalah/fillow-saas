@@ -1,0 +1,45 @@
+/* chatbox.css */
+.chatbox {
+  width: 21.25rem;
+  height: 100vh;
+  position: fixed;
+  right: -31.25rem;
+  top: 0;
+  z-index: 3;
+  box-shadow: rgba(82, 63, 105, 0.15) 0 0 1.875rem 0;
+  background: rgb(255, 255, 255);
+  transition: right 0.8s ease-in-out;
+}
+
+.chatbox.active {
+  right: 0;
+  transition: right 0.8s 0.8s ease-in-out;
+  /* Delay opening animation */
+}
+
+.chatbox-overlay {
+  position: fixed;
+  top: 0;
+  right: -100vw;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.1);
+  z-index: 3;
+  transition: right 0.8s 0.8s ease-in-out;
+}
+
+.chatbox-overlay.active {
+  right: 0;
+  transition: right 0.8s ease-in-out;
+}
+
+@media only screen and (max-width: 36rem) {
+  .chatbox {
+    width: 17.5rem;
+    right: -17.5rem;
+  }
+
+  .chatbox-overlay.active {
+    right: 0;
+  }
+}

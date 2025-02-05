@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { NavLink, useLocation } from 'react-router';
 import { MenuItemProps } from '.';
 
@@ -8,10 +8,26 @@ const MiniMenuItem: React.FC<MenuItemProps> = ({
 	activeItem,
 	onItemClick,
 	toggleDropdown,
-	openDropdown = '',
+	openDropdown,
+	setOpenDropdown = () => {}
 }) => {
 	const dropdownlistRef = useRef<HTMLUListElement>(null);
 	const location = useLocation();
+	useEffect(() => {
+		const closeMenu = (e: MouseEvent) => {
+			if (
+				openDropdown !== null &&
+				dropdownlistRef.current &&
+				!dropdownlistRef.current.contains(e.target as Node)
+			) {
+				setOpenDropdown(null);
+			}
+		};
+		document.addEventListener('mousedown', closeMenu);
+		return () => {
+			document.removeEventListener('mousedown', closeMenu);
+		};
+	}, [openDropdown]);
 
 	return (
 		<li

@@ -24,7 +24,7 @@ const App = () => {
 	}, [login]);
 
 	return (
-		<div className='overflow-hidden  transition-all duration-300 ease-in'>
+		<div className='relative transition-all ease-in-out duration-200'>
 			<Loading />
 			<Dashboard />
 		</div>

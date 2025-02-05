@@ -7,44 +7,73 @@ import {
 	faStar,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useState } from 'react';
 import ProfileDropdown from '../../../../components/profileDropdown/ProfileDropdown';
 import { useAppSelector } from '../../../../hooks/hooks';
+import Notifications from './Notifications';
 
-const items = [
-	{ icon: faSearch },
-	{
-		icon: faMoon,
-	},
+export const items = [
+	{ icon: faSearch, action: 'search' },
+	{ icon: faMoon, action: 'toggleTheme' },
 	{
 		icon: faStar,
 		num: 76,
 		bg: 'bg-[#ffa7d7]',
+		action: 'relatedApps',
+		children: (
+			<div className='absolute top-[100%] right-0 mt-2'>
+				<Notifications />
+			</div>
+		),
 	},
 	{
 		icon: faBell,
 		num: 12,
 		bg: 'bg-[#ffbf00]',
+		action: 'notifications',
 	},
-	{
-		icon: faEnvelope,
-		num: 2,
-		bg: 'bg-[#fc2e53]',
-	},
-	{
-		icon: faShoppingBag,
-		num: 4,
-		bg: 'bg-[#ffbf00]',
-	},
+	{ icon: faEnvelope, num: 2, bg: 'bg-[#fc2e53]', action: 'messages' },
+	{ icon: faShoppingBag, num: 4, bg: 'bg-[#ffbf00]', action: 'cart' },
 ];
 
-const HeaderContent = () => {
+const HeaderContent = ({ setShowSlider }) => {
 	const mode = useAppSelector((state) => state.sidebar.mode);
 	const isMobileView = useAppSelector((state) => state.sidebar.isMobileView);
+	const [showNotifications, setShowNotifications] = useState(false);
+
+	const handleItemClick = (action) => {
+		switch (action) {
+			case 'search':
+				console.log('Search clicked');
+				// Implement search action logic here
+				break;
+			case 'toggleTheme':
+				console.log('Toggle theme');
+				// Implement theme toggle logic here
+				break;
+			case 'relatedApps':
+				setShowNotifications(!showNotifications); // Implement favorites logic here
+				break;
+			case 'notifications':
+				break;
+			case 'messages':
+				console.log('Messages clicked');
+				setShowSlider(true);
+				// Implement messages logic here (e.g., slide in chat box)
+				break;
+			case 'cart':
+				console.log('Cart clicked');
+				// Implement cart logic here
+				break;
+			default:
+				console.log('No action defined');
+		}
+	};
 
 	return (
 		<header
 			className={`relative flex items-center ${
-				mode === 'wide' && !isMobileView
+				mode === 'wide' || !isMobileView
 					? 'pl-[4rem] md:pl-[5rem] '
 					: 'lg:pl-[8rem] md:pl-[1.875rem] sm:pl-[8rem]'
 			} pl-1  pr-1 sm:px-[1.875rem] h-full`}
@@ -60,6 +89,7 @@ const HeaderContent = () => {
 								<li
 									key={'faSearch'}
 									className='hidden lg:flex h-full items-center text-[1.25rem] gap-2'
+									onClick={() => handleItemClick(item.action)}
 								>
 									<div className='relative flex items-stretch w-full flex-wrap search-area rounded-[50%]'>
 										<input
@@ -75,32 +105,27 @@ const HeaderContent = () => {
 										</span>
 									</div>
 								</li>
-							) : item.icon === faMoon ? (
-								<li
-									className='text-[--text-gray] h-full flex items-center text-[1.125rem] sm:text-[1.25rem] px-[0.45rem] sm:px-[1.25rem]'
-									key={'faMoon'}
-								>
-									<div className='relative p-[0.625rem] sm:p-[0.9375rem] rounded-[.625rem]'>
-										<FontAwesomeIcon
-											icon={faMoon}
-										></FontAwesomeIcon>
-									</div>
-								</li>
 							) : (
 								<li
-									className='text-[--text-gray] h-full flex items-center text-[1.125rem] sm:text-[1.25rem] px-[0.45rem] sm:px-[1.25rem]'
+									className='relative cursor-pointer text-[--text-gray] h-full flex items-center text-[1.125rem] sm:text-[1.25rem] px-[0.45rem] sm:px-[1.25rem]'
 									key={index}
+									onClick={() => handleItemClick(item.action)}
 								>
 									<div className='relative p-[0.625rem] sm:p-[0.9375rem] rounded-[.625rem]'>
 										<FontAwesomeIcon
 											icon={item.icon}
 										></FontAwesomeIcon>
-										<span
-											className={`absolute  text-white ${item.bg} text-[0.675rem] font-medium me-2 w-[1.2rem] h-[1.2rem] leading-[1rem] text-center p-[.1rem] rounded-full  sm:top-[8px] sm:right-[-1px] top-0 right-[-0.625rem] `}
-										>
-											{item.num}
-										</span>
+										{item.num && (
+											<span
+												className={`absolute  text-white ${item.bg} text-[0.675rem] font-medium me-2 w-[1.2rem] h-[1.2rem] leading-[1rem] text-center p-[.1rem] rounded-full  sm:top-[8px] sm:right-[-1px] top-0 right-[-0.625rem] `}
+											>
+												{item.num}
+											</span>
+										)}
 									</div>
+									{showNotifications &&
+										item.action === 'relatedApps' &&
+										item.children}
 								</li>
 							);
 						})}

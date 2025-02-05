@@ -36,6 +36,7 @@ export interface MenuItemProps {
 	onItemClick?: (id: string) => void;
 	toggleDropdown?: (id: string) => void;
 	openDropdown?: string | null;
+	setOpenDropdown: (id: string) => void;
 }
 
 const list = [
@@ -204,6 +205,7 @@ const MenuList = () => {
 								setActiveItem={setActiveItem}
 								activeItem={activeItem || ''}
 								toggleDropdown={toggleDropdown}
+								setOpenDropdown={setOpenDropdown}
 							/>
 						))}
 					</MetisMenu>
@@ -218,6 +220,7 @@ const MenuList = () => {
 							onItemClick={handleClick}
 							toggleDropdown={toggleDropdown}
 							openDropdown={openDropdown}
+							setOpenDropdown={setOpenDropdown}
 						/>
 					))}
 				</ul>

@@ -24,7 +24,7 @@ const NavHeader = () => {
 		<div
 			className={`${
 				mode === 'wide' ? 'w-sidebar-wide' : 'w-sidebar-mini'
-			} nav-header fixed inline-block  top-0  h-[--dz-header-height]  transition-all duration-300 ease-in-out  bg-nav-headbg z-[1001]`}
+			} nav-header fixed inline-block  top-0  h-[--dz-header-height]  transition-all duration-300 ease-in-out  bg-nav-headbg z-[2]`}
 		>
 			<div className='brand-logo'>
 				<MiniLogo />

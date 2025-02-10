@@ -11,12 +11,11 @@ const Dashboard = () => {
 	const [showSlider, setShowSlider] = useState(false);
 	return (
 		<>
-			
-				<Chatbox
-					setShowSlider={setShowSlider}
-					showSlider={showSlider}
-				/>
-			
+			<Chatbox
+				setShowSlider={setShowSlider}
+				showSlider={showSlider}
+			/>
+
 			{/* nav-header here */}
 			<NavHeader />
 			{/* start header here */}

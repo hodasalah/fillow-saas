@@ -171,32 +171,12 @@
 				},
 				{
 					"category": "MO",
-					"code": null,
+					"code": "MO",
 					"message": "Athan Jacoby\nNargis left 30 mins ago",
 					"time": null
 				}
 			]
 		},
-		{
-			"name": "Notes",
-			"items": [
-				{
-					"title": "New order placed..",
-					"date": "10 Aug 2020"
-				},
-				{
-					"title": "Youtube, a video-sharing website..",
-					"date": "10 Aug 2020"
-				},
-				{
-					"title": "john just buy your product..",
-					"date": "10 Aug 2020"
-				},
-				{
-					"title": "Athan Jacoby",
-					"date": "10 Aug 2020"
-				}
-			]
-		},
+		
 		
 }

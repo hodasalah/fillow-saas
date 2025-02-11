@@ -1,6 +1,7 @@
 import React from 'react';
 import NavTabs, { NavList } from './NavTabs'
-import TabPanel from './TabPanel'
+import TabPanel from './tabPanelComponents/TabPanel'
+import NotesTabPanel from './tabPanelComponents/NotesTabPanel';
 
 const ChatboxContent = () => {
   const [activeTab, setActiveTab] = React.useState(0);
@@ -17,7 +18,7 @@ const ChatboxContent = () => {
 			activeTab={activeTab}
 			index={index}
 		>
-      tab for item with index {index}
+      {item.children}
 		</TabPanel>
     ))
   }

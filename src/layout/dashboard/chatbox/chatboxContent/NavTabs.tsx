@@ -1,17 +1,22 @@
 import React from 'react';
+import NotesTabPanel from './tabPanelComponents/NotesTabPanel';
+import AlertsTabPanel from './tabPanelComponents/AlertsTabPanel';
 
 export const NavList = [
 	{
 		name: 'Notes',
 		id: 'notes',
+		children:<NotesTabPanel />
 	},
 	{
 		name: 'Alerts',
 		id: 'alerts',
+		children:<AlertsTabPanel/>
 	},
 	{
 		name: 'Chats',
 		id: 'chats',
+		children:<div>Chat Panel</div>
 	},
 ];
 
@@ -32,7 +37,6 @@ const NavTabs: React.FC<NavTabsProps> = ({activeTab, setActiveTab}) => {
 				{NavList.map((item, index) => (
 					<li
 						key={item.id}
-						className=''
 					>
 						<button
 							role='tab'

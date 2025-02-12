@@ -61,12 +61,12 @@ const AlertsTabPanel = () => {
 					<li className='bg-white py-1 px-4 text-black sticky top-0 z-[1] font-bold border-b-[0.0625rem] cursor-pointer'>
 					{notification.category}
 				</li>
-				<li className='border-b-[0.0625rem] cursor-pointer py-[0.4375rem] px-4'>
+				<li className='border-b-[0.0625rem] cursor-pointer py-[0.4375rem] px-4 hover:bg-[#f6f6f6]'>
 					<div className='flex'>
 						<div className='bg-rgba-primary-1 text-primary w-10 h-10 relative flex justify-center min-w-10 min-h-10 items-center rounded-[2.5rem] mr-[0.625rem] font-medium text-[0.875rem]'>
 							{notification.code}
 						</div>
-						<div className=''>
+						<div>
 							<span className='text-[var(--text-dark)] text-[0.9375rem] font-medium mb-[0.3125rem] overflow-hidden block max-w-[10.625rem] leading-[1] text-ellipsis whitespace-nowrap'>
 								{notification.message}
 							</span>

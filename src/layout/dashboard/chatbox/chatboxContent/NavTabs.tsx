@@ -1,6 +1,7 @@
 import React from 'react';
 import NotesTabPanel from './tabPanelComponents/NotesTabPanel';
 import AlertsTabPanel from './tabPanelComponents/AlertsTabPanel';
+import ChatListTab from './tabPanelComponents/ChatListTab';
 
 export const NavList = [
 	{
@@ -16,7 +17,7 @@ export const NavList = [
 	{
 		name: 'Chats',
 		id: 'chats',
-		children:<div>Chat Panel</div>
+		children:<ChatListTab/>
 	},
 ];
 

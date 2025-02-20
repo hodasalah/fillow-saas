@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { Route, Routes } from 'react-router';
+import { useAppSelector } from '../../hooks/hooks';
+import PrivateRoute from '../../PrivateRoute';
 import Chatbox from './chatbox';
 import Footer from './footer';
 import Header from './header';
@@ -9,6 +11,8 @@ import Sidebar from './sidebar';
 
 const Dashboard = () => {
 	const [showSlider, setShowSlider] = useState(false);
+	const user = useAppSelector((state) => state.auth);
+	console.log(user);
 	return (
 		<>
 			<Chatbox
@@ -26,18 +30,7 @@ const Dashboard = () => {
 
 			{/* body-content here */}
 			{/* routes here [1] dashboard layout */}
-			<Routes>
-				<Route
-					index
-					path='/dashboard'
-					element={<DashboardHome />}
-				/>
-				<Route
-					path='/dashboard'
-					element={<DashboardHome />}
-				/>
-			</Routes>
-
+			<DashboardHome />
 			{/* end body-content here */}
 			{/* footer here */}
 			<Footer />

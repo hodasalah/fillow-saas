@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import { Message } from '../layout/dashboard/pages/home/messages';
+import { Message } from '../layout/dashboardLayout/pages/home/messages';
 
 export const fetchMessages = async () => {
 	try {

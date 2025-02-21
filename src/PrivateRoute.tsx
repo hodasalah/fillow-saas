@@ -3,6 +3,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 import React from 'react';
 import { Navigate } from 'react-router';
 import { auth } from './firebase';
+import Loading from './components/Loading';
 
 interface PrivateRouteProps {
 	children: JSX.Element;
@@ -22,7 +23,7 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({ children }) => {
 		return unsubscribe;
 	}, []);
 console.log(user)
-	if (loading) return <p>Loading...</p>;
+	if (loading) return <Loading/>;
 	return user ? children : <Navigate to='/login' />;
 };
 

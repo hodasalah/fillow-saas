@@ -7,7 +7,8 @@ import {
 	signInWithPopup,
 	signOut,
 } from 'firebase/auth';
-import { auth } from '../../firebase';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { auth, db } from '../../firebase';
 
 //signup with google auth
 export const loginWithGoogle = createAsyncThunk(
@@ -16,31 +17,54 @@ export const loginWithGoogle = createAsyncThunk(
 		try {
 			const provider = new GoogleAuthProvider();
 			const userCredential = await signInWithPopup(auth, provider);
-			return userCredential.user;
+			const user = userCredential.user;
+			if (user) {
+				// Reference to the user's document in Firestore
+				const userRef = doc(db, 'users', user.uid);
+				const userSnap = await getDoc(userRef);
+
+				if (!userSnap.exists()) {
+					// If the user does not exist, create a new document
+					await setDoc(userRef, {
+						uid: user.uid,
+						name: user.displayName,
+						email: user.email,
+						profilePicture: user.photoURL,
+						createdAt: new Date(),
+					});
+				}
+			}
+
+			return user;
 		} catch (error) {
 			return rejectWithValue((error as Error).message);
 		}
 	},
 );
 
-
-
-
 //اجراء انشاء الحساب
 export const createUser = createAsyncThunk(
 	'auth/createUser',
 	async (
-		payload: { email: string; password: string },
+		payload: { email: string; password: string; name: string },
 		{ rejectWithValue },
 	) => {
 		try {
-			const { email, password } = payload;
+			const { email, password, name } = payload;
 			const userCredential = await createUserWithEmailAndPassword(
 				auth,
 				email,
 				password,
 			);
-			return userCredential.user;
+			const user = userCredential.user;
+			await setDoc(doc(db, 'users', user.uid), {
+				uid: user.uid,
+				name: name,
+				email: user.email,
+				createdAt: new Date(),
+				profilePicture: user.photoURL || '',
+			});
+			return user;
 		} catch (error) {
 			return rejectWithValue((error as Error).message);
 		}
@@ -61,7 +85,23 @@ export const loginUser = createAsyncThunk(
 				email,
 				password,
 			);
-			return userCredential.user;
+			const user = userCredential.user;
+
+			// Check if user exists in Firestore
+			const userRef = doc(db, 'users', user.uid);
+			const userSnap = await getDoc(userRef);
+
+			if (!userSnap.exists()) {
+				// Add user if not already in Firestore
+				await setDoc(userRef, {
+					uid: user.uid,
+					email: user.email,
+					name: user.displayName || 'Anonymous',
+					profilePicture: user.photoURL || '',
+					createdAt: new Date(),
+				});
+			}
+			return user;
 		} catch (error) {
 			return rejectWithValue((error as Error).message);
 		}

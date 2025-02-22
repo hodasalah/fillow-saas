@@ -1,16 +1,15 @@
 import { Route, Routes } from 'react-router';
 import PrivateRoute from './PrivateRoute';
 import Loading from './components/Loading';
-import { useAppSelector } from './hooks/hooks';
 import Layout from './layout/dashboardLayout';
 import DashboardHome from './layout/dashboardLayout/pages/home';
 import Home from './routes/Home';
 import Login from './routes/Login';
 import Signup from './routes/SignUp';
+import useAuthListener from './utils/useAuthListener';
 
 const App = () => {
-	const user = useAppSelector((state) => state.auth);
-	console.log(user);
+	useAuthListener();
 
 	return (
 		<div className='relative transition-all ease-in-out duration-200'>

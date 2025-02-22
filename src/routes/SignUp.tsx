@@ -10,6 +10,7 @@ import { createUser, loginWithGoogle } from '../store/slices/authActions';
 const Signup: React.FC = () => {
 	const navigate = useNavigate();
 	const [email, setEmail] = useState('');
+	const [name, setName] = useState('');
 	const [password, setPassword] = useState('');
 	const [error, setError] = useState<string | null>(null);
 	const dispatch = useAppDispatch();
@@ -20,7 +21,7 @@ const Signup: React.FC = () => {
 		e.preventDefault();
 		setError(null);
 		try{
-dispatch(createUser({email, password}));
+dispatch(createUser({email, password,name}));
 		navigate('/login')
 		}catch(error: any) {
 			setError(error)
@@ -48,6 +49,22 @@ dispatch(createUser({email, password}));
 						onSubmit={handleSignup}
 						className='mb-4'
 					>
+						<div className='mb-4 text-[var(--text-dark)] px-2'>
+							<label
+								className='block mb-2'
+								htmlFor='name'
+							>
+								Name:
+							</label>
+							<input
+								className='rounded-[0.625rem] border-[0.0625rem] border-border h-[2.9rem] w-full'
+								type='text'
+								value={name}
+								name='name'
+								onChange={(e) => setName(e.target.value)}
+								required
+							/>
+						</div>
 						<div className='mb-4 text-[var(--text-dark)] px-2'>
 							<label
 								className='block mb-2'

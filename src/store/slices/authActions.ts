@@ -7,7 +7,7 @@ import {
 	signInWithPopup,
 	signOut,
 } from 'firebase/auth';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore';
 import { auth, db } from '../../firebase';
 
 //signup with google auth
@@ -18,6 +18,7 @@ export const loginWithGoogle = createAsyncThunk(
 			const provider = new GoogleAuthProvider();
 			const userCredential = await signInWithPopup(auth, provider);
 			const user = userCredential.user;
+			const { uid, displayName, email, photoURL } = user;
 			if (user) {
 				// Reference to the user's document in Firestore
 				const userRef = doc(db, 'users', user.uid);
@@ -30,17 +31,17 @@ export const loginWithGoogle = createAsyncThunk(
 						name: user.displayName,
 						email: user.email,
 						profilePicture: user.photoURL,
-						createdAt: new Date(),
+						createdAt:
+							serverTimestamp(),
 					});
 				}
 			}
 
-			return user;
+			return { uid, displayName, email, photoURL };
 		} catch (error) {
 			return rejectWithValue((error as Error).message);
 		}
-	},
-);
+	},);
 
 //اجراء انشاء الحساب
 export const createUser = createAsyncThunk(
@@ -61,7 +62,7 @@ export const createUser = createAsyncThunk(
 				uid: user.uid,
 				name: name,
 				email: user.email,
-				createdAt: new Date(),
+				createdAt: serverTimestamp(),
 				profilePicture: user.photoURL || '',
 			});
 			return user;
@@ -98,7 +99,7 @@ export const loginUser = createAsyncThunk(
 					email: user.email,
 					name: user.displayName || 'Anonymous',
 					profilePicture: user.photoURL || '',
-					createdAt: new Date(),
+					createdAt: serverTimestamp(),
 				});
 			}
 			return user;
@@ -116,7 +117,7 @@ export const logoutUser = createAsyncThunk(
 			await signOut(auth);
 			return true;
 		} catch (error) {
-			return rejectWithValue((error as any).message);
+			return rejectWithValue((error as Error).message);
 		}
 	},
 );

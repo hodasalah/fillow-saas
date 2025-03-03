@@ -6,7 +6,7 @@ import DashboardHome from './layout/dashboardLayout/pages/home';
 import Home from './routes/Home';
 import Login from './routes/Login';
 import Signup from './routes/SignUp';
-import useAuthListener from './utils/useAuthListener';
+import useAuthListener from './hooks/useAuthListener';
 
 const App = () => {
 	useAuthListener();

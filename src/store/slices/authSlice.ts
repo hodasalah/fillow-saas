@@ -1,7 +1,7 @@
 // authSlice.js
 import { createSlice } from '@reduxjs/toolkit';
 import { User } from 'firebase/auth';
-import { loginUser, logoutUser } from './authActions';
+import { loginUser, loginWithGoogle, logoutUser } from './authActions';
 
 const authSlice = createSlice({
 	name: 'auth',
@@ -18,6 +18,26 @@ const authSlice = createSlice({
 	},
 	extraReducers: (builder) => {
 		builder
+			.addCase(loginWithGoogle.pending, (state) => {
+				state.loading = true;
+			})
+			.addCase(loginWithGoogle.fulfilled, (state, action) => {
+				state.loading = false;
+				state.user = {
+					...action.payload,
+					emailVerified: false,
+					isAnonymous: false,
+					metadata: {},
+					providerData: [],
+					phoneNumber: null,
+					refreshToken: '',
+					tenantId: null,
+				} as unknown as User; // ✅ Storing only serializable user data
+			})
+			.addCase(loginWithGoogle.rejected, (state, action) => {
+				state.loading = false;
+				state.error = action.error.message;
+			})
 			// حالة تسجيل الدخول
 			.addCase(loginUser.pending, (state) => {
 				state.loading = true;

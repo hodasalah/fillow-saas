@@ -1,0 +1,152 @@
+{
+	"users": {
+		"uid_1": {
+			"userId": "uid_1",
+			"name": "John Doe",
+			"email": "john@example.com",
+			"role": "admin",
+			"avatarUrl": "/images/avatar/1.jpg",
+			"createdAt": "2023-09-20T10:00:00Z",
+			"lastLogin": "2023-09-25T14:30:00Z",
+			"projects": ["project_1", "project_2"],
+			"preferences": {
+				"notifications": {
+					"email": true,
+					"push": true,
+					"dailyDigest": "18:00"
+				},
+				"theme": "dark",
+				"timezone": "Europe/Berlin",
+				"language": "en",
+				"emailSignature": "Best regards,\nJohn Doe"
+			}
+		},
+		"uid_2": {
+			"userId": "uid_2",
+			"name": "Jane Smith",
+			"email": "jane@example.com",
+			"role": "user",
+			"avatarUrl": "/images/avatar/2.jpg",
+			"createdAt": "2023-09-21T11:00:00Z",
+			"lastLogin": "2023-09-25T15:00:00Z",
+			"projects": ["project_1"],
+			"preferences": {
+				"notifications": {
+					"email": true,
+					"push": true,
+					"dailyDigest": "18:00"
+				},
+				"theme": "dark",
+				"timezone": "Europe/Berlin",
+				"language": "en",
+				"emailSignature": "Best regards,\nJohn Doe"
+			}
+		}
+	},
+
+	"projects": {
+		"project_1": {
+			"projectId": "project_1",
+			"name": "Website Redesign",
+			"description": "Complete overhaul of company website",
+			"status": "in-progress",
+			"startDate": "2023-09-01",
+			"endDate": "2023-12-31",
+			"tags": ["tag_1", "tag_2"],
+			"category": "web-development",
+			"members": ["uid_1", "uid_2"],
+			"tasks": {
+				"task_1": {
+					"taskId": "task_1",
+					"title": "Design Mockups",
+					"description": "Create initial design concepts",
+					"assignees": ["uid_1"],
+					"status": "completed",
+					"priority": "high",
+					"dueDate": "2023-10-15",
+					"comments": {
+						"comment_1": {
+							"userId": "uid_1",
+							"content": "First draft completed",
+							"timestamp": "2023-09-22T09:00:00Z"
+						}
+					}
+				}
+			}
+		}
+	},
+
+	"messages": {
+		"message_1": {
+			"messageId": "message_1",
+			"senderId": "uid_1",
+			"receiverId": "uid_2",
+			"content": "Hey, let's discuss the project timeline",
+			"timestamp": "2023-09-25T10:00:00Z",
+			"readStatus": true
+		}
+	},
+
+	"emails": {
+		"email_1": {
+			"emailId": "email_1",
+			"senderId": "uid_2",
+			"receiverIds": ["uid_1"],
+			"subject": "Meeting Agenda",
+			"body": "Here's the agenda for our next meeting...",
+			"attachments": ["/attachments/agenda.pdf"],
+			"timestamp": "2023-09-25T14:00:00Z",
+			"readStatus": false,
+			"starred": false,
+			"archived": false
+		}
+	},
+	"notifications": {
+		"notif_1": {
+			"notificationId": "notif_1",
+			"userId": "uid_1",
+			"type": "project_update",
+			"message": "New task assigned in Website Redesign",
+			"relatedItem": {
+				"type": "project",
+				"id": "project_1"
+			},
+			"read": false,
+			"createdAt": "2023-09-25T16:00:00Z",
+			"senderId": "uid_2"
+		}
+	},
+	"files": {
+		"file_1": {
+			"fileId": "file_1",
+			"name": "specs.pdf",
+			"ownerId": "uid_1",
+			"storagePath": "uploads/specs.pdf",
+			"sharedWith": ["uid_2"], // Used for permissions
+			"linkedTo": {
+				// Track where file is used
+				"emails": ["email_1"],
+				"projects": ["project_1"]
+			}
+		}
+	},
+	"tags": {
+		"tag_1": {
+			"tagId": "tag_1",
+			"name": "Urgent",
+			"color": "#FF0000",
+			"projects": ["project_1"]
+		}
+	},
+  "activities":{
+		"activityId": "activity_1",
+		"userId": "uid_1", // Who performed the action
+		"type": "file_upload",
+		"targetEntity": {
+			// What was affected
+			"type": "project",
+			"id": "project_1"
+		},
+		"timestamp": "2023-09-25T09:00:00Z"
+  }
+}

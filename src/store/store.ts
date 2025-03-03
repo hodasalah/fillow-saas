@@ -3,6 +3,7 @@ import authReducer from './slices/authSlice';
 import counterReducer from './slices/counterSlice';
 import loadingReducer from './slices/loadingSlice';
 import sidebarReducer from './slices/sidebarSlice';
+import userReducer from './slices/usersSlice';
 
 
 
@@ -12,17 +13,20 @@ export const store = configureStore({
 		sidebar: sidebarReducer,
 		loading: loadingReducer,
 		auth: authReducer,
+		users: userReducer,
+
 		// Add other reducers here if needed. For example:
 		// posts: postsReducer,
 		// comments: commentsReducer,
 		// users: usersReducer,
 	},
-	middleware: (getDefaultMiddleware) => getDefaultMiddleware({
-		serializableCheck: {
-			// Ignore these paths in the state
-			ignoredPaths: ['auth.user'],
-		},
-	}),
+	middleware: (getDefaultMiddleware) =>
+		getDefaultMiddleware({
+			serializableCheck: {
+				// Ignore these paths in the state
+				ignoredPaths: ['auth.user'],
+			},
+		}),
 });
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>;

@@ -1,10 +1,9 @@
 // Signup.tsx
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router';
 import Logo from '../components/logo/logo';
 import MiniLogo from '../components/logo/miniLogo';
-import { useAppDispatch } from '../hooks/hooks';
+import { useAppDispatch, useAppSelector } from '../hooks/hooks';
 import { createUser, loginWithGoogle } from '../store/slices/authActions';
 
 const Signup: React.FC = () => {
@@ -14,26 +13,33 @@ const Signup: React.FC = () => {
 	const [password, setPassword] = useState('');
 	const [error, setError] = useState<string | null>(null);
 	const dispatch = useAppDispatch();
-	
+	const { user, loading } = useAppSelector((state) => state.auth);
 
+	useEffect(() => {
+		if (user) {
+			navigate('/dashboard');
+		}
+	}, [user, navigate]);
 	// Signup with email and password
 	const handleSignup = async (e: React.FormEvent) => {
 		e.preventDefault();
 		setError(null);
-		try{
-dispatch(createUser({email, password,name}));
-		navigate('/login')
-		}catch(error: any) {
-			setError(error)
+		try {
+			await dispatch(createUser({ email, password, name }));
+			// Optionally, navigate to login if using email signup flow
+			navigate('/login');
+		} catch (err: any) {
+			setError(err);
 		}
-		
 	};
 
 	// Signup with Google
 	const handleGoogleSignup = async () => {
 		setError(null);
-		dispatch(loginWithGoogle());
-		navigate('/dashboard')
+		if (!user && !loading) {
+			// Prevent duplicate dispatches
+			await dispatch(loginWithGoogle());
+		}
 	};
 
 	return (

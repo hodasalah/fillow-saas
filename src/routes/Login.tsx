@@ -1,9 +1,9 @@
 // Login.tsx
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router';
 import Logo from '../components/logo/logo';
 import MiniLogo from '../components/logo/miniLogo';
-import { useAppDispatch } from '../hooks/hooks';
+import { useAppDispatch, useAppSelector } from '../hooks/hooks';
 import { loginUser, loginWithGoogle } from '../store/slices/authActions';
 
 const Login: React.FC = () => {
@@ -12,6 +12,14 @@ const Login: React.FC = () => {
 	const [password, setPassword] = useState('');
 	const [error, setError] = useState<string | null>(null);
 	const dispatch = useAppDispatch();
+	const { user } = useAppSelector((state) => state.auth);
+
+	useEffect(() => {
+		// Navigate to dashboard once the user object is set
+		if (user) {
+			navigate('/dashboard');
+		}
+	}, [user, navigate]);
 	// Handle login with email and password
 	const handleLogin = async (e: React.FormEvent) => {
 		e.preventDefault();

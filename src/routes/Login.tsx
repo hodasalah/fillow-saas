@@ -13,7 +13,7 @@ const Login: React.FC = () => {
 	const [error, setError] = useState<string | null>(null);
 	const dispatch = useAppDispatch();
 	const { user } = useAppSelector((state) => state.auth);
-
+	console.log(user);
 	useEffect(() => {
 		// Navigate to dashboard once the user object is set
 		if (user) {
@@ -38,8 +38,11 @@ const Login: React.FC = () => {
 	const handleGoogleLogin = async () => {
 		setError(null);
 		try {
-			dispatch(loginWithGoogle());
-			navigate('/dashboard');
+			if (!user) {
+				// Prevent duplicate dispatches
+				await dispatch(loginWithGoogle());
+				navigate('/dashboard');
+			}
 		} catch (err: any) {
 			setError(err.message);
 		}

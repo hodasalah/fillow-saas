@@ -1,7 +1,10 @@
 import { faGear, faRightFromBracket, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useRef, useState } from 'react';
+import { Link, useNavigate } from 'react-router';
 import { v4 as uuidv4 } from 'uuid';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
+import { logoutUser } from '../../store/slices/authActions';
 
 const links = [
 	{
@@ -9,23 +12,29 @@ const links = [
 		icon: faUser,
 		iconColor: 'text-[var(--primary)]',
 		name: 'Profile',
+		link: '/profile',
 	},
 	{
 		id: uuidv4(),
 		icon: faGear,
 		iconColor: 'text-green-500',
 		name: 'Settings',
+		link: '/settings',
 	},
 	{
 		id: uuidv4(),
 		icon: faRightFromBracket,
 		iconColor: 'text-red-500',
 		name: 'Logout',
+
 	},
 ];
 const ProfileDropdown = () => {
 	const [showDropdown, setShowDropdown] = useState(false);
 		const dropdownMenuRef = useRef<HTMLLIElement>(null);
+		const dispatch=useAppDispatch()
+		const user =useAppSelector((state) => state.users.currentUser);
+		const navigate = useNavigate();
 	
 		useEffect(() => {
 			const closeMenu = (e: MouseEvent) => {
@@ -48,6 +57,11 @@ const ProfileDropdown = () => {
 		const ToggleMenu = () => {
 			setShowDropdown((prevState) => !prevState);
 		};
+		const handleLogout = () => {
+			dispatch(logoutUser())
+						navigate('/login');
+
+		};
 	return (
 		<div
 			className='w-full relative'
@@ -56,7 +70,7 @@ const ProfileDropdown = () => {
 		>
 			<div className='flex items-center w-full h-full relative'>
 				<img
-					src='https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80'
+					src={user?.profilePicture}
 					alt='profile'
 					className='w-[3rem] h-[3rem] rounded-[4.25rem]'
 				/>
@@ -72,13 +86,13 @@ const ProfileDropdown = () => {
 					{links.map((link) => (
 						<li
 							key={link.id}
-							className='block w-full font-normal text-[#9da1a5] text-base py-2 px-7 active:text-[var(--primary)] active:bg-[var(--rgba-primary-1)] hover:text-[var(--primary)] hover:bg-[var(--rgba-primary-1)]'
+							className='block w-full font-normal text-[#9da1a5] text-base py-2 px-7 active:text-[var(--primary)] active:bg-[var(--rgba-primary-1)] hover:text-[var(--primary)] hover:bg-[var(--rgba-primary-1)] cursor-pointer'
 						>
 							<FontAwesomeIcon
 								icon={link.icon}
 								className={`${link.iconColor} pr-2`}
 							/>{' '}
-							<a>{link.name}</a>
+							{link.link?<Link to={link.link}>{link.name}</Link>:<span onClick={handleLogout}>{link.name}</span>}
 						</li>
 					))}
 				</ul>

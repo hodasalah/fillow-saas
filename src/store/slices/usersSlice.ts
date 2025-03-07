@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchUsers, updateUser } from '../../utils/fetchusers';
+import { fetchUsers, updateUser } from '../../utils/fetchUsers';
 
 interface User {
 	id: string;
@@ -10,18 +10,24 @@ interface UsersState {
 	users: User[];
 	loading: boolean;
 	error: string | null;
+	currentUser: User | null;
 }
 
 const initialState: UsersState = {
 	users: [],
 	loading: false,
 	error: null,
+	currentUser: null,
 };
 
 const userSlice = createSlice({
 	name: 'users',
 	initialState,
-	reducers: {},
+	reducers: {
+		setUser: (state, action) => {
+			state.currentUser = action.payload;
+		},
+	},
 	extraReducers: (builder) => {
 		builder
 			.addCase(fetchUsers.pending, (state) => {
@@ -39,8 +45,9 @@ const userSlice = createSlice({
 				state.users = state.users.map((user) =>
 					user.id === action.payload.id ? action.payload : user,
 				);
+				state.currentUser = action.payload;
 			});
 	},
 });
-
+export const { setUser } = userSlice.actions;
 export default userSlice.reducer;

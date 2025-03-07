@@ -1,15 +1,11 @@
-import { configureStore} from '@reduxjs/toolkit';
+import { configureStore } from '@reduxjs/toolkit';
 import authReducer from './slices/authSlice';
-import counterReducer from './slices/counterSlice';
 import loadingReducer from './slices/loadingSlice';
 import sidebarReducer from './slices/sidebarSlice';
 import userReducer from './slices/usersSlice';
 
-
-
 export const store = configureStore({
 	reducer: {
-		counter: counterReducer,
 		sidebar: sidebarReducer,
 		loading: loadingReducer,
 		auth: authReducer,

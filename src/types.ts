@@ -1,13 +1,17 @@
+import { Timestamp } from 'firebase/firestore';
+
 // User
 export type User = {
-  id: string;
-  name: string;
-  email: string;
-  role: "admin" | "member";
-  teams: string[];
-  projects: string[];
-  status: "online" | "offline";
-  lastSeen: Date;
+	uid: string;
+	name: string;
+	email: string;
+	profilePicture: string;
+	role: 'admin' | 'member';
+  createdAt?: Timestamp | number;
+	teams: string[];
+	projects: string[];
+	status: 'online' | 'offline';
+	lastSeen: Date;
 };
 
 // Project

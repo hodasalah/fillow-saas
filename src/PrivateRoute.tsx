@@ -1,30 +1,37 @@
 // PrivateRoute.tsx
-import { onAuthStateChanged } from 'firebase/auth';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Navigate } from 'react-router';
 import { auth } from './firebase';
-import Loading from './components/Loading';
+import { useAppDispatch } from './hooks/hooks';
+import { setLoading } from './store/slices/loadingSlice';
 
 interface PrivateRouteProps {
 	children: JSX.Element;
 }
 
 const PrivateRoute: React.FC<PrivateRouteProps> = ({ children }) => {
-	// This example uses a simple hook to get the current user.
-	// In a real app you might use a context or Redux to store auth state.
-	const [user, setUser] = React.useState<any>(null);
-	const [loading, setLoading] = React.useState(true);
+	const dispatch = useAppDispatch();
+	const user = auth.currentUser;
 
-	React.useEffect(() => {
-		const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-			setUser(currentUser);
-			setLoading(false);
-		});
-		return unsubscribe;
-	}, []);
-console.log(user)
-	if (loading) return <Loading/>;
-	return user ? children : <Navigate to='/login' />;
+	useEffect(() => {
+		if (user) {
+			dispatch(setLoading(false));
+		}
+		return () => {
+			// Unsubscribe when no longer needed
+			auth.onAuthStateChanged(() => {
+				dispatch(setLoading(false));
+			});
+		};
+	}, [user]);
+	return user ? (
+		children
+	) : (
+		<Navigate
+			to='/login'
+			replace
+		/>
+	);
 };
 
 export default PrivateRoute;

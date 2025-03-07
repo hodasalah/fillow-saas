@@ -5,9 +5,8 @@ import {
 	GoogleAuthProvider,
 	signInWithEmailAndPassword,
 	signInWithPopup,
-	signOut,
 } from 'firebase/auth';
-import { doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore';
+import { doc, getDoc, serverTimestamp, setDoc } from 'firebase/firestore';
 import { auth, db } from '../../firebase';
 
 //signup with google auth
@@ -18,30 +17,50 @@ export const loginWithGoogle = createAsyncThunk(
 			const provider = new GoogleAuthProvider();
 			const userCredential = await signInWithPopup(auth, provider);
 			const user = userCredential.user;
-			const { uid, displayName, email, photoURL } = user;
 			if (user) {
 				// Reference to the user's document in Firestore
 				const userRef = doc(db, 'users', user.uid);
 				const userSnap = await getDoc(userRef);
 
 				if (!userSnap.exists()) {
-					// If the user does not exist, create a new document
-					await setDoc(userRef, {
-						uid: user.uid,
-						name: user.displayName,
-						email: user.email,
-						profilePicture: user.photoURL,
-						createdAt:
-							serverTimestamp(),
-					});
+					// Create new user document if doesn't exist
+					await setDoc(
+						userRef,
+						{
+							userId: user.uid,
+							email: user.email,
+							name: user.displayName,
+							profilePicture: user.photoURL,
+							createdAt: serverTimestamp(),
+							role: 'user',
+							projects: [],
+							tags: ['google-user'],
+							preferences: {
+								theme: 'light',
+								notifications: {
+									email: true,
+									push: true,
+								},
+							},
+						},
+						{ merge: true },
+					);
+				}
+				const userData = (await getDoc(userRef)).data();
+				if (userData) {
+					return {
+						...userData,
+						createdAt: userData.createdAt.toMillis(),
+					};
+				} else {
+					throw new Error('User data is undefined');
 				}
 			}
-
-			return { uid, displayName, email, photoURL };
 		} catch (error) {
 			return rejectWithValue((error as Error).message);
 		}
-	},);
+	},
+);
 
 //اجراء انشاء الحساب
 export const createUser = createAsyncThunk(
@@ -65,7 +84,9 @@ export const createUser = createAsyncThunk(
 				createdAt: serverTimestamp(),
 				profilePicture: user.photoURL || '',
 			});
-			return user;
+			const userDoc = await getDoc(doc(db, 'users', user.uid));
+			const userData = userDoc.data();
+			return { ...user, createdAt: userData?.createdAt.toMillis() };
 		} catch (error) {
 			return rejectWithValue((error as Error).message);
 		}
@@ -102,7 +123,15 @@ export const loginUser = createAsyncThunk(
 					createdAt: serverTimestamp(),
 				});
 			}
-			return user;
+			const userData = userSnap.data();
+			if (userData) {
+				return {
+					...userData,
+					createdAt: userData.createdAt.toMillis(),
+				};
+			} else {
+				throw new Error('User data is undefined');
+			}
 		} catch (error) {
 			return rejectWithValue((error as Error).message);
 		}
@@ -114,7 +143,7 @@ export const logoutUser = createAsyncThunk(
 	'auth/logoutUser',
 	async (_, { rejectWithValue }) => {
 		try {
-			await signOut(auth);
+			await auth.signOut();
 			return true;
 		} catch (error) {
 			return rejectWithValue((error as Error).message);

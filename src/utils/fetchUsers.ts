@@ -5,7 +5,7 @@ import { db } from '../firebase';
 // Async Thunk to Fetch Users from Firestore
 export const fetchUsers = createAsyncThunk('users/fetchUsers', async () => {
 	const querySnapshot = await getDocs(collection(db, 'users'));
-	return querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+	return querySnapshot.docs.map((doc) => ({ uid: doc.id, ...doc.data() }));
 });
 
 // Async Thunk to Update a User in Firestore

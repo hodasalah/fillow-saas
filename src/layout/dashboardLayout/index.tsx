@@ -9,7 +9,7 @@ import Footer from './mainParts/footer';
 
 const DashboardLayout = () => {
 	const [showSlider, setShowSlider] = useState(false);
-	const user = useAppSelector((state) => state.auth);
+	const user = useAppSelector((state) => state.users.currentUser);
 	console.log(user);
 	return (
 		<>

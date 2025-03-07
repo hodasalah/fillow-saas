@@ -11,9 +11,16 @@ const authSlice = createSlice({
 		error: null as unknown,
 	},
 	reducers: {
-		// يمكنك إضافة reducers إضافية هنا إذا لزم الأمر
 		setUser: (state, action) => {
-			state.user = action.payload;
+			state.user = {
+				...action.payload,
+				emailVerified: action.payload.emailVerified ?? false,
+				createdAt: action.payload.createdAt ?? new Date().getTime(),
+				isAnonymous: action.payload.isAnonymous ?? false,
+				metadata: action.payload.metadata ?? {},
+				providerData: action.payload.providerData ?? [],
+				phoneNumber: action.payload.phoneNumber ?? null,
+			} as User;
 		},
 	},
 	extraReducers: (builder) => {
@@ -26,13 +33,12 @@ const authSlice = createSlice({
 				state.user = {
 					...action.payload,
 					emailVerified: false,
+					createdAt: new Date().getTime(),
 					isAnonymous: false,
 					metadata: {},
 					providerData: [],
 					phoneNumber: null,
-					refreshToken: '',
-					tenantId: null,
-				} as unknown as User; // ✅ Storing only serializable user data
+				} as unknown as User;
 			})
 			.addCase(loginWithGoogle.rejected, (state, action) => {
 				state.loading = false;

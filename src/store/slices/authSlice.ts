@@ -15,11 +15,17 @@ const authSlice = createSlice({
 			state.user = {
 				...action.payload,
 				emailVerified: action.payload.emailVerified ?? false,
-				createdAt: action.payload.createdAt ?? new Date().getTime(),
-				isAnonymous: action.payload.isAnonymous ?? false,
-				metadata: action.payload.metadata ?? {},
-				providerData: action.payload.providerData ?? [],
-				phoneNumber: action.payload.phoneNumber ?? null,
+				createdAt:
+					action.payload.createdAt,
+				last_login:
+					action.payload.last_login.toMillis(),
+				role: 'user',
+				projects: [],
+				tags: ['google-user'],
+				preferences: {
+					theme: 'light',
+					language: 'en-US',
+				},
 			} as User;
 		},
 	},
@@ -32,12 +38,6 @@ const authSlice = createSlice({
 				state.loading = false;
 				state.user = {
 					...action.payload,
-					emailVerified: false,
-					createdAt: new Date().getTime(),
-					isAnonymous: false,
-					metadata: {},
-					providerData: [],
-					phoneNumber: null,
 				} as unknown as User;
 			})
 			.addCase(loginWithGoogle.rejected, (state, action) => {

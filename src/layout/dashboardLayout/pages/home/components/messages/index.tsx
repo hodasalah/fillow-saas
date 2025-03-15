@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import MessageItem from './MessageItem';
+import { PrimaryBtn } from '../../../../../../components/buttons';
 import { useAppDispatch } from '../../../../../../hooks/hooks';
 import { setLoading } from '../../../../../../store/slices/loadingSlice';
 import { fetchMessages } from '../../../../../../utils/fetchMessages';
-import { PrimaryBtn } from '../../../../../../components/buttons';
+import MessageItem from './MessageItem';
 
 export interface Message {
 	id: string;
@@ -20,7 +20,7 @@ const Messages = () => {
 	const [retryCount, setRetryCount] = useState(0);
 	const MAX_RETRIES = 3;
 	const dispatch = useAppDispatch();
-	
+
 	const handleRetry = async () => {
 		if (retryCount >= MAX_RETRIES) {
 			setError('Maximum retry attempts reached. Please try again later.');
@@ -30,7 +30,7 @@ const Messages = () => {
 		setError(null);
 		try {
 			dispatch(setLoading(true));
-			const data= await fetchMessages();
+			const data = await fetchMessages();
 			setMessages(data);
 			dispatch(setLoading(false));
 		} catch (error) {
@@ -47,7 +47,6 @@ const Messages = () => {
 		};
 		fetchData();
 	}, [dispatch]);
-console.log(messages)
 	return (
 		<div className='w-full shadow-custom-shadow mb-10'>
 			<div className='bg-white rounded-lg shadow-sm'>

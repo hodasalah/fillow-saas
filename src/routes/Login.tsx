@@ -1,10 +1,12 @@
 // Login.tsx
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router';
 import Logo from '../components/logo/logo';
 import MiniLogo from '../components/logo/miniLogo';
-import { useAppDispatch, useAppSelector } from '../hooks/hooks';
+import { auth } from '../firebase';
+import { useAppDispatch } from '../hooks/hooks';
 import { loginUser, loginWithGoogle } from '../store/slices/authActions';
+import { setLoading } from '../store/slices/loadingSlice';
 
 const Login: React.FC = () => {
 	const navigate = useNavigate();
@@ -12,25 +14,17 @@ const Login: React.FC = () => {
 	const [password, setPassword] = useState('');
 	const [error, setError] = useState<string | null>(null);
 	const dispatch = useAppDispatch();
-	const { user } = useAppSelector((state) => state.auth);
-	console.log(user);
-	useEffect(() => {
-		// Navigate to dashboard once the user object is set
-		if (user) {
-			navigate('/dashboard');
-		}
-	}, [user, navigate]);
+	const user = auth.currentUser;
+
 	// Handle login with email and password
 	const handleLogin = async (e: React.FormEvent) => {
 		e.preventDefault();
-		console.log(email, password);
 		setError(null);
 		try {
-			dispatch(loginUser({ email, password }));
-			navigate('/dashboard'); // Navigate to the protected dashboard page
-		} catch (err: any) {
-			// If error indicates user not found, show a specific message.
-			setError(err.message);
+			dispatch(setLoading(true));
+			await dispatch(loginUser({ email, password }));
+		} finally {
+			dispatch(setLoading(false));
 		}
 	};
 	// Handle login with Google
@@ -42,9 +36,13 @@ const Login: React.FC = () => {
 				// Prevent duplicate dispatches
 				await dispatch(loginWithGoogle());
 				navigate('/dashboard');
+				dispatch(setLoading(false));
 			}
 		} catch (err: any) {
 			setError(err.message);
+			dispatch(setLoading(false));
+		} finally {
+			dispatch(setLoading(false));
 		}
 	};
 

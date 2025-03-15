@@ -44,37 +44,49 @@
 		}
 	},
 
-	"projects": {
-		"project_1": {
-			"projectId": "project_1",
-			"name": "Website Redesign",
-			"description": "Complete overhaul of company website",
-			"status": "in-progress",
-			"startDate": "2023-09-01",
-			"endDate": "2023-12-31",
-			"tags": ["tag_1", "tag_2"],
-			"category": "web-development",
-			"members": ["uid_1", "uid_2"],
-			"tasks": {
-				"task_1": {
-					"taskId": "task_1",
-					"title": "Design Mockups",
-					"description": "Create initial design concepts",
-					"assignees": ["uid_1"],
-					"status": "completed",
-					"priority": "high",
-					"dueDate": "2023-10-15",
-					"comments": {
-						"comment_1": {
-							"userId": "uid_1",
-							"content": "First draft completed",
-							"timestamp": "2023-09-22T09:00:00Z"
-						}
-					}
-				}
-			}
-		}
-	},
+	
+  "projects": {
+    "project_1": {
+      "tasks": {
+        "task_1": {
+          "taskId": "task_1",
+          "title": "Design Homepage",
+          "description": "Create responsive layouts",
+          "assignees": ["uid_1", "uid_2"],
+          "status": "in-progress",
+          "progressPercentage": 60,
+					"userProgress": {
+            "uid_1": {
+              "percentage": 75,
+              "lastUpdated": "2023-09-30T09:00:00Z"
+            },
+            "uid_2": {
+              "percentage": 40,
+              "lastUpdated": "2023-09-30T10:00:00Z"
+            }
+          },
+          "history": [
+            {
+              "timestamp": "2023-09-29T10:00:00Z",
+              "oldProgress": 0,
+              "newProgress": 30,
+              "changedBy": "uid_1"
+            },
+            {
+              "timestamp": "2023-09-29T14:00:00Z",
+              "oldProgress": 30,
+              "newProgress": 60,
+              "changedBy": "uid_2"
+            }
+          ],
+          "startDate": "2023-09-28",
+          "dueDate": "2023-10-05",
+          "priority": "high",
+          "lastUpdated": "2023-09-29T14:00:00Z"
+        }
+      }
+    }
+  },
 
 	"messages": {
 		"message_1": {

@@ -1,10 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { fetchUsers, updateUser } from '../../utils/fetchUsers';
-
-interface User {
-	id: string;
-	// add other user properties here
-}
+import { User } from '../../types';
 
 interface UsersState {
 	users: User[];

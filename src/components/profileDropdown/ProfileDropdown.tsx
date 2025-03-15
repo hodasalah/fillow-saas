@@ -1,4 +1,8 @@
-import { faGear, faRightFromBracket, faUser } from '@fortawesome/free-solid-svg-icons';
+import {
+	faGear,
+	faRightFromBracket,
+	faUser,
+} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router';
@@ -26,42 +30,40 @@ const links = [
 		icon: faRightFromBracket,
 		iconColor: 'text-red-500',
 		name: 'Logout',
-
 	},
 ];
 const ProfileDropdown = () => {
 	const [showDropdown, setShowDropdown] = useState(false);
-		const dropdownMenuRef = useRef<HTMLLIElement>(null);
-		const dispatch=useAppDispatch()
-		const user =useAppSelector((state) => state.users.currentUser);
-		const navigate = useNavigate();
-	
-		useEffect(() => {
-			const closeMenu = (e: MouseEvent) => {
-				if (
-					showDropdown &&
-					dropdownMenuRef?.current &&
-					!(dropdownMenuRef.current as HTMLElement).contains(
-						e.target as Node,
-					)
-				) {
-					setShowDropdown(false);
-				}
-			};
-			document.addEventListener('mousedown', closeMenu);
-			return () => {
-				document.removeEventListener('mousedown', closeMenu);
-			};
-		}, [showDropdown]);
-	
-		const ToggleMenu = () => {
-			setShowDropdown((prevState) => !prevState);
-		};
-		const handleLogout = () => {
-			dispatch(logoutUser())
-						navigate('/login');
+	const dropdownMenuRef = useRef<HTMLLIElement>(null);
+	const dispatch = useAppDispatch();
+	const user = useAppSelector((state) => state.users.currentUser);
+	const navigate = useNavigate();
 
+	useEffect(() => {
+		const closeMenu = (e: MouseEvent) => {
+			if (
+				showDropdown &&
+				dropdownMenuRef?.current &&
+				!(dropdownMenuRef.current as HTMLElement).contains(
+					e.target as Node,
+				)
+			) {
+				setShowDropdown(false);
+			}
 		};
+		document.addEventListener('mousedown', closeMenu);
+		return () => {
+			document.removeEventListener('mousedown', closeMenu);
+		};
+	}, [showDropdown]);
+
+	const ToggleMenu = () => {
+		setShowDropdown((prevState) => !prevState);
+	};
+	const handleLogout = () => {
+		dispatch(logoutUser());
+		navigate('/login');
+	};
 	return (
 		<div
 			className='w-full relative'
@@ -92,7 +94,11 @@ const ProfileDropdown = () => {
 								icon={link.icon}
 								className={`${link.iconColor} pr-2`}
 							/>{' '}
-							{link.link?<Link to={link.link}>{link.name}</Link>:<span onClick={handleLogout}>{link.name}</span>}
+							{link.link ? (
+								<Link to={link.link}>{link.name}</Link>
+							) : (
+								<span onClick={handleLogout}>{link.name}</span>
+							)}
 						</li>
 					))}
 				</ul>

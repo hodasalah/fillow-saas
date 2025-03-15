@@ -32,15 +32,13 @@ export const loginWithGoogle = createAsyncThunk(
 							name: user.displayName,
 							profilePicture: user.photoURL,
 							createdAt: serverTimestamp(),
+							last_login: serverTimestamp(),
 							role: 'user',
 							projects: [],
 							tags: ['google-user'],
 							preferences: {
 								theme: 'light',
-								notifications: {
-									email: true,
-									push: true,
-								},
+								language: 'en-US',
 							},
 						},
 						{ merge: true },
@@ -51,6 +49,7 @@ export const loginWithGoogle = createAsyncThunk(
 					return {
 						...userData,
 						createdAt: userData.createdAt.toMillis(),
+						last_login: userData.last_login.toMillis(),
 					};
 				} else {
 					throw new Error('User data is undefined');
@@ -78,15 +77,27 @@ export const createUser = createAsyncThunk(
 			);
 			const user = userCredential.user;
 			await setDoc(doc(db, 'users', user.uid), {
-				uid: user.uid,
-				name: name,
+				userId: user.uid,
 				email: user.email,
+				name: user.displayName,
+				profilePicture: user.photoURL,
 				createdAt: serverTimestamp(),
-				profilePicture: user.photoURL || '',
+				last_login: serverTimestamp(),
+				role: 'user',
+				projects: [],
+				tags: ['google-user'],
+				preferences: {
+					theme: 'light',
+					language: 'en-US',
+				},
 			});
 			const userDoc = await getDoc(doc(db, 'users', user.uid));
 			const userData = userDoc.data();
-			return { ...user, createdAt: userData?.createdAt.toMillis() };
+			return {
+				...user,
+				createdAt: userData?.createdAt.toMillis(),
+				last_login: userData?.last_login.toMillis(),
+			};
 		} catch (error) {
 			return rejectWithValue((error as Error).message);
 		}
@@ -116,11 +127,19 @@ export const loginUser = createAsyncThunk(
 			if (!userSnap.exists()) {
 				// Add user if not already in Firestore
 				await setDoc(userRef, {
-					uid: user.uid,
+					userId: user.uid,
 					email: user.email,
-					name: user.displayName || 'Anonymous',
-					profilePicture: user.photoURL || '',
+					name: user.displayName,
+					profilePicture: user.photoURL,
 					createdAt: serverTimestamp(),
+					last_login: serverTimestamp(),
+					role: 'user',
+					projects: [],
+					tags: ['google-user'],
+					preferences: {
+						theme: 'light',
+						language: 'en-US',
+					},
 				});
 			}
 			const userData = userSnap.data();
@@ -128,6 +147,7 @@ export const loginUser = createAsyncThunk(
 				return {
 					...userData,
 					createdAt: userData.createdAt.toMillis(),
+					last_login: userData.last_login.toMillis(),
 				};
 			} else {
 				throw new Error('User data is undefined');

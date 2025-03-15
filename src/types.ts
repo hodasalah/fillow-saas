@@ -18,6 +18,7 @@ export type User = {
 		theme: 'light' | 'dark';
 		language: 'en-US' | 'ar-SA';
 	};
+	taskProgress: number;
 };
 
 // Project

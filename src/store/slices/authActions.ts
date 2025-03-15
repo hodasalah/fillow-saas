@@ -40,6 +40,7 @@ export const loginWithGoogle = createAsyncThunk(
 								theme: 'light',
 								language: 'en-US',
 							},
+							taskProgress: 25,
 						},
 						{ merge: true },
 					);
@@ -90,6 +91,7 @@ export const createUser = createAsyncThunk(
 					theme: 'light',
 					language: 'en-US',
 				},
+				taskProgress: 25,
 			});
 			const userDoc = await getDoc(doc(db, 'users', user.uid));
 			const userData = userDoc.data();
@@ -140,6 +142,7 @@ export const loginUser = createAsyncThunk(
 						theme: 'light',
 						language: 'en-US',
 					},
+					taskProgress:25,
 				});
 			}
 			const userData = userSnap.data();

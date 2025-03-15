@@ -8,6 +8,7 @@ const SidebarProfile = () => {
 	const user = useAppSelector(
 		(state) => state.users.currentUser,
 	) as User | null;
+	console.log(user)
 	return (
 		<div
 			className={`${
@@ -22,7 +23,9 @@ const SidebarProfile = () => {
 					/>
 				</div>
 				<div className='overflow-hidden'>
-					<h5 className='leading-6 font-semibold max-w-full'>{user?.name}</h5>
+					<h5 className='leading-6 font-semibold max-w-full'>
+						{user?.name}
+					</h5>
 					<span className='text-[.7rem]'>{user?.email}</span>
 				</div>
 			</div>
@@ -34,11 +37,15 @@ const SidebarProfile = () => {
 					/>
 					Task Progress
 				</span>
-				<span className='text-[.75rem] leading-6'>20/45</span>
+				<span className='text-[.75rem] leading-6'>
+					{user?.taskProgress}/45
+				</span>
 			</div>
 			<div className='flex h-[8px] bg-[#f6f6f6] rounded-[0.625rem] overflow-hidden default-progress '>
 				<div className='progress-bar bg-gradientf progress-animated'>
-					<span className='sr-only'>45% Complete</span>
+					<span className='sr-only'>
+						{user?.taskProgress} Complete
+					</span>
 				</div>
 			</div>
 		</div>

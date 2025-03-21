@@ -1,7 +1,6 @@
 // PrivateRoute.tsx
 import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router';
-import { auth } from './firebase';
+import { useNavigate, useLocation } from 'react-router';
 import { useAppDispatch, useAppSelector } from './hooks/hooks';
 import { setLoading } from './store/slices/loadingSlice';
 
@@ -13,17 +12,20 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({ children }) => {
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 	const user = useAppSelector((state) => state.users.currentUser);
+	const isLoading = useAppSelector((state) => state.loading.isLoading);
+	const location = useLocation();
 
 	useEffect(() => {
-		dispatch(setLoading(true));
-		if (user) {
-			dispatch(setLoading(false));
-		} else {
-			navigate('/login');
+		if (!user && !isLoading) {
+			dispatch(setLoading(true));
+			navigate('/login', { state: { from: location } });
+		}
+		if (user && isLoading) {
 			dispatch(setLoading(false));
 		}
-	}, [user]);
-	return user && children;
+	}, [user, dispatch, navigate, isLoading, location]);
+
+	return user ? <>{children}</> : null;
 };
 
 export default PrivateRoute;

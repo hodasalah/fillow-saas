@@ -1,6 +1,6 @@
 // Login.tsx
 import React, { useState } from 'react';
-import { NavLink, useNavigate } from 'react-router';
+import { NavLink, useNavigate,useLocation } from 'react-router';
 import Logo from '../components/logo/logo';
 import MiniLogo from '../components/logo/miniLogo';
 import { auth } from '../firebase';
@@ -8,13 +8,17 @@ import { useAppDispatch, useAppSelector } from '../hooks/hooks';
 import { loginUser, loginWithGoogle } from '../store/slices/authActions';
 import { setLoading } from '../store/slices/loadingSlice';
 
+
 const Login: React.FC = () => {
-	const navigate = useNavigate();
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [error, setError] = useState<string | null>(null);
 	const dispatch = useAppDispatch();
 	const user = useAppSelector((state) => state.users.currentUser);
+
+	const location = useLocation();
+	const navigate = useNavigate();
+	const from = location.state?.from?.pathname || '/dashboard'; // Get the previous route or default to '/dashboard'
 
 	// Handle login with email and password
 	const handleLogin = async (e: React.FormEvent) => {
@@ -23,6 +27,7 @@ const Login: React.FC = () => {
 		try {
 			dispatch(setLoading(true));
 			await dispatch(loginUser({ email, password }));
+			navigate(from, { replace: true }); // Redirect to the previous route, replacing the current entry in history
 		} finally {
 			dispatch(setLoading(false));
 		}
@@ -35,7 +40,7 @@ const Login: React.FC = () => {
 			if (!user) {
 				// Prevent duplicate dispatches
 				await dispatch(loginWithGoogle());
-				navigate('/dashboard');
+				navigate(from, { replace: true }); // Redirect to the previous route, replacing the current entry in history
 				dispatch(setLoading(false));
 			}
 		} catch (err: any) {

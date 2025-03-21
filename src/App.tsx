@@ -1,6 +1,5 @@
 import { Route, Routes, useNavigate } from 'react-router';
 import Loading from './components/Loading';
-import { auth } from './firebase';
 import { useAppSelector } from './hooks/hooks';
 import Layout from './layout/dashboardLayout';
 import DashboardHome from './layout/dashboardLayout/pages/home';
@@ -16,12 +15,13 @@ const App = () => {
 	const loading = useAppSelector((state) => state.loading.isLoading);
 	const navigate = useNavigate();
 	const user = useAppSelector((state) => state.users.currentUser);
-	console.log(user);
+
 	useEffect(() => {
 		if (user) {
 			navigate('/dashboard');
 		}
-	}, []);
+	}, [user, navigate]);
+
 	return (
 		<div className='relative transition-all ease-in-out duration-200'>
 			{loading ? (
@@ -46,12 +46,19 @@ const App = () => {
 							path='signup'
 							element={<Signup />}
 						/>
+						<Route
+							path='*'
+							element={
+								<div className='h-screen w-full flex items-center pl-[10rem] justify-center'>
+									Public Page not found
+								</div>
+							}
+						/>
 					</Routes>
 
 					<AuthListener>
 						<Routes>
 							{/* Protected route */}
-
 							<Route
 								path='dashboard'
 								element={
@@ -63,7 +70,7 @@ const App = () => {
 								<Route
 									index
 									element={<DashboardHome />}
-							/>
+								/>
 								<Route
 									path='projects'
 									element={<Projects />}
@@ -92,7 +99,7 @@ const App = () => {
 									path='*'
 									element={
 										<div className='h-screen w-full flex items-center pl-[10rem] justify-center'>
-											Page not found
+											Dashboard Page not found
 										</div>
 									}
 								/>

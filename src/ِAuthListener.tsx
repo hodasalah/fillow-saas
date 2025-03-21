@@ -12,6 +12,7 @@ const AuthListener = ({ children }: { children: ReactNode }) => {
 
 	useEffect(() => {
 		const unsubscribe = auth.onAuthStateChanged(async (user) => {
+			dispatch(setLoading(true));
 			try {
 				if (user) {
 					const userDoc = await getDoc(doc(db, 'users', user.uid));
@@ -24,7 +25,7 @@ const AuthListener = ({ children }: { children: ReactNode }) => {
 						}),
 					);
 				} else {
-					dispatch(setLoading(false));
+					dispatch(setUser(null));
 				}
 			} catch (err: any) {
 				console.log(err);

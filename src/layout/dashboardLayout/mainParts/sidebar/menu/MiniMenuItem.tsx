@@ -59,7 +59,7 @@ const MiniMenuItem: React.FC<MenuItemProps> = ({
 								}`}
 							>
 								<NavLink
-									to={submenuItem.link}
+									to={`/dashboard/${submenuItem.link}`}
 									className={`nav-link`}
 								>
 									{submenuItem.title}

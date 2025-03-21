@@ -21,7 +21,7 @@ const DashboardHome = () => {
 						: mode === 'wide'
 						? 'pl-[var(--dz-sidebar-width)]'
 						: 'pl-[var(--dz-sidebar-width-mobile)]'
-				} w-full bg-body-bg text-[0.875rem] min-h-[calc(100vh-7.7rem)]  pt-[--dz-header-height]`}
+				} w-full bg-body-bg text-[0.875rem] min-h-[calc(100vh-5.3rem)]  pt-[--dz-header-height]`}
 		>
 			<div className='md:pl-[1.875rem] md:pr-[1.875rem] pt-[1.875rem] flex  justify-center'>
 				<div className='grid grid-cols-1 md:grid-cols-2  gap-4 xl:gap-8  '>

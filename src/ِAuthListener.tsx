@@ -4,14 +4,11 @@ import { setUser } from './store/slices/usersSlice';
 
 import { doc, getDoc } from 'firebase/firestore';
 import { ReactNode } from 'react';
-import { useNavigate } from 'react-router';
 import { useAppDispatch } from './hooks/hooks';
 import { setLoading } from './store/slices/loadingSlice';
 
 const AuthListener = ({ children }: { children: ReactNode }) => {
 	const dispatch = useAppDispatch();
-	const navigate = useNavigate();
-	const user = auth.currentUser;
 
 	useEffect(() => {
 		const unsubscribe = auth.onAuthStateChanged(async (user) => {
@@ -27,7 +24,6 @@ const AuthListener = ({ children }: { children: ReactNode }) => {
 						}),
 					);
 				} else {
-					dispatch(setUser(null));
 					dispatch(setLoading(false));
 				}
 			} catch (err: any) {

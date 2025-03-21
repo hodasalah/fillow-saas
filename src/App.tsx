@@ -4,17 +4,24 @@ import { auth } from './firebase';
 import { useAppSelector } from './hooks/hooks';
 import Layout from './layout/dashboardLayout';
 import DashboardHome from './layout/dashboardLayout/pages/home';
+import Projects from './layout/dashboardLayout/pages/projects';
 import PrivateRoute from './PrivateRoute';
 import Home from './routes/Home';
 import Login from './routes/Login';
 import Signup from './routes/SignUp';
 import AuthListener from './ِAuthListener';
+import { useEffect } from 'react';
 
 const App = () => {
 	const loading = useAppSelector((state) => state.loading.isLoading);
 	const navigate = useNavigate();
-	const user = auth.currentUser;
-
+	const user = useAppSelector((state) => state.users.currentUser);
+	console.log(user);
+	useEffect(() => {
+		if (user) {
+			navigate('/dashboard');
+		}
+	}, []);
 	return (
 		<div className='relative transition-all ease-in-out duration-200'>
 			{loading ? (
@@ -55,11 +62,11 @@ const App = () => {
 							>
 								<Route
 									index
-									element={
-										<PrivateRoute>
-											<DashboardHome />
-										</PrivateRoute>
-									}
+									element={<DashboardHome />}
+							/>
+								<Route
+									path='projects'
+									element={<Projects />}
 								/>
 								<Route
 									path='profile'

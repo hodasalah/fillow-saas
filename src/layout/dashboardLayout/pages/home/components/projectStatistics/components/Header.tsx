@@ -1,6 +1,6 @@
 import DropdownDelEditBtn from '../../../../../../../components/dropdownDelEditBtn';
+import TabGroup from '../../../../../../../components/TabGroup';
 import { TABS } from './constants';
-import TabGroup from './TabGroup';
 import { TimePeriod } from './types';
 
 interface HeaderProps {

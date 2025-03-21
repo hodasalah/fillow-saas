@@ -4,7 +4,7 @@ import { NavLink, useNavigate } from 'react-router';
 import Logo from '../components/logo/logo';
 import MiniLogo from '../components/logo/miniLogo';
 import { auth } from '../firebase';
-import { useAppDispatch } from '../hooks/hooks';
+import { useAppDispatch, useAppSelector } from '../hooks/hooks';
 import { loginUser, loginWithGoogle } from '../store/slices/authActions';
 import { setLoading } from '../store/slices/loadingSlice';
 
@@ -14,7 +14,7 @@ const Login: React.FC = () => {
 	const [password, setPassword] = useState('');
 	const [error, setError] = useState<string | null>(null);
 	const dispatch = useAppDispatch();
-	const user = auth.currentUser;
+	const user = useAppSelector((state) => state.users.currentUser);
 
 	// Handle login with email and password
 	const handleLogin = async (e: React.FormEvent) => {

@@ -1,4 +1,7 @@
-import { TabConfig, TimePeriod } from './types';
+import {
+	TabConfig,
+	TimePeriod,
+} from '../layout/dashboardLayout/pages/home/components/projectStatistics/components/types';
 
 const TabGroup = ({
 	tabs,
@@ -6,10 +9,10 @@ const TabGroup = ({
 	onTabChange,
 }: {
 	tabs: TabConfig[];
-	activeTab: TimePeriod;
-	onTabChange: (tab: TimePeriod) => void;
+	activeTab: TimePeriod | string;
+	onTabChange: (tab: TimePeriod | string) => void;
 }) => (
-	<div className='bg-primary-100 p-1 rounded-lg flex gap-1'>
+	<div className='bg-white p-1 rounded-lg flex gap-1'>
 		{tabs.map((tab) => (
 			<button
 				key={tab.id}

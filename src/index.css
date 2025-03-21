@@ -105,7 +105,11 @@ body>* {
 svg {
 	display: inline-block;
 }
-
+h6{
+	line-height: 1.5;
+	font-weight: 600;
+	color:var(--text-dark);
+}
 .brand-logo {
 	display: flex;
 	height: 100%;

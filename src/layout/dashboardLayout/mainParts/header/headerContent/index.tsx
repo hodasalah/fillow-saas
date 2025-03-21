@@ -5,6 +5,8 @@ import ProfileDropdown from '../../../../../components/profileDropdown/ProfileDr
 import { useAppSelector } from '../../../../../hooks/hooks';
 
 import { items } from './constants';
+import { useLocation } from 'react-router';
+import ToggleSwitch from './../../../../../components/toggleSwitch/ToggleSwitch';
 
 interface HeaderContentProps {
 	setShowSlider: (show: boolean) => void;
@@ -51,7 +53,8 @@ const HeaderContent = ({ setShowSlider }: HeaderContentProps) => {
 				break;
 		}
 	};
-
+const location = useLocation();
+console.log(location.pathname.split('/').at(-1));
 	return (
 		<header
 			className={`relative flex items-center ${
@@ -62,7 +65,8 @@ const HeaderContent = ({ setShowSlider }: HeaderContentProps) => {
 		>
 			<nav className='flex sm:justify-between justify-end items-center w-full'>
 				<div className='font-bold text-[1.25rem] text-[--text-dark] hidden sm:block'>
-					Dashboard
+					{(location.pathname.split('/').at(-1) ?? '').charAt(0).toUpperCase() +
+						(location.pathname.split('/').at(-1) ?? '').slice(1)}
 				</div>
 				<div className='nav-links flex items-center px-2 sm:px-5'>
 					<ul className='header-right w-full flex  md:items-center  justify-end'>
@@ -122,6 +126,6 @@ const HeaderContent = ({ setShowSlider }: HeaderContentProps) => {
 			</nav>
 		</header>
 	);
-};
 
+};
 export default HeaderContent;

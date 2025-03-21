@@ -46,12 +46,12 @@ const list = [
 		name: 'Dashboard',
 		hasSubMenu: true,
 		submenu: [
-			{ id: uuidv4(), title: 'Dashboard', link: '/dashboard' },
-			{ id: uuidv4(), title: 'Project', link: '/project' },
-			{ id: uuidv4(), title: 'Contacts', link: '/contacts' },
-			{ id: uuidv4(), title: 'Kanban', link: '/kanban' },
-			{ id: uuidv4(), title: 'Calendar', link: '/calendar' },
-			{ id: uuidv4(), title: 'Messages', link: '/messages' },
+			{ id: uuidv4(), title: 'Dashboard', link: 'dashboard' },
+			{ id: uuidv4(), title: 'Project', link: 'projects' },
+			{ id: uuidv4(), title: 'Contacts', link: 'contacts' },
+			{ id: uuidv4(), title: 'Kanban', link: 'kanban' },
+			{ id: uuidv4(), title: 'Calendar', link: 'calendar' },
+			{ id: uuidv4(), title: 'Messages', link: 'messages' },
 		],
 	},
 	{
@@ -60,14 +60,14 @@ const list = [
 		name: 'CMS',
 		hasSubMenu: true,
 		submenu: [
-			{ id: uuidv4(), title: 'Content', link: '/content' },
-			{ id: uuidv4(), title: 'Add Content', link: '/add-content' },
-			{ id: uuidv4(), title: 'Menus', link: '/menus' },
-			{ id: uuidv4(), title: 'Email Template', link: '/email-template' },
-			{ id: uuidv4(), title: 'Add Email', link: '/add-email' },
-			{ id: uuidv4(), title: 'Blog', link: '/blog' },
-			{ id: uuidv4(), title: 'Add Blog', link: '/add-blog' },
-			{ id: uuidv4(), title: 'Blog Category', link: '/blog-category' },
+			{ id: uuidv4(), title: 'Content', link: 'content' },
+			{ id: uuidv4(), title: 'Add Content', link: 'add-content' },
+			{ id: uuidv4(), title: 'Menus', link: 'menus' },
+			{ id: uuidv4(), title: 'Email Template', link: 'email-template' },
+			{ id: uuidv4(), title: 'Add Email', link: 'add-email' },
+			{ id: uuidv4(), title: 'Blog', link: 'blog' },
+			{ id: uuidv4(), title: 'Add Blog', link: 'add-blog' },
+			{ id: uuidv4(), title: 'Blog Category', link: 'blog-category' },
 		],
 	},
 	{
@@ -76,12 +76,12 @@ const list = [
 		name: 'Apps',
 		hasSubMenu: true,
 		submenu: [
-			{ id: uuidv4(), title: 'Profile', link: '/profile' },
-			{ id: uuidv4(), title: 'Edit Profile', link: '/edit-profile' },
-			{ id: uuidv4(), title: 'Post Details', link: '/post-details' },
-			{ id: uuidv4(), title: 'Email', link: '/email' },
-			{ id: uuidv4(), title: 'Calendar', link: '/calendar' },
-			{ id: uuidv4(), title: 'Shop', link: '/shop' },
+			{ id: uuidv4(), title: 'Profile', link: 'profile' },
+			{ id: uuidv4(), title: 'Edit Profile', link: 'edit-profile' },
+			{ id: uuidv4(), title: 'Post Details', link: 'post-details' },
+			{ id: uuidv4(), title: 'Email', link: 'email' },
+			{ id: uuidv4(), title: 'Calendar', link: 'calendar' },
+			{ id: uuidv4(), title: 'Shop', link: 'shop' },
 		],
 	},
 	{
@@ -90,9 +90,9 @@ const list = [
 		name: 'Charts',
 		hasSubMenu: true,
 		submenu: [
-			{ id: uuidv4(), title: 'Chart', link: '/chart' },
-			{ id: uuidv4(), title: 'Chart 2', link: '/chart2' },
-			{ id: uuidv4(), title: 'Chart 3', link: '/chart3' },
+			{ id: uuidv4(), title: 'Chart', link: 'chart' },
+			{ id: uuidv4(), title: 'Chart 2', link: 'chart2' },
+			{ id: uuidv4(), title: 'Chart 3', link: 'chart3' },
 		],
 	},
 	{
@@ -101,9 +101,9 @@ const list = [
 		name: 'Bootstrap',
 		hasSubMenu: true,
 		submenu: [
-			{ id: uuidv4(), title: 'Bootstrap', link: '/bootstrap' },
-			{ id: uuidv4(), title: 'Bootstrap 2', link: '/bootstrap2' },
-			{ id: uuidv4(), title: 'Bootstrap 3', link: '/bootstrap3' },
+			{ id: uuidv4(), title: 'Bootstrap', link: 'bootstrap' },
+			{ id: uuidv4(), title: 'Bootstrap 2', link: 'bootstrap2' },
+			{ id: uuidv4(), title: 'Bootstrap 3', link: 'bootstrap3' },
 		],
 	},
 	{
@@ -112,9 +112,9 @@ const list = [
 		name: 'Plugins',
 		hasSubMenu: true,
 		submenu: [
-			{ id: uuidv4(), title: 'plugin-1', link: '/plugin-1' },
-			{ id: uuidv4(), title: 'plugin-2', link: '/plugin-2' },
-			{ id: uuidv4(), title: 'plugin-3', link: '/plugin-3' },
+			{ id: uuidv4(), title: 'plugin-1', link: 'plugin-1' },
+			{ id: uuidv4(), title: 'plugin-2', link: 'plugin-2' },
+			{ id: uuidv4(), title: 'plugin-3', link: 'plugin-3' },
 		],
 	},
 	{
@@ -123,8 +123,8 @@ const list = [
 		name: 'Widget',
 		hasSubMenu: true,
 		submenu: [
-			{ id: uuidv4(), title: 'Edit Profile', link: '/edit-profile' },
-			{ id: uuidv4(), title: 'signOut', link: '/signout' },
+			{ id: uuidv4(), title: 'Edit Profile', link: 'edit-profile' },
+			{ id: uuidv4(), title: 'signOut', link: 'signout' },
 		],
 	},
 	{
@@ -133,14 +133,14 @@ const list = [
 		name: 'Forms',
 		hasSubMenu: true,
 		submenu: [
-			{ id: uuidv4(), title: 'Form Elements', link: '/form-elements' },
-			{ id: uuidv4(), title: 'Form Layouts', link: '/form-layouts' },
+			{ id: uuidv4(), title: 'Form Elements', link: 'form-elements' },
+			{ id: uuidv4(), title: 'Form Layouts', link: 'form-layouts' },
 			{
 				id: uuidv4(),
 				title: 'Form Validation',
 				link: '/form-validation',
 			},
-			{ id: uuidv4(), title: 'Form Advanced', link: '/form-advanced' },
+			{ id: uuidv4(), title: 'Form Advanced', link: 'form-advanced' },
 		],
 	},
 	{
@@ -149,8 +149,8 @@ const list = [
 		name: 'Table',
 		hasSubMenu: true,
 		submenu: [
-			{ id: uuidv4(), title: 'Table Elements', link: '/table-elements' },
-			{ id: uuidv4(), title: 'Table Data', link: '/table-data' },
+			{ id: uuidv4(), title: 'Table Elements', link: 'table-elements' },
+			{ id: uuidv4(), title: 'Table Data', link: 'table-data' },
 		],
 	},
 ];

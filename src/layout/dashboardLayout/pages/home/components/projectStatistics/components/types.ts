@@ -8,7 +8,7 @@ export interface StatisticsData {
 }
 
 export interface TabConfig {
-	id: TimePeriod;
+	id: TimePeriod |string;
 	label: string;
 }
 

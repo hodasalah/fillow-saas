@@ -2,7 +2,7 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { auth } from './firebase';
-import { useAppDispatch } from './hooks/hooks';
+import { useAppDispatch, useAppSelector } from './hooks/hooks';
 import { setLoading } from './store/slices/loadingSlice';
 
 interface PrivateRouteProps {
@@ -12,7 +12,7 @@ interface PrivateRouteProps {
 const PrivateRoute: React.FC<PrivateRouteProps> = ({ children }) => {
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
-	const user = auth.currentUser;
+	const user = useAppSelector((state) => state.users.currentUser);
 
 	useEffect(() => {
 		dispatch(setLoading(true));

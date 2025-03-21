@@ -22,7 +22,16 @@
 					"background": "#61CFF1"
 				}
 			],
-			"image": "/assets/Solutions.png"
+			"image": "/assets/Solutions.png",
+			"status": "On Progress",
+			"client": {
+				"name": "Tamer Tawfik",
+				"image": "/assets/Solutions.png"
+			},
+			"PersonInCharge": {
+				"name": "Hoda Salah",
+				"image": "/assets/Solutions.png"
+			}
 		},
 		{
 			"name": "Big Wind",
@@ -49,7 +58,16 @@
 					"background": "#FFEDF0"
 				}
 			],
-			"image": "/assets/big-wind.png"
+			"image": "/assets/big-wind.png",
+			"status": "Pending",
+			"client": {
+				"name": "Enas Samy",
+				"image": "/assets/big-wind.png"
+			},
+			"PersonInCharge": {
+				"name": "Hoda",
+				"image": "/assets/big-wind.png"
+			}
 		},
 		{
 			"name": "Circle Hunt",
@@ -76,7 +94,16 @@
 					"background": "#FFEDF0"
 				}
 			],
-			"image": "/assets/circle-hunt.png"
+			"image": "/assets/circle-hunt.png",
+			"status": "Closed",
+			"client": {
+				"name": "Tamer Tawfik",
+				"image": "/assets/circle-hunt.png"
+			},
+			"PersonInCharge": {
+				"name": "Hoda Salah",
+				"image": "/assets/circle-hunt.png"
+			}
 		}
 	]
 }

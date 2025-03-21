@@ -13,13 +13,13 @@ const Signup: React.FC = () => {
 	const [password, setPassword] = useState('');
 	const [error, setError] = useState<string | null>(null);
 	const dispatch = useAppDispatch();
-	const { user, loading } = useAppSelector((state) => state.auth);
+	const { currentUser, loading } = useAppSelector((state) => state.users);
 
 	useEffect(() => {
-		if (user) {
+		if (currentUser) {
 			navigate('/dashboard');
 		}
-	}, [user, navigate]);
+	}, [currentUser, navigate]);
 	// Signup with email and password
 	const handleSignup = async (e: React.FormEvent) => {
 		e.preventDefault();
@@ -36,7 +36,7 @@ const Signup: React.FC = () => {
 	// Signup with Google
 	const handleGoogleSignup = async () => {
 		setError(null);
-		if (!user && !loading) {
+		if (!currentUser && !loading) {
 			// Prevent duplicate dispatches
 			await dispatch(loginWithGoogle());
 		}

@@ -1,26 +1,27 @@
 import { Timestamp } from 'firebase/firestore';
 
 // User
-export type User = {
+import { FieldValue } from 'firebase/firestore';
+
+export interface User {
 	uid: string;
-	name: string;
 	email: string;
+	name: string;
 	profilePicture: string;
-	role: 'admin' | 'member';
-	createdAt?: Timestamp | number;
-	last_login: number;
-	teams: string[];
+	createdAt?: number | Timestamp | FieldValue;
+	last_login?: number | Timestamp | FieldValue;
+	role: string;
 	projects: string[];
-	status: 'online' | 'offline';
-	lastSeen: Date;
 	tags: string[];
 	preferences: {
-		theme: 'light' | 'dark';
-		language: 'en-US' | 'ar-SA';
+		theme: string;
+		language: string;
 	};
 	taskProgress: number;
-};
-
+	teams: string[];
+	status: string;
+	lastSeen?: number | Timestamp | FieldValue;
+}
 // Project
 export type Project = {
 	id: string;
@@ -30,6 +31,7 @@ export type Project = {
 	teamId?: string;
 	members: string[];
 	createdAt: Date;
+	status: string;
 };
 
 // Team

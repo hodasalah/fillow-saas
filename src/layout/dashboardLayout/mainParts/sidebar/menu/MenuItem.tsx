@@ -36,7 +36,7 @@ const MenuItem: React.FC<MenuItemProps> = ({
 							key={submenuItem.title}
 						>
 							<NavLink
-								to={submenuItem.link}
+								to={`/dashboard/${submenuItem.link}`}
 								className={`nav-link `}
 							>
 								{submenuItem.title}

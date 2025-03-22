@@ -1,4 +1,3 @@
-// Signup.tsx
 import React, { useEffect, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router';
 import Logo from '../components/logo/logo';
@@ -13,13 +12,24 @@ const Signup: React.FC = () => {
 	const [password, setPassword] = useState('');
 	const [error, setError] = useState<string | null>(null);
 	const dispatch = useAppDispatch();
-	const { currentUser, loading } = useAppSelector((state) => state.users);
+	const {
+		currentUser,
+		status,
+		error: authError,
+	} = useAppSelector((state) => state.auth);
 
 	useEffect(() => {
 		if (currentUser) {
 			navigate('/dashboard');
 		}
 	}, [currentUser, navigate]);
+
+	useEffect(() => {
+		if (authError) {
+			setError(authError);
+		}
+	}, [authError]);
+
 	// Signup with email and password
 	const handleSignup = async (e: React.FormEvent) => {
 		e.preventDefault();
@@ -27,18 +37,19 @@ const Signup: React.FC = () => {
 		try {
 			await dispatch(createUser({ email, password, name }));
 			// Optionally, navigate to login if using email signup flow
-			navigate('/login');
+			// navigate('/login'); // Removed navigation here
 		} catch (err: any) {
-			setError(err);
+			setError(err.message || 'An error occurred during signup.');
 		}
 	};
 
 	// Signup with Google
 	const handleGoogleSignup = async () => {
 		setError(null);
-		if (!currentUser && !loading) {
-			// Prevent duplicate dispatches
+		try {
 			await dispatch(loginWithGoogle());
+		} catch (err: any) {
+			setError(err.message || 'An error occurred during Google signup.');
 		}
 	};
 
@@ -50,7 +61,7 @@ const Signup: React.FC = () => {
 						<MiniLogo />
 						<Logo />
 					</div>
-					{error && <p style={{ color: 'red' }}>{error}</p>}
+					{error && <p className='text-red-500 px-4'>{error}</p>}
 					<form
 						onSubmit={handleSignup}
 						className='mb-4'
@@ -108,8 +119,11 @@ const Signup: React.FC = () => {
 							<button
 								type='submit'
 								className='bg-primary w-full rounded-lg py-2 text-white'
+								disabled={status === 'loading'}
 							>
-								Signup
+								{status === 'loading'
+									? 'Signing up...'
+									: 'Signup'}
 							</button>
 						</div>
 					</form>
@@ -117,8 +131,11 @@ const Signup: React.FC = () => {
 						<button
 							onClick={handleGoogleSignup}
 							className='text-primary w-full rounded-lg border-primary py-2 bg-rgba-primary-1'
+							disabled={status === 'loading'}
 						>
-							Signup with Google
+							{status === 'loading'
+								? 'Signing up with Google...'
+								: 'Signup with Google'}
 						</button>
 					</div>
 					<p className='px-4'>

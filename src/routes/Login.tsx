@@ -1,53 +1,48 @@
-// Login.tsx
-import React, { useState } from 'react';
-import { NavLink, useNavigate,useLocation } from 'react-router';
+import React, { useEffect, useState } from 'react';
+import { NavLink, useNavigate } from 'react-router';
 import Logo from '../components/logo/logo';
 import MiniLogo from '../components/logo/miniLogo';
-import { auth } from '../firebase';
 import { useAppDispatch, useAppSelector } from '../hooks/hooks';
 import { loginUser, loginWithGoogle } from '../store/slices/authActions';
-import { setLoading } from '../store/slices/loadingSlice';
-
 
 const Login: React.FC = () => {
+	const navigate = useNavigate();
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [error, setError] = useState<string | null>(null);
 	const dispatch = useAppDispatch();
-	const user = useAppSelector((state) => state.users.currentUser);
+	const {
+		currentUser,
+		status,
+		error: authError,
+	} = useAppSelector((state) => state.auth);
 
-	const location = useLocation();
-	const navigate = useNavigate();
-	const from = location.state?.from?.pathname || '/dashboard'; // Get the previous route or default to '/dashboard'
+	useEffect(() => {
+		if (currentUser) {
+			navigate('/dashboard');
+		}
+	}, [currentUser, navigate]);
 
-	// Handle login with email and password
+	useEffect(() => {
+		if (authError) {
+			setError(authError);
+		}
+	}, [authError]);
+
 	const handleLogin = async (e: React.FormEvent) => {
 		e.preventDefault();
 		setError(null);
 		try {
-			dispatch(setLoading(true));
 			await dispatch(loginUser({ email, password }));
-			navigate(from, { replace: true }); // Redirect to the previous route, replacing the current entry in history
-		} finally {
-			dispatch(setLoading(false));
+		} catch (err: any) {
+			setError(err.message || 'An error occurred during login.');
 		}
 	};
-	// Handle login with Google
-
 	const handleGoogleLogin = async () => {
-		setError(null);
 		try {
-			if (!user) {
-				// Prevent duplicate dispatches
-				await dispatch(loginWithGoogle());
-				navigate(from, { replace: true }); // Redirect to the previous route, replacing the current entry in history
-				dispatch(setLoading(false));
-			}
+			await dispatch(loginWithGoogle());
 		} catch (err: any) {
-			setError(err.message);
-			dispatch(setLoading(false));
-		} finally {
-			dispatch(setLoading(false));
+			setError(err.message || 'An error occurred during login.');
 		}
 	};
 
@@ -59,7 +54,7 @@ const Login: React.FC = () => {
 						<MiniLogo />
 						<Logo />
 					</div>
-					{error && <p style={{ color: 'red' }}>{error}</p>}
+					{error && <p className='text-red-500 px-4'>{error}</p>}
 					<form
 						onSubmit={handleLogin}
 						className='mb-4'
@@ -101,26 +96,32 @@ const Login: React.FC = () => {
 							<button
 								type='submit'
 								className='bg-primary w-full rounded-lg py-2 text-white'
+								disabled={status === 'loading'}
 							>
-								Login
+								{status === 'loading'
+									? 'Logging in...'
+									: 'Login'}
+							</button>
+						</div>
+						<div className='px-2 mt-2'>
+							<button
+								onClick={handleGoogleLogin}
+								className='text-primary w-full rounded-lg border-primary py-2 bg-rgba-primary-1'
+								disabled={status === 'loading'}
+							>
+								{status === 'loading'
+									? 'Signing up with Google...'
+									: 'Signup with Google'}
 							</button>
 						</div>
 					</form>
-					<div className='px-2 mb-4'>
-						<button
-							onClick={handleGoogleLogin}
-							className='text-primary w-full rounded-lg border-primary py-2 bg-rgba-primary-1'
-						>
-							Login with Google
-						</button>
-					</div>
 					<p className='px-4'>
 						Don't have an account?{' '}
 						<NavLink
 							to='/signup'
-							className={'text-primary'}
+							className='text-primary'
 						>
-							Sign Up
+							Sign up
 						</NavLink>
 					</p>
 				</div>
@@ -128,4 +129,5 @@ const Login: React.FC = () => {
 		</div>
 	);
 };
+
 export default Login;

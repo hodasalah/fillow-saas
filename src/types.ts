@@ -1,15 +1,12 @@
-import { Timestamp } from 'firebase/firestore';
-
 // User
-import { FieldValue } from 'firebase/firestore';
 
 export interface User {
 	uid: string;
 	email: string;
 	name: string;
 	profilePicture: string;
-	createdAt?: number | Timestamp | FieldValue;
-	last_login?: number | Timestamp | FieldValue;
+	createdAt?: number;
+	last_login?: number;
 	role: string;
 	projects: string[];
 	tags: string[];
@@ -20,7 +17,7 @@ export interface User {
 	taskProgress: number;
 	teams: string[];
 	status: string;
-	lastSeen?: number | Timestamp | FieldValue;
+	lastSeen?: number;
 }
 // Project
 export type Project = {

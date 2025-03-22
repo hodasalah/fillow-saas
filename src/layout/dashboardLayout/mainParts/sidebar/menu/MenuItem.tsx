@@ -14,6 +14,8 @@ const MenuItem: React.FC<MenuItemProps> = ({
 		if (item.id === activeItem) {
 			ref?.current?.classList?.add('mm-active');
 			setActiveItem?.(item.id);
+		} else {
+			ref.current?.classList.remove('mm-active');
 		}
 	}, [item.id, activeItem, setActiveItem]);
 	const ref = useRef<HTMLLIElement>(null);
@@ -36,8 +38,15 @@ const MenuItem: React.FC<MenuItemProps> = ({
 							key={submenuItem.title}
 						>
 							<NavLink
-								to={`/dashboard/${submenuItem.link}`}
-								className={`nav-link `}
+								to={
+									submenuItem.title === 'Dashboard'
+										? '/dashboard'
+										: `/dashboard/${submenuItem.link}`
+								}
+								className={({ isActive }) =>
+									`nav-link ${isActive ? 'active' : ''}`
+								}
+								end={submenuItem.title === 'Dashboard'}
 							>
 								{submenuItem.title}
 							</NavLink>

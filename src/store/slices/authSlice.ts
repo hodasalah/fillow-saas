@@ -1,74 +1,82 @@
-// authSlice.js
 import { createSlice } from '@reduxjs/toolkit';
-import { User } from 'firebase/auth';
-import { loginUser, loginWithGoogle, logoutUser } from './authActions';
+import { User as FirebaseUser } from 'firebase/auth';
+import {
+	createUser,
+	loginUser,
+	loginWithGoogle,
+	logoutUser,
+} from './authActions';
+import { User } from '../../types';
+
+interface AuthState {
+	currentUser: User | null;
+	status: 'idle' | 'loading' | 'succeeded' | 'failed';
+	error: string | null;
+}
+
+const initialState: AuthState = {
+	currentUser: null,
+	status: 'idle',
+	error: null,
+};
 
 const authSlice = createSlice({
 	name: 'auth',
-	initialState: {
-		user: null as User | null,
-		loading: false,
-		error: null as unknown,
-	},
+	initialState,
 	reducers: {
 		setUser: (state, action) => {
-			state.user = {
-				...action.payload,
-				emailVerified: action.payload.emailVerified ?? false,
-				createdAt:
-					action.payload.createdAt,
-				last_login:
-					action.payload.last_login.toMillis(),
-				role: 'user',
-				projects: [],
-				tags: ['google-user'],
-				preferences: {
-					theme: 'light',
-					language: 'en-US',
-				},
-			} as User;
+			state.currentUser = action.payload;
 		},
 	},
 	extraReducers: (builder) => {
 		builder
 			.addCase(loginWithGoogle.pending, (state) => {
-				state.loading = true;
+				state.status = 'loading';
+				state.error = null;
 			})
 			.addCase(loginWithGoogle.fulfilled, (state, action) => {
-				state.loading = false;
-				state.user = {
-					...action.payload,
-				} as unknown as User;
+				state.status = 'succeeded';
+				state.currentUser = action.payload;
 			})
 			.addCase(loginWithGoogle.rejected, (state, action) => {
-				state.loading = false;
-				state.error = action.error.message;
+				state.status = 'failed';
+				state.error = action.payload || 'An error occurred';
 			})
-			// حالة تسجيل الدخول
+			.addCase(createUser.pending, (state) => {
+				state.status = 'loading';
+				state.error = null;
+			})
+			.addCase(createUser.fulfilled, (state, action) => {
+				state.status = 'succeeded';
+				state.currentUser = action.payload;
+			})
+			.addCase(createUser.rejected, (state, action) => {
+				state.status = 'failed';
+				state.error = action.payload || 'An error occurred';
+			})
 			.addCase(loginUser.pending, (state) => {
-				state.loading = true;
+				state.status = 'loading';
 				state.error = null;
 			})
 			.addCase(loginUser.fulfilled, (state, action) => {
-				state.loading = false;
-				state.user = action.payload;
+				state.status = 'succeeded';
+				state.currentUser = action.payload;
 			})
 			.addCase(loginUser.rejected, (state, action) => {
-				state.loading = false;
-				state.error = action.payload;
+				state.status = 'failed';
+				state.error = action.payload || 'An error occurred';
 			})
-			// حالة تسجيل الخروج
 			.addCase(logoutUser.pending, (state) => {
-				state.loading = true;
+				state.status = 'loading';
 				state.error = null;
 			})
 			.addCase(logoutUser.fulfilled, (state) => {
-				state.loading = false;
-				state.user = null;
+				state.status = 'idle';
+				state.currentUser = null;
 			})
 			.addCase(logoutUser.rejected, (state, action) => {
-				state.loading = false;
-				state.error = action.payload;
+				state.status = 'failed';
+				state.error = action.payload || 'An error occurred';
 			});
 	},
 });

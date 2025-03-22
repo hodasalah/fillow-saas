@@ -9,7 +9,7 @@ const MiniMenuItem: React.FC<MenuItemProps> = ({
 	onItemClick,
 	toggleDropdown,
 	openDropdown,
-	setOpenDropdown = () => {}
+	setOpenDropdown = () => {},
 }) => {
 	const dropdownlistRef = useRef<HTMLUListElement>(null);
 	const location = useLocation();
@@ -59,8 +59,15 @@ const MiniMenuItem: React.FC<MenuItemProps> = ({
 								}`}
 							>
 								<NavLink
-									to={`/dashboard/${submenuItem.link}`}
-									className={`nav-link`}
+									to={
+										submenuItem.title === 'Dashboard'
+											? '/dashboard'
+											: `/dashboard/${submenuItem.link}`
+									}
+									className={({ isActive }) =>
+										`nav-link ${isActive ? 'active' : ''}`
+									}
+									end={submenuItem.title === 'Dashboard'}
 								>
 									{submenuItem.title}
 								</NavLink>

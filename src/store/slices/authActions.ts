@@ -1,175 +1,142 @@
-// authActions.js أو يمكنك تضمينها داخل authSlice.js
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import {
 	createUserWithEmailAndPassword,
 	GoogleAuthProvider,
 	signInWithEmailAndPassword,
 	signInWithPopup,
+	UserCredential,
 } from 'firebase/auth';
 import { doc, getDoc, serverTimestamp, setDoc } from 'firebase/firestore';
 import { auth, db } from '../../firebase';
+import { User } from '../../types';
 
-//signup with google auth
-export const loginWithGoogle = createAsyncThunk(
-	'auth/loginWithGoogle',
-	async (_, { rejectWithValue }) => {
-		try {
-			const provider = new GoogleAuthProvider();
-			const userCredential = await signInWithPopup(auth, provider);
-			const user = userCredential.user;
-			if (user) {
-				// Reference to the user's document in Firestore
-				const userRef = doc(db, 'users', user.uid);
-				const userSnap = await getDoc(userRef);
+// Helper function to create or update user in Firestore
+const createUserInFirestore = async (
+	user: any,
+	name?: string,
+): Promise<User> => {
+	const userRef = doc(db, 'users', user.uid);
+	const userSnap = await getDoc(userRef);
 
-				if (!userSnap.exists()) {
-					// Create new user document if doesn't exist
-					await setDoc(
-						userRef,
-						{
-							userId: user.uid,
-							email: user.email,
-							name: user.displayName,
-							profilePicture: user.photoURL,
-							createdAt: serverTimestamp(),
-							last_login: serverTimestamp(),
-							role: 'user',
-							projects: [],
-							tags: ['google-user'],
-							preferences: {
-								theme: 'light',
-								language: 'en-US',
-							},
-							taskProgress: 25,
-						},
-						{ merge: true },
-					);
-				}
-				const userData = (await getDoc(userRef)).data();
-				if (userData) {
-					return {
-						...userData,
-						createdAt: userData.createdAt.toMillis(),
-						last_login: userData.last_login.toMillis(),
-					};
-				} else {
-					throw new Error('User data is undefined');
-				}
-			}
-		} catch (error) {
-			return rejectWithValue((error as Error).message);
-		}
-	},
-);
+	const userDataToSet = {
+		uid: user.uid,
+		email: user.email,
+		name: name || user.displayName || user.email, // Use provided name, then displayName, then email as fallback
+		profilePicture: user.photoURL || '', // Default to empty string if no photoURL
+		createdAt: serverTimestamp(),
+		last_login: serverTimestamp(),
+		role: 'user',
+		projects: [],
+		tags: user.providerData?.some(
+			(provider: any) => provider.providerId === 'google.com',
+		)
+			? ['google-user']
+			: [],
+		preferences: {
+			theme: 'light',
+			language: 'en-US',
+		},
+		taskProgress: 25,
+	};
 
-//اجراء انشاء الحساب
-export const createUser = createAsyncThunk(
-	'auth/createUser',
-	async (
-		payload: { email: string; password: string; name: string },
-		{ rejectWithValue },
-	) => {
-		try {
-			const { email, password, name } = payload;
-			const userCredential = await createUserWithEmailAndPassword(
-				auth,
-				email,
-				password,
-			);
-			const user = userCredential.user;
-			await setDoc(doc(db, 'users', user.uid), {
-				userId: user.uid,
-				email: user.email,
-				name: user.displayName,
-				profilePicture: user.photoURL,
-				createdAt: serverTimestamp(),
+	if (!userSnap.exists()) {
+		await setDoc(userRef, userDataToSet, { merge: true });
+	} else {
+		await setDoc(
+			userRef,
+			{
 				last_login: serverTimestamp(),
-				role: 'user',
-				projects: [],
-				tags: ['google-user'],
-				preferences: {
-					theme: 'light',
-					language: 'en-US',
-				},
-				taskProgress: 25,
-			});
-			const userDoc = await getDoc(doc(db, 'users', user.uid));
-			const userData = userDoc.data();
-			return {
-				...user,
-				createdAt: userData?.createdAt.toMillis(),
-				last_login: userData?.last_login.toMillis(),
-			};
-		} catch (error) {
-			return rejectWithValue((error as Error).message);
+			},
+			{ merge: true },
+		);
+	}
+
+	const userData = (await getDoc(userRef)).data();
+	if (userData) {
+		return {
+			...userData,
+			uid: user.uid,
+			createdAt: userData.createdAt.toMillis(),
+			last_login: userData.last_login.toMillis(),
+		} as User;
+	} else {
+		throw new Error('User data is undefined');
+	}
+};
+
+// Signup with Google
+export const loginWithGoogle = createAsyncThunk<
+	User,
+	void,
+	{ rejectValue: string }
+>('auth/loginWithGoogle', async (_, { rejectWithValue }) => {
+	try {
+		const provider = new GoogleAuthProvider();
+		const userCredential: UserCredential = await signInWithPopup(
+			auth,
+			provider,
+		);
+		const user = userCredential.user;
+		return await createUserInFirestore(user);
+	} catch (error) {
+		return rejectWithValue((error as Error).message);
+	}
+});
+
+// Create user with email and password
+export const createUser = createAsyncThunk<
+	User,
+	{ email: string; password: string; name: string },
+	{ rejectValue: string }
+>('auth/createUser', async (payload, { rejectWithValue }) => {
+	try {
+		const { email, password, name } = payload;
+		const userCredential: UserCredential =
+			await createUserWithEmailAndPassword(auth, email, password);
+		const user = userCredential.user;
+		// Update the user's display name
+		await user.updateProfile({ displayName: name });
+		return await createUserInFirestore(user, name);
+	} catch (error) {
+		return rejectWithValue((error as Error).message);
+	}
+});
+
+// Login user with email and password
+export const loginUser = createAsyncThunk<
+	User,
+	{ email: string; password: string },
+	{ rejectValue: string }
+>('auth/loginUser', async (payload, { rejectValue }) => {
+	try {
+		const { email, password } = payload;
+		const userCredential: UserCredential = await signInWithEmailAndPassword(
+			auth,
+			email,
+			password,
+		);
+		const user = userCredential.user;
+		const userDoc = await getDoc(doc(db, 'users', user.uid));
+		if (userDoc.exists()) {
+			return await createUserInFirestore(user);
+		} else {
+			throw new Error('This email is not registered. Please sign up.');
 		}
-	},
-);
+	} catch (error) {
+		return rejectWithValue((error as Error).message);
+	}
+});
 
-// إجراء تسجيل الدخول
-export const loginUser = createAsyncThunk(
-	'auth/loginUser',
-	async (
-		payload: { email: string; password: string },
-		{ rejectWithValue },
-	) => {
-		try {
-			const { email, password } = payload;
-			const userCredential = await signInWithEmailAndPassword(
-				auth,
-				email,
-				password,
-			);
-			const user = userCredential.user;
-
-			// Check if user exists in Firestore
-			const userRef = doc(db, 'users', user.uid);
-			const userSnap = await getDoc(userRef);
-
-			if (!userSnap.exists()) {
-				// Add user if not already in Firestore
-				await setDoc(userRef, {
-					userId: user.uid,
-					email: user.email,
-					name: user.displayName,
-					profilePicture: user.photoURL,
-					createdAt: serverTimestamp(),
-					last_login: serverTimestamp(),
-					role: 'user',
-					projects: [],
-					tags: ['google-user'],
-					preferences: {
-						theme: 'light',
-						language: 'en-US',
-					},
-					taskProgress:25,
-				});
-			}
-			const userData = userSnap.data();
-			if (userData) {
-				return {
-					...userData,
-					createdAt: userData.createdAt.toMillis(),
-					last_login: userData.last_login.toMillis(),
-				};
-			} else {
-				throw new Error('User data is undefined');
-			}
-		} catch (error) {
-			return rejectWithValue((error as Error).message);
-		}
-	},
-);
-
-// إجراء تسجيل الخروج
-export const logoutUser = createAsyncThunk(
-	'auth/logoutUser',
-	async (_, { rejectWithValue }) => {
-		try {
-			await auth.signOut();
-			return true;
-		} catch (error) {
-			return rejectWithValue((error as Error).message);
-		}
-	},
-);
+// Logout user
+export const logoutUser = createAsyncThunk<
+	boolean,
+	void,
+	{ rejectValue: string }
+>('auth/logoutUser', async (_, { rejectValue }) => {
+	try {
+		await auth.signOut();
+		return true;
+	} catch (error) {
+		return rejectWithValue((error as Error).message);
+	}
+});

@@ -46,7 +46,7 @@ const list = [
 		name: 'Dashboard',
 		hasSubMenu: true,
 		submenu: [
-			{ id: uuidv4(), title: 'Dashboard', link: 'dashboard' },
+			{ id: uuidv4(), title: 'Dashboard', link: '' },
 			{ id: uuidv4(), title: 'Project', link: 'projects' },
 			{ id: uuidv4(), title: 'Contacts', link: 'contacts' },
 			{ id: uuidv4(), title: 'Kanban', link: 'kanban' },

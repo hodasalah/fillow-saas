@@ -1,21 +1,26 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
+import { faBolt, faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import Card from '../../../../components/Card';
 import TabGroup from '../../../../components/TabGroup';
 import { PrimaryBtn } from '../../../../components/buttons';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
 import { setLoading } from '../../../../store/slices/loadingSlice';
 import { Project } from '../../../../types';
-import Card from '../../../../components/Card';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBolt } from '@fortawesome/free-solid-svg-icons';
+import { fetchProjects } from '../../../../utils/fetchProjects';
+import { v4 as uuidv4 } from 'uuid';
+import { Timestamp } from 'firebase/firestore';
+import NewProject from './NewProject';
 
-// Desc: Projects page
 const Projects = () => {
 	const mode = useAppSelector((state) => state.sidebar.mode);
 	const isMobileView = useAppSelector((state) => state.sidebar.isMobileView);
 	const [error, setError] = useState<string | null>(null);
 	const [projects, setProjects] = useState<Project[]>([]);
-	const [data, setData] = useState<Project[]>([]);
+	const [openDropdownId, setOpenDropdownId] = useState<string | null>(null);
+	const dropdownRef = useRef<HTMLDivElement>(null);
+	    const [isOverlayOpen, setIsOverlayOpen] = useState(false);
+
 
 	const [activeTab, setActiveTab] = useState<string>('All Status');
 	const TABS = [
@@ -26,42 +31,89 @@ const Projects = () => {
 	];
 
 	const dispatch = useAppDispatch();
-	const fetchProjects = useCallback(async () => {
-		dispatch(setLoading(true));
-		setError(null);
-		try {
-			const response = await fetch('/datas/projects.json');
-			if (!response.ok) {
-				throw new Error('Failed to fetch projects');
-			}
-			const data = await response.json();
-
-			setProjects(
-				data.projects.map((project: Project) => ({
-					...project,
-					id: uuidv4(),
-				})),
-			);
-		} catch (error: any) {
-			console.error('Error fetching projects:', error);
-			setError(error.message);
-		} finally {
-			dispatch(setLoading(false));
-		}
-	}, [dispatch]);
-
-	useEffect(() => {
-		fetchProjects();
-	}, [fetchProjects]);
 
 	const activeData = useMemo(() => {
 		if (activeTab === 'All Status') return projects;
 		return projects.filter((project) => project.status === activeTab);
 	}, [activeTab, projects]);
 
+	const handleDropdownToggle = (projectId: string) => {
+		setOpenDropdownId((prevId) =>
+			prevId === projectId ? null : projectId,
+		);
+	};
 	useEffect(() => {
-		setData(projects);
-	}, [projects]);
+		const handleClickOutside = (event: MouseEvent) => {
+			if (
+				dropdownRef.current &&
+				!dropdownRef.current.contains(event.target as Node)
+			) {
+				setOpenDropdownId(null);
+			}
+		};
+		document.addEventListener('mousedown', handleClickOutside);
+		return () => {
+			document.removeEventListener('mousedown', handleClickOutside);
+		};
+	}, []);
+
+	const formatDate = (date: Date | Timestamp) => {
+		if (date instanceof Timestamp) {
+			date = date.toDate(); // Convert Timestamp to Date
+		}
+		const options: Intl.DateTimeFormatOptions = {
+			year: 'numeric',
+			month: 'short',
+			day: 'numeric',
+		};
+		return date.toLocaleString('en-US', options);
+	};
+
+	useEffect(() => {
+		dispatch(setLoading(true));
+		dispatch(fetchProjects())
+			.unwrap()
+			.then((projectsData) => {
+				setProjects(
+					projectsData.map((project) => ({
+						...project,
+						id: project.id || uuidv4(),
+						clientName: project.client.name,
+						clientImg: project.client.image,
+						chargerName: project.personInCharge.name,
+						chargerImg: project.personInCharge.image,
+						desc: project.description,
+						status: project.status,
+						createdAt: formatDate(project.createdAt),
+						deadline: formatDate(project.deadline),
+					})),
+				);
+				setError(null);
+			})
+			.catch((error) => {
+				console.error('Error fetching projects:', error);
+				setError(error.message || 'Failed to fetch projects');
+			})
+			.finally(() => {
+				dispatch(setLoading(false));
+			});
+	}, [dispatch]);
+
+	 const handleProjectAdded = (newProject: Project) => {
+			setProjects((prevProjects) => [
+				{
+					...newProject,
+					clientName: newProject.client.name,
+					clientImg: newProject.client.image,
+					chargerName: newProject.personInCharge.name,
+					chargerImg: newProject.personInCharge.image,
+					desc: newProject.description,
+					createdAt: formatDate(newProject.createdAt),
+					deadline: formatDate(newProject.deadline),
+				},
+				...prevProjects,
+			]);
+		};
 
 	return (
 		<div
@@ -74,6 +126,12 @@ const Projects = () => {
 						: 'pl-[var(--dz-sidebar-width-mobile)]'
 				} w-full bg-body-bg text-[0.875rem] min-h-[calc(100vh-5.3rem)]  pt-[--dz-header-height] h-full`}
 		>
+			{isOverlayOpen && (
+				<NewProject
+					onClose={() => setIsOverlayOpen(false)}
+					onProjectAdded={handleProjectAdded}
+				/>
+			)}
 			<div className='md:pl-[1.875rem] md:pr-[1.875rem] pt-[1.875rem] p-[0.9375rem] flex  justify-center'>
 				<div className='flex justify-between w-full'>
 					<TabGroup
@@ -82,31 +140,35 @@ const Projects = () => {
 						onTabChange={setActiveTab}
 					/>
 					<div className='flex items-center max-w-[150px]'>
-						<PrimaryBtn>+ New Project</PrimaryBtn>
+						<PrimaryBtn onClick={() => setIsOverlayOpen(true)}>
+							+ New Project
+						</PrimaryBtn>
 					</div>
 				</div>
 			</div>
 			{/* projects cards here */}
-			<div className='w-full'>
+			<div className='w-full grid gap-4 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 md:pl-[1.875rem] md:pr-[1.875rem] pt-[1.875rem] p-[0.9375rem]'>
 				{error && <div className='text-red-500'>{error}</div>}
 				{activeData.length == 0 && (
 					<div className='px-4'>No Projects here</div>
 				)}
 				{activeData.map((project) => (
 					<Card key={project.id}>
-						<div className='py-3 px-4'>
-							{/* includes 5 blocks */}
+						<div className='w-full py-3  px-6 grid grid-cols-1 md:grid-cols-[35%_1fr_1fr_1fr_1fr] gap-4 items-center relative'>
 							{/* block 1 project info name /desc /createdAt */}
-							<div>
-								<p className='text-primary mb-0'>
-									{project.name}
-								</p>
-								<h6 className='text-[--text-dark]'>
-									{project.desc}
-								</h6>
-								<p className='mb-0'>{project.createdAt}</p>
+							<div className='flex flex-col justify-center'>
+								<div>
+									<p className='text-primary mb-0 font-bold'>
+										{project.name}
+									</p>
+									<h6 className='max-w-[75%] text-[--text-dark]  text-sm overflow-hidden whitespace-nowrap text-ellipsis'>
+										{project.desc}
+									</h6>
+								</div>
+								<div className='text-gray-500 text-sm'>
+									Created at: {formatDate(project.createdAt)}
+								</div>
 							</div>
-
 							{/* block 2 client info */}
 							<div className='flex items-center gap-2'>
 								<img
@@ -115,7 +177,9 @@ const Projects = () => {
 									className='w-8 h-8 rounded-full bg-black'
 								/>
 								<div>
-									<p className='mb-0'>Client</p>
+									<p className='mb-0 text-gray-500 text-sm'>
+										Client
+									</p>
 									<h6 className='mb-0'>
 										{project.clientName}
 									</h6>
@@ -129,7 +193,9 @@ const Projects = () => {
 									className='w-8 h-8 rounded-full bg-black'
 								/>
 								<div>
-									<p className='mb-0'>Person in charge</p>
+									<p className='mb-0 text-gray-500 text-sm'>
+										Person in charge
+									</p>
 									<h6 className='mb-0'>
 										{project.chargerName}
 									</h6>
@@ -144,8 +210,48 @@ const Projects = () => {
 									/>
 								</div>
 								<div>
-									<p>Deadline</p>
+									<p className='text-gray-500 text-sm'>
+										Deadline
+									</p>
 									<h6>{project.deadline}</h6>
+								</div>
+							</div>
+							{/* block 5 project status and dropdown */}
+							<div className='flex justify-end items-center relative'>
+								<span
+									className={`text-xs px-2 py-1 rounded-full ${
+										project.status === 'On Progress'
+											? 'bg-blue-100 text-blue-500'
+											: project.status === 'Pending'
+											? 'bg-yellow-100 text-yellow-500'
+											: 'bg-green-100 text-green-500'
+									}`}
+								>
+									{project.status}
+								</span>
+								<div
+									className='relative ml-2'
+									ref={dropdownRef}
+								>
+									<FontAwesomeIcon
+										icon={faEllipsisVertical}
+										className='text-gray-500 cursor-pointer'
+										onClick={() =>
+											handleDropdownToggle(project.id)
+										}
+									/>
+									{openDropdownId === project.id && (
+										<div className='absolute right-0 top-6 bg-dark border border-gray-300 rounded-md shadow-md z-10'>
+											<ul className='py-2'>
+												<li className='px-4 py-2 hover:bg-gray-700 hover:text-white cursor-pointer'>
+													Edit
+												</li>
+												<li className='px-4 py-2 hover:bg-gray-700 hover:text-white cursor-pointer'>
+													Delete
+												</li>
+											</ul>
+										</div>
+									)}
 								</div>
 							</div>
 						</div>

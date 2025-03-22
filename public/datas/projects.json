@@ -10,10 +10,22 @@
 			"deadline": "2024-06-30",
 			"targetCompletion": 100,
 			"dataPoints": [
-				{ "date": "2024-01-31", "completion": 15 },
-				{ "date": "2024-02-29", "completion": 30 },
-				{ "date": "2024-03-31", "completion": 55 },
-				{ "date": "2024-04-30", "completion": 75 }
+				{
+					"date": "2024-01-31",
+					"completion": 15
+				},
+				{
+					"date": "2024-02-29",
+					"completion": 30
+				},
+				{
+					"date": "2024-03-31",
+					"completion": 55
+				},
+				{
+					"date": "2024-04-30",
+					"completion": 75
+				}
 			],
 			"tags": [
 				{
@@ -28,81 +40,95 @@
 				"name": "Tamer Tawfik",
 				"image": "/assets/Solutions.png"
 			},
-			"PersonInCharge": {
+			"personInCharge": {
 				"name": "Hoda Salah",
 				"image": "/assets/Solutions.png"
 			}
 		},
 		{
-			"name": "Big Wind",
-			"description": "Optimization Dashboard Page for indexing in Google.",
-			"category": "Creative Agency",
-			"startDate": "2024-07-01",
-			"endDate": "2024-12-31",
-			"progress": 12,
-			"deadline": "2025-01-10",
+			"name": "Mobile App Development",
+			"description": "Developing a new mobile application for iOS and Android.",
+			"category": "Mobile App",
+			"startDate": "2024-02-15",
+			"endDate": "2024-10-31",
+			"progress": 20,
+			"deadline": "2024-10-31",
 			"targetCompletion": 100,
 			"dataPoints": [
-				{ "date": "2024-07-31", "completion": 20 },
-				{ "date": "2024-08-31", "completion": 35 }
+				{
+					"date": "2024-02-28",
+					"completion": 5
+				},
+				{
+					"date": "2024-03-31",
+					"completion": 10
+				},
+				{
+					"date": "2024-04-30",
+					"completion": 20
+				}
 			],
 			"tags": [
 				{
-					"name": "SEO",
-					"color": "#FFBF00",
-					"background": "#FFF9E6"
-				},
-				{
-					"name": "Marketing",
-					"color": "#FC2E53",
-					"background": "#FFEDF0"
+					"name": "Mobile",
+					"color": "#006E91",
+					"background": "#61CFF1"
 				}
 			],
-			"image": "/assets/big-wind.png",
+			"image": "/assets/Solutions.png",
 			"status": "Pending",
 			"client": {
-				"name": "Enas Samy",
-				"image": "/assets/big-wind.png"
+				"name": "Ahmed Ali",
+				"image": "/assets/Solutions.png"
 			},
-			"PersonInCharge": {
-				"name": "Hoda",
-				"image": "/assets/big-wind.png"
+			"personInCharge": {
+				"name": "Mohamed Khaled",
+				"image": "/assets/Solutions.png"
 			}
 		},
 		{
-			"name": "Circle Hunt",
-			"description": "Redesign Landing Page Website for Company Profile.",
-			"category": "Software Company",
+			"name": "E-commerce Platform",
+			"description": "Building a new e-commerce platform for online sales.",
+			"category": "Web Development",
 			"startDate": "2024-03-01",
-			"endDate": "2024-08-31",
-			"progress": 15,
-			"deadline": "2025-02-15",
+			"endDate": "2024-12-31",
+			"progress": 90,
+			"deadline": "2024-12-31",
 			"targetCompletion": 100,
 			"dataPoints": [
-				{ "date": "2024-03-31", "completion": 30 },
-				{ "date": "2024-04-30", "completion": 50 }
+				{
+					"date": "2024-03-31",
+					"completion": 25
+				},
+				{
+					"date": "2024-04-30",
+					"completion": 50
+				},
+				{
+					"date": "2024-05-31",
+					"completion": 75
+				},
+				{
+					"date": "2024-06-30",
+					"completion": 90
+				}
 			],
 			"tags": [
 				{
-					"name": "UI/UX",
-					"color": "var(--primary)",
-					"background": "var(--rgba-primary-1)"
-				},
-				{
-					"name": "Web Design",
-					"color": "#FC2E53",
-					"background": "#FFEDF0"
+					"name": "E-commerce",
+					"color": "#006E91",
+					"background": "#61CFF1"
 				}
 			],
-			"image": "/assets/circle-hunt.png",
+			"image": "/assets/Solutions.png",
 			"status": "Closed",
 			"client": {
-				"name": "Tamer Tawfik",
-				"image": "/assets/circle-hunt.png"
+				"name": "Youssef Mahmoud",
+				"image": "/assets/Solutions.png"
 			},
-			"PersonInCharge": {
-				"name": "Hoda Salah",
-				"image": "/assets/circle-hunt.png"
+			"personInCharge": {
+				"name": "Fatma Hassan",
+				"image": "/assets/Solutions.png"
 			}
 		}
 	]

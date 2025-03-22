@@ -20,16 +20,25 @@ export interface User {
 	lastSeen?: number;
 }
 // Project
-export type Project = {
+export interface Project {
 	id: string;
 	name: string;
 	description: string;
 	ownerId: string;
 	teamId?: string;
 	members: string[];
-	createdAt: Date;
 	status: string;
-};
+	client: {
+		name: string;
+		image: string;
+	};
+	personInCharge: {
+		name: string;
+		image: string;
+	};
+	createdAt: Date;
+	deadline: Date;
+}
 
 // Team
 export type Team = {

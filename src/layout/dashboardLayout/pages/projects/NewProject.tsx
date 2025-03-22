@@ -1,4 +1,3 @@
-// c:\Users\hodas\OneDrive\Desktop\تعلم البرمجة من جديد\new\src\layout\dashboardLayout\pages\projects\NewProject.tsx
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import React, { useState } from 'react';
 import { db } from '../../../../firebase';

@@ -26,15 +26,15 @@ const userSlice = createSlice({
 			if (action.payload) {
 				const createdAt =
 					action.payload.createdAt instanceof Timestamp
-						? action.payload.createdAt.toDate()
+						? action.payload.createdAt.toDate().toISOString()
 						: action.payload.createdAt;
 				const last_login =
 					action.payload.last_login instanceof Timestamp
-						? action.payload.last_login.toDate()
+						? action.payload.last_login.toDate().toISOString()
 						: action.payload.last_login;
 				const lastSeen =
 					action.payload.lastSeen instanceof Timestamp
-						? action.payload.lastSeen.toDate()
+						? action.payload.lastSeen.toDate().toISOString()
 						: action.payload.lastSeen;
 				state.currentUser = {
 					...action.payload,
@@ -66,15 +66,15 @@ const userSlice = createSlice({
 					state.users = action.payload.map((user) => {
 						const createdAt =
 							user.createdAt instanceof Timestamp
-								? user.createdAt.toDate()
+								? user.createdAt.toDate().toISOString()
 								: user.createdAt;
 						const last_login =
 							user.last_login instanceof Timestamp
-								? user.last_login.toDate()
+								? user.last_login.toDate().toISOString()
 								: user.last_login;
 						const lastSeen =
 							user.lastSeen instanceof Timestamp
-								? user.lastSeen.toDate()
+								? user.lastSeen.toDate().toISOString()
 								: user.lastSeen;
 
 						return {
@@ -126,15 +126,15 @@ const userSlice = createSlice({
 				if (state.currentUser?.uid === action.payload.uid) {
 					const createdAt =
 						action.payload.createdAt instanceof Timestamp
-							? action.payload.createdAt.toDate()
+							? action.payload.createdAt.toDate().toISOString()
 							: action.payload.createdAt;
 					const last_login =
 						action.payload.last_login instanceof Timestamp
-							? action.payload.last_login.toDate()
+							? action.payload.last_login.toDate().toISOString()
 							: action.payload.last_login;
 					const lastSeen =
 						action.payload.lastSeen instanceof Timestamp
-							? action.payload.lastSeen.toDate()
+							? action.payload.lastSeen.toDate().toISOString()
 							: action.payload.lastSeen;
 					state.currentUser = {
 						...action.payload,

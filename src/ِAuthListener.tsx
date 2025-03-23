@@ -34,15 +34,15 @@ const AuthListener = () => {
 						const userData = userDoc.data() as User;
 						const last_login =
 							userData.last_login instanceof Timestamp
-								? userData.last_login.toDate()
+								? userData.last_login.toDate().toISOString()
 								: userData.last_login;
 						const createdAt =
 							userData.createdAt instanceof Timestamp
-								? userData.createdAt.toDate()
+								? userData.createdAt.toDate().toISOString()
 								: userData.createdAt;
 						const lastSeen =
 							userData.lastSeen instanceof Timestamp
-								? userData.lastSeen.toDate()
+								? userData.lastSeen.toDate().toISOString()
 								: userData.lastSeen;
 
 						const convertedUserData: User = {

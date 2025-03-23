@@ -23,45 +23,64 @@ const userSlice = createSlice({
 	reducers: {
 		setUser: (state, action: PayloadAction<User | null>) => {
 			state.currentUser = action.payload;
+						console.log(
+							'Redux Store Updated: setUser dispatched',
+							action.payload,
+						);
+
 		},
 		// You can add more reducers here if needed
 	},
 	extraReducers: (builder) => {
 		builder
 			.addCase(fetchUsers.pending, (state) => {
+								console.log(
+									'Redux Store Update: fetchUsers.pending',
+								);
+
 				state.status = 'loading';
 				state.error = null;
 			})
 			.addCase(fetchUsers.fulfilled, (state, action) => {
+				console.log(
+					'9. Redux Store Updated: fetchUsers.fulfilled',
+					action.payload,
+				); // Step 9
+
 				state.status = 'succeeded';
 				// Ensure that the payload is an array of users
 				if (Array.isArray(action.payload)) {
-					state.users = action.payload.map((user) => ({
-						...user,
-						// Convert Timestamps to numbers if needed
-						createdAt:
+					state.users = action.payload.map((user) => {
+						const createdAt =
 							user.createdAt instanceof Timestamp
 								? user.createdAt.toMillis()
-								: user.createdAt,
-						last_login:
+								: user.createdAt;
+						const last_login =
 							user.last_login instanceof Timestamp
 								? user.last_login.toMillis()
-								: user.last_login,
-						lastSeen:
+								: user.last_login;
+						const lastSeen =
 							user.lastSeen instanceof Timestamp
 								? user.lastSeen.toMillis()
-								: user.lastSeen,
-						role: user.role ?? 'member',
-						projects: user.projects ?? [],
-						tags: user.tags ?? ['google-user'],
-						preferences: user.preferences ?? {
-							theme: 'light',
-							language: 'en-US',
-						},
-						taskProgress: user.taskProgress ?? 25,
-						teams: user.teams ?? [],
-						status: user.status ?? 'active',
-					}));
+								: user.lastSeen;
+
+						return {
+							...user,
+							createdAt: createdAt,
+							last_login: last_login,
+							lastSeen: lastSeen,
+							role: user.role ?? 'employee',
+							projects: user.projects ?? [],
+							tags: user.tags ?? ['google-user'],
+							preferences: user.preferences ?? {
+								theme: 'light',
+								language: 'en-US',
+							},
+							taskProgress: user.taskProgress ?? 25,
+							teams: user.teams ?? [],
+							status: user.status ?? 'active',
+						};
+					});
 				} else {
 					console.error(
 						'fetchUsers.fulfilled: Payload is not an array:',
@@ -73,6 +92,11 @@ const userSlice = createSlice({
 				}
 			})
 			.addCase(fetchUsers.rejected, (state, action) => {
+								console.log(
+									'Redux Store Update: fetchUsers.rejected',
+									action.payload,
+								);
+
 				state.status = 'failed';
 				state.error = action.payload ?? 'Unknown error';
 				state.users = [];

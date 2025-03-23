@@ -4,6 +4,8 @@ import Logo from '../components/logo/logo';
 import MiniLogo from '../components/logo/miniLogo';
 import { useAppDispatch, useAppSelector } from '../hooks/hooks';
 import { loginUser, loginWithGoogle } from '../store/slices/authActions';
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from '../firebase'; // Import your Firestore instance
 
 const Login: React.FC = () => {
 	const navigate = useNavigate();
@@ -32,12 +34,24 @@ const Login: React.FC = () => {
 	const handleLogin = async (e: React.FormEvent) => {
 		e.preventDefault();
 		setError(null);
+
 		try {
-			await dispatch(loginUser({ email, password }));
+			// 1. Check if the email exists in the database
+			const userDocRef = doc(db, 'users', email); 
+			const userDocSnap = await getDoc(userDocRef);
+
+			if (userDocSnap.exists()) {
+				// 2. Email exists, proceed with login
+				await dispatch(loginUser({ email, password }));
+			} else {
+				// 3. Email does not exist, show an error or redirect to signup
+				setError('Email not found. Please sign up.');
+			}
 		} catch (err: any) {
 			setError(err.message || 'An error occurred during login.');
 		}
 	};
+
 	const handleGoogleLogin = async () => {
 		try {
 			await dispatch(loginWithGoogle());

@@ -1,3 +1,4 @@
+import { doc, getDoc } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router';
 import Logo from '../components/logo/logo';
@@ -34,12 +35,17 @@ const Signup: React.FC = () => {
 	const handleSignup = async (e: React.FormEvent) => {
 		e.preventDefault();
 		setError(null);
-		try {
-			await dispatch(createUser({ email, password, name }));
-			// Optionally, navigate to login if using email signup flow
-			// navigate('/login'); // Removed navigation here
-		} catch (err: any) {
-			setError(err.message || 'An error occurred during signup.');
+		const userDocRef = doc(db, 'users', email);
+		const userDocSnap = await getDoc(userDocRef);
+		if (userDocSnap.exists()) {
+			setError('Email already exists. Please log in.');
+			return; // Stop the signup process
+		} else {
+			try {
+				await dispatch(createUser({ email, password, name }));
+			} catch (err: any) {
+				setError(err.message || 'An error occurred during signup.');
+			}
 		}
 	};
 

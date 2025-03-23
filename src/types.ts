@@ -7,7 +7,7 @@ export interface User {
 	profilePicture: string;
 	createdAt?: number;
 	last_login?: number;
-	role: string;
+	role: 'admin' | 'employee' | 'client';
 	projects: string[];
 	tags: string[];
 	preferences: {

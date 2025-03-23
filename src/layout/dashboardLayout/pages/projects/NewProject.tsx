@@ -1,17 +1,25 @@
-import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
-import React, { useState } from 'react';
+import {
+	addDoc,
+	collection,
+	serverTimestamp,
+	getDocs,
+	query,
+	where,
+} from 'firebase/firestore';
+import React, { useState, useEffect } from 'react';
 import { db } from '../../../../firebase';
-import { useAppDispatch } from '../../../../hooks/hooks';
+import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
 import { setLoading } from '../../../../store/slices/loadingSlice';
-import { Project } from '../../../../types';
+import { Project, User } from '../../../../types';
+import { fetchProjects } from '../../../../utils/fetchProjects';
+import { fetchUsers } from '../../../../utils/fetchUsers';
+import { fetchClients } from '../../../../utils/userUtils';
 
 interface ProjectFormData {
 	name: string;
 	description: string;
-	clientName: string;
-	clientImage: string;
-	personInChargeName: string;
-	personInChargeImage: string;
+	clientId: string;
+	personInChargeId: string;
 	deadline: Date | null;
 	status: string;
 }
@@ -25,14 +33,42 @@ const NewProject: React.FC<NewProjectProps> = ({ onClose, onProjectAdded }) => {
 	const [projectFormData, setProjectFormData] = useState<ProjectFormData>({
 		name: '',
 		description: '',
-		clientName: '',
-		clientImage: '',
-		personInChargeName: '',
-		personInChargeImage: '',
+		clientId: '',
+		personInChargeId: '',
 		deadline: null,
 		status: 'Pending',
 	});
+	const [clients, setClients] = useState<User[]>([]);
+	const [allUsers, setAllUsers] = useState<User[]>([]);
 	const dispatch = useAppDispatch();
+
+	// Fetch clients
+	useEffect(() => {
+		const loadClients = async () => {
+			try {
+				const clientsData = await fetchClients();
+				setClients(clientsData);
+			} catch (error) {
+				console.error('Error loading clients:', error);
+			}
+		};
+
+		loadClients();
+	}, []);
+
+	// Fetch all users
+	useEffect(() => {
+		const loadAllUsers = async () => {
+			try {
+				const usersData = await fetchUsers();
+				setAllUsers(usersData);
+			} catch (error) {
+				console.error('Error loading all users:', error);
+			}
+		};
+
+		loadAllUsers();
+	}, []);
 
 	const handleInputChange = (
 		event:
@@ -57,16 +93,26 @@ const NewProject: React.FC<NewProjectProps> = ({ onClose, onProjectAdded }) => {
 	const handleSaveProject = async () => {
 		try {
 			dispatch(setLoading(true));
+			// Find the selected client and person in charge details
+			const selectedClient = allUsers.find(
+				(user) => user.uid === projectFormData.clientId,
+			);
+			const selectedPersonInCharge = allUsers.find(
+				(user) => user.uid === projectFormData.personInChargeId,
+			);
+
 			const docRef = await addDoc(collection(db, 'projects'), {
 				name: projectFormData.name,
 				description: projectFormData.description,
 				client: {
-					name: projectFormData.clientName,
-					image: projectFormData.clientImage,
+					name: selectedClient?.name || '',
+					image: selectedClient?.image || '',
+					id: projectFormData.clientId,
 				},
 				personInCharge: {
-					name: projectFormData.personInChargeName,
-					image: projectFormData.personInChargeImage,
+					name: selectedPersonInCharge?.name || '',
+					image: selectedPersonInCharge?.image || '',
+					id: projectFormData.personInChargeId,
 				},
 				deadline: projectFormData.deadline,
 				status: projectFormData.status,
@@ -82,12 +128,14 @@ const NewProject: React.FC<NewProjectProps> = ({ onClose, onProjectAdded }) => {
 				name: projectFormData.name,
 				description: projectFormData.description,
 				client: {
-					name: projectFormData.clientName,
-					image: projectFormData.clientImage,
+					name: selectedClient?.name || '',
+					image: selectedClient?.image || '',
+					id: projectFormData.clientId,
 				},
 				personInCharge: {
-					name: projectFormData.personInChargeName,
-					image: projectFormData.personInChargeImage,
+					name: selectedPersonInCharge?.name || '',
+					image: selectedPersonInCharge?.image || '',
+					id: projectFormData.personInChargeId,
 				},
 				deadline: projectFormData.deadline!,
 				status: projectFormData.status,
@@ -142,68 +190,56 @@ const NewProject: React.FC<NewProjectProps> = ({ onClose, onProjectAdded }) => {
 				</div>
 				<div className='mb-4'>
 					<label
-						htmlFor='clientName'
+						htmlFor='clientId'
 						className='block text-gray-700 text-sm font-bold mb-2'
 					>
-						Client Name
+						Client
 					</label>
-					<input
-						type='text'
-						id='clientName'
-						name='clientName'
-						value={projectFormData.clientName}
+					<select
+						id='clientId'
+						name='clientId'
+						value={projectFormData.clientId}
 						onChange={handleInputChange}
 						className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
-					/>
+					>
+						<option value=''>Select a Client</option>
+						{clients.map((user) => (
+							<option
+								key={user.uid}
+								value={user.uid}
+							>
+								{user.name}
+							</option>
+						))}
+					</select>
 				</div>
+
 				<div className='mb-4'>
 					<label
-						htmlFor='clientImage'
+						htmlFor='personInChargeId'
 						className='block text-gray-700 text-sm font-bold mb-2'
 					>
-						Client Image URL
+						Person in Charge
 					</label>
-					<input
-						type='text'
-						id='clientImage'
-						name='clientImage'
-						value={projectFormData.clientImage}
+					<select
+						id='personInChargeId'
+						name='personInChargeId'
+						value={projectFormData.personInChargeId}
 						onChange={handleInputChange}
 						className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
-					/>
-				</div>
-				<div className='mb-4'>
-					<label
-						htmlFor='personInChargeName'
-						className='block text-gray-700 text-sm font-bold mb-2'
 					>
-						Person in Charge Name
-					</label>
-					<input
-						type='text'
-						id='personInChargeName'
-						name='personInChargeName'
-						value={projectFormData.personInChargeName}
-						onChange={handleInputChange}
-						className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
-					/>
+						<option value=''>Select a Person in Charge</option>
+						{allUsers.map((user) => (
+							<option
+								key={user.uid}
+								value={user.uid}
+							>
+								{user.name}
+							</option>
+						))}
+					</select>
 				</div>
-				<div className='mb-4'>
-					<label
-						htmlFor='personInChargeImage'
-						className='block text-gray-700 text-sm font-bold mb-2'
-					>
-						Person in Charge Image URL
-					</label>
-					<input
-						type='text'
-						id='personInChargeImage'
-						name='personInChargeImage'
-						value={projectFormData.personInChargeImage}
-						onChange={handleInputChange}
-						className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
-					/>
-				</div>
+
 				<div className='mb-4'>
 					<label
 						htmlFor='deadline'

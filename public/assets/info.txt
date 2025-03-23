@@ -1,0 +1,12 @@
+1.App Mounts: App.tsx mounts.
+2.AuthListener: AuthListener starts listening for authentication changes.
+3.User Logs In: A user logs in.
+4.AuthListener Fires: AuthListener's onAuthStateChanged callback fires.
+5.Current User Data Fetched: AuthListener fetches the current user's data and dispatches setUser.
+6.App.tsx useEffect Fires: The useEffect in App.tsx with the user dependency fires.
+7.fetchUsers Dispatched: dispatch(fetchUsers()) is called.
+8.All Users Fetched: fetchUsers fetches all users from Firestore.
+9.Redux Store Updated: The users array in the Redux store is updated.
+10.NewProject Renders: NewProject renders and gets the allUsers from the Redux store.
+11.Clients Filtered: NewProject filters the allUsers to get the clients.
+12.Client Select Populated: The client select field is populated with the client users.

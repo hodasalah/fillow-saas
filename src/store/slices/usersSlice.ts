@@ -1,7 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Timestamp } from 'firebase/firestore';
 import { User } from '../../types';
-import { fetchUsers, updateUser } from '../../utils/fetchUsers';
+import { fetchUsers } from '../../utils/fetchUsers';
+import { updateUser } from '../../utils/userUtils';
 
 interface UsersState {
 	users: User[];
@@ -22,46 +23,58 @@ const userSlice = createSlice({
 	initialState,
 	reducers: {
 		setUser: (state, action: PayloadAction<User | null>) => {
-			state.currentUser = action.payload;
-						console.log(
-							'Redux Store Updated: setUser dispatched',
-							action.payload,
-						);
-
+			if (action.payload) {
+				const createdAt =
+					action.payload.createdAt instanceof Timestamp
+						? action.payload.createdAt.toDate()
+						: action.payload.createdAt;
+				const last_login =
+					action.payload.last_login instanceof Timestamp
+						? action.payload.last_login.toDate()
+						: action.payload.last_login;
+				const lastSeen =
+					action.payload.lastSeen instanceof Timestamp
+						? action.payload.lastSeen.toDate()
+						: action.payload.lastSeen;
+				state.currentUser = {
+					...action.payload,
+					createdAt: createdAt,
+					last_login: last_login,
+					lastSeen: lastSeen,
+				};
+			} else {
+				state.currentUser = null;
+			}
+			console.log(
+				'Redux Store Updated: setUser dispatched',
+				action.payload,
+			);
 		},
 		// You can add more reducers here if needed
 	},
 	extraReducers: (builder) => {
 		builder
 			.addCase(fetchUsers.pending, (state) => {
-								console.log(
-									'Redux Store Update: fetchUsers.pending',
-								);
-
+				console.log('Redux Store Update: fetchUsers.pending');
 				state.status = 'loading';
 				state.error = null;
 			})
 			.addCase(fetchUsers.fulfilled, (state, action) => {
-				console.log(
-					'9. Redux Store Updated: fetchUsers.fulfilled',
-					action.payload,
-				); // Step 9
-
 				state.status = 'succeeded';
 				// Ensure that the payload is an array of users
 				if (Array.isArray(action.payload)) {
 					state.users = action.payload.map((user) => {
 						const createdAt =
 							user.createdAt instanceof Timestamp
-								? user.createdAt.toMillis()
+								? user.createdAt.toDate()
 								: user.createdAt;
 						const last_login =
 							user.last_login instanceof Timestamp
-								? user.last_login.toMillis()
+								? user.last_login.toDate()
 								: user.last_login;
 						const lastSeen =
 							user.lastSeen instanceof Timestamp
-								? user.lastSeen.toMillis()
+								? user.lastSeen.toDate()
 								: user.lastSeen;
 
 						return {
@@ -92,10 +105,10 @@ const userSlice = createSlice({
 				}
 			})
 			.addCase(fetchUsers.rejected, (state, action) => {
-								console.log(
-									'Redux Store Update: fetchUsers.rejected',
-									action.payload,
-								);
+				console.log(
+					'Redux Store Update: fetchUsers.rejected',
+					action.payload,
+				);
 
 				state.status = 'failed';
 				state.error = action.payload ?? 'Unknown error';
@@ -111,7 +124,24 @@ const userSlice = createSlice({
 					user.uid === action.payload.uid ? action.payload : user,
 				);
 				if (state.currentUser?.uid === action.payload.uid) {
-					state.currentUser = action.payload;
+					const createdAt =
+						action.payload.createdAt instanceof Timestamp
+							? action.payload.createdAt.toDate()
+							: action.payload.createdAt;
+					const last_login =
+						action.payload.last_login instanceof Timestamp
+							? action.payload.last_login.toDate()
+							: action.payload.last_login;
+					const lastSeen =
+						action.payload.lastSeen instanceof Timestamp
+							? action.payload.lastSeen.toDate()
+							: action.payload.lastSeen;
+					state.currentUser = {
+						...action.payload,
+						createdAt: createdAt,
+						last_login: last_login,
+						lastSeen: lastSeen,
+					};
 				}
 			})
 			.addCase(updateUser.rejected, (state, action) => {

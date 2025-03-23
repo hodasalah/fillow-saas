@@ -1,77 +1,89 @@
+import { doc, getDoc, Timestamp } from 'firebase/firestore';
 import { useEffect } from 'react';
 import { auth, db } from './firebase';
-import { setUser } from './store/slices/usersSlice';
-import { doc, getDoc } from 'firebase/firestore';
-import { ReactNode } from 'react';
 import { useAppDispatch } from './hooks/hooks';
-import { setLoading } from './store/slices/loadingSlice';
-import { User } from './types';
 import AppRoutes from './routes';
+import { setLoading } from './store/slices/loadingSlice';
+import { setUser } from './store/slices/usersSlice';
+import { User } from './types';
 
- const AuthListener = ({ children }: { children: ReactNode }) => {
-		console.log('2. AuthListener: AuthListener starts listening.'); // Step 2
+const AuthListener = () => {
+	console.log('2. AuthListener: AuthListener starts listening.'); // Step 2
 
-		const dispatch = useAppDispatch();
+	const dispatch = useAppDispatch();
 
-		useEffect(() => {
-			const unsubscribe = auth.onAuthStateChanged(async (user) => {
-				console.log(
-					'4. AuthListener Fires: onAuthStateChanged callback fires.',
-					user,
-				); // Step 4
+	useEffect(() => {
+		const unsubscribe = auth.onAuthStateChanged(async (user) => {
+			console.log(
+				'4. AuthListener: onAuthStateChanged callback fires.',
+				user,
+			); // Step 4
+			dispatch(setLoading(true));
+			console.log('AuthListener: setLoading(true) dispatched');
+			try {
+				if (user) {
+					console.log('AuthListener: user is logged in', user);
+					const userDocRef = doc(db, 'users', user.uid);
+					console.log('AuthListener: userDocRef created', userDocRef);
+					const userDoc = await getDoc(userDocRef);
+					console.log('AuthListener: userDoc fetched', userDoc);
 
-				dispatch(setLoading(true));
-				try {
-					if (user) {
-						const userDocRef = doc(db, 'users', user.uid);
-						const userDoc = await getDoc(userDocRef);
+					if (userDoc.exists()) {
+						console.log('5. AuthListener: userDoc exists');
+						// Convert Timestamp to Date BEFORE dispatching
+						const userData = userDoc.data() as User;
+						const last_login =
+							userData.last_login instanceof Timestamp
+								? userData.last_login.toDate()
+								: userData.last_login;
+						const createdAt =
+							userData.createdAt instanceof Timestamp
+								? userData.createdAt.toDate()
+								: userData.createdAt;
+						const lastSeen =
+							userData.lastSeen instanceof Timestamp
+								? userData.lastSeen.toDate()
+								: userData.lastSeen;
 
-						if (userDoc.exists()) {
-							console.log(
-								'5. Current User Data Fetched: user data fetched.',
-							); // Step 5
+						const convertedUserData: User = {
+							...userData,
+							last_login: last_login,
+							createdAt: createdAt,
+							lastSeen: lastSeen,
+						};
 
-							const userData = userDoc.data();
-							const typedUserData = userData as Partial<User>;
-
-							dispatch(
-								setUser({
-									...typedUserData,
-									uid: userDoc.id,
-									createdAt:
-										typedUserData.createdAt instanceof Date
-											? typedUserData.createdAt.getTime()
-											: typedUserData.createdAt,
-									last_login:
-										typedUserData.last_login instanceof Date
-											? typedUserData.last_login.getTime()
-											: typedUserData.last_login,
-									role: typedUserData.role || 'employee',
-								} as User),
-							);
-						} else {
-							console.warn(
-								`User document not found for UID: ${user.uid}`,
-							);
-							dispatch(setUser(null));
-						}
+						console.log(
+							'AuthListener: userData',
+							convertedUserData,
+						);
+						dispatch(setUser(convertedUserData));
+						console.log('AuthListener: setUser dispatched');
 					} else {
+						console.log('AuthListener: userDoc does not exist');
 						dispatch(setUser(null));
+						console.log('AuthListener: setUser(null) dispatched');
 					}
-				} catch (err: any) {
-					console.error('Error in AuthListener:', err);
-				} finally {
-					dispatch(setLoading(false));
+				} else {
+					console.log('AuthListener: user is logged out');
+					dispatch(setUser(null));
+					console.log('AuthListener: setUser(null) dispatched');
 				}
-			});
+			} catch (err: any) {
+				console.error('AuthListener: Error fetching user data:', err);
+			} finally {
+				dispatch(setLoading(false));
+				console.log('AuthListener: setLoading(false) dispatched');
+			}
+		});
 
-			return () => unsubscribe();
-		}, [dispatch]);
+		return () => unsubscribe();
+	}, [dispatch]);
 
-		return (
-			<>
-				<AppRoutes />
-			</>
-		);
- };
+	return (
+		<>
+			<AppRoutes />
+		</>
+	);
+};
+
 export default AuthListener;

@@ -1,5 +1,10 @@
-import { faEllipsis, faMagnifyingGlass, faPlus } from '@fortawesome/free-solid-svg-icons';
+import {
+	faEllipsis,
+	faMagnifyingGlass,
+} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React from 'react';
+import { v4 as uuidv4 } from 'uuid';
 
 const Notifications = [
 	{
@@ -7,24 +12,28 @@ const Notifications = [
 		code: 'KK',
 		message: 'David Nester Birthday',
 		time: 'Today',
+		id: uuidv4(),
 	},
 	{
 		category: 'Social',
 		code: 'RU',
 		message: 'Perfection Simplified\nJame Smith commented on your status',
-		time: "Today",
+		time: 'Today',
+		id: uuidv4(),
 	},
 	{
 		category: 'Server Status',
 		code: 'AU',
 		message: 'AharlieKane\nSami is online',
 		time: 'Yesterday',
+		id: uuidv4(),
 	},
 	{
 		category: 'Server Status',
 		code: 'MO',
 		message: 'Athan Jacoby\nNargis left 30 mins ago',
-		time: "2 days ago",
+		time: '2 days ago',
+		id: uuidv4(),
 	},
 ];
 const AlertsTabPanel = () => {
@@ -56,29 +65,28 @@ const AlertsTabPanel = () => {
 				</button>
 			</div>
 			<ul>
-				{Notifications.map((notification)=>(
-					<>
-					<li className='bg-white py-1 px-4 text-black sticky top-0 z-[1] font-bold border-b-[0.0625rem] cursor-pointer'>
-					{notification.category}
-				</li>
-				<li className='border-b-[0.0625rem] cursor-pointer py-[0.4375rem] px-4 hover:bg-[#f6f6f6]'>
-					<div className='flex'>
-						<div className='bg-rgba-primary-1 text-primary w-10 h-10 relative flex justify-center min-w-10 min-h-10 items-center rounded-[2.5rem] mr-[0.625rem] font-medium text-[0.875rem]'>
-							{notification.code}
-						</div>
-						<div>
-							<span className='text-[var(--text-dark)] text-[0.9375rem] font-medium mb-[0.3125rem] overflow-hidden block max-w-[10.625rem] leading-[1] text-ellipsis whitespace-nowrap'>
-								{notification.message}
-							</span>
-							<p className='text-[0.8125rem] mb-0 max-w-[10.625rem] overflow-clip leading-[1]'>
-								{notification.time}
-							</p>
-						</div>
-					</div>
-				</li>
-				</>
+				{Notifications.map((notification) => (
+					<React.Fragment key={notification.id}>
+						<li className='bg-white py-1 px-4 text-black sticky top-0 z-[1] font-bold border-b-[0.0625rem] cursor-pointer'>
+							{notification.category}
+						</li>
+						<li className='border-b-[0.0625rem] cursor-pointer py-[0.4375rem] px-4 hover:bg-[#f6f6f6]'>
+							<div className='flex'>
+								<div className='bg-rgba-primary-1 text-primary w-10 h-10 relative flex justify-center min-w-10 min-h-10 items-center rounded-[2.5rem] mr-[0.625rem] font-medium text-[0.875rem]'>
+									{notification.code}
+								</div>
+								<div>
+									<span className='text-[var(--text-dark)] text-[0.9375rem] font-medium mb-[0.3125rem] overflow-hidden block max-w-[10.625rem] leading-[1] text-ellipsis whitespace-nowrap'>
+										{notification.message}
+									</span>
+									<p className='text-[0.8125rem] mb-0 max-w-[10.625rem] overflow-clip leading-[1]'>
+										{notification.time}
+									</p>
+								</div>
+							</div>
+						</li>
+					</React.Fragment>
 				))}
-				
 			</ul>
 		</div>
 	);

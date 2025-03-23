@@ -61,7 +61,7 @@ const NotesTabPanel = () => {
 			<div>
 				<ul>
 					{notes.map((note) => (
-						<li className='py-3  border-b-[0.0625rem] hover:bg-[#f5f5f5]'>
+						<li key={note.id} className='py-3  border-b-[0.0625rem] hover:bg-[#f5f5f5]'>
 							<div className='flex items-center justify-between px-4'>
 								<div className=''>
 									<span className='text-[var(--text-dark)] text-[0.9375rem] font-medium mb-[0.3125rem] overflow-hidden block max-w-[10.625rem] leading-[1] text-ellipsis whitespace-nowrap'>

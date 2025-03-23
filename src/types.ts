@@ -5,8 +5,8 @@ export interface User {
 	email: string;
 	name: string;
 	profilePicture: string;
-	createdAt?: number;
-	last_login?: number;
+	createdAt?: Date | number; // Change to Date or number
+	last_login?: Date | number; // Change to Date or number
 	role: 'admin' | 'employee' | 'client';
 	projects: string[];
 	tags: string[];
@@ -17,7 +17,7 @@ export interface User {
 	taskProgress: number;
 	teams: string[];
 	status: string;
-	lastSeen?: number;
+	lastSeen?: Date | number; // Change to Date or number
 }
 // Project
 export interface Project {

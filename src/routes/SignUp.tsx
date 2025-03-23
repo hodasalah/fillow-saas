@@ -35,17 +35,17 @@ const Signup: React.FC = () => {
 	const handleSignup = async (e: React.FormEvent) => {
 		e.preventDefault();
 		setError(null);
-		const userDocRef = doc(db, 'users', email);
-		const userDocSnap = await getDoc(userDocRef);
-		if (userDocSnap.exists()) {
-			setError('Email already exists. Please log in.');
-			return; // Stop the signup process
-		} else {
-			try {
+		try {
+			const userDocRef = doc(db, 'users', email);
+			const userDocSnap = await getDoc(userDocRef);
+			if (userDocSnap.exists()) {
+				setError('Email already exists. Please log in.');
+				return; // Stop the signup process
+			} else {
 				await dispatch(createUser({ email, password, name }));
-			} catch (err: any) {
-				setError(err.message || 'An error occurred during signup.');
 			}
+		} catch (err: any) {
+			setError(err.message || 'An error occurred during signup.');
 		}
 	};
 
@@ -58,7 +58,6 @@ const Signup: React.FC = () => {
 			setError(err.message || 'An error occurred during Google signup.');
 		}
 	};
-
 	return (
 		<div className='min-h-screen flex items-center justify-center py-[30px]'>
 			<div className='bg-white max-w-[580px] min-w-[320px] w-full mx-auto py-6 px-4 rounded-lg shadow-lg'>

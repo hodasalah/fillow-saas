@@ -18,14 +18,7 @@ const firebaseConfig = {
   appId: "1:863043103885:web:af46408e94b858a81186c4",
   measurementId: "G-XW7DW6JG41"
 };
-export const getCurrentUser = () => {
-	return new Promise((resolve, reject) => {
-		const unsubscribe = auth.onAuthStateChanged((user) => {
-			unsubscribe();
-			resolve(user);
-		}, reject);
-	});
-};
+
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);

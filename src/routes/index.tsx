@@ -3,10 +3,11 @@ import { Route, Routes } from 'react-router';
 import Layout from '../layout/dashboardLayout';
 import DashboardHome from '../layout/dashboardLayout/pages/home';
 import Projects from '../layout/dashboardLayout/pages/projects';
+import Login from '../layout/publicLayout/AuthPages/Login';
+import Home from '../layout/publicLayout/Home';
 import PrivateRoute from '../PrivateRoute';
-import Home from './Home';
-import Login from './Login';
-import Signup from './SignUp';
+import Signup from '../layout/publicLayout/AuthPages/SignUp';
+import Profile from '../layout/dashboardLayout/pages/profile';
 
 const AppRoutes = () => {
 	return (
@@ -48,9 +49,7 @@ const AppRoutes = () => {
 				<Route
 					path='profile'
 					element={
-						<div className='h-screen w-full flex items-center pl-[10rem] justify-center'>
-							Profile
-						</div>
+						<Profile />
 					}
 				/>
 				<Route

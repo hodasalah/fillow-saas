@@ -1,11 +1,10 @@
 import { useState } from 'react';
 import { Outlet } from 'react-router';
-import { useAppSelector } from '../../hooks/hooks';
 import Chatbox from './mainParts/chatbox';
-import Header from './mainParts/header';
-import Sidebar from './mainParts/sidebar';
-import NavHeader from './mainParts/navHeader';
 import Footer from './mainParts/footer';
+import Header from './mainParts/header';
+import NavHeader from './mainParts/navHeader';
+import Sidebar from './mainParts/sidebar';
 
 const DashboardLayout = () => {
 	const [showSlider, setShowSlider] = useState(false);

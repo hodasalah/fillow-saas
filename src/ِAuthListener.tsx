@@ -1,89 +1,76 @@
-import { doc, getDoc, Timestamp } from 'firebase/firestore';
-import { useEffect } from 'react';
+import { doc, getDoc } from 'firebase/firestore';
+import { useEffect, useRef } from 'react';
 import { auth, db } from './firebase';
-import { useAppDispatch } from './hooks/hooks';
-import AppRoutes from './routes';
-import { setLoading } from './store/slices/loadingSlice';
-import { setUser } from './store/slices/usersSlice';
+import { useAppDispatch, useAppSelector } from './hooks/hooks';
+import { authError, setUser } from './store/slices/authSlice';
+import { setAuthLoading, setLoading } from './store/slices/loadingSlice';
 import { User } from './types';
+import { convertTimestamp } from './utils/helpers/convertTimeStamp';
 
 const AuthListener = () => {
-	console.log('2. AuthListener: AuthListener starts listening.'); // Step 2
-
+	const currentUser = useAppSelector((state) => state.auth.currentUser);
+	const loading = useAppSelector((state) => state.loading.auth);
 	const dispatch = useAppDispatch();
+	const isMounted = useRef(true);
 
 	useEffect(() => {
+		dispatch(setLoading(true));
+
 		const unsubscribe = auth.onAuthStateChanged(async (user) => {
-			console.log(
-				'4. AuthListener: onAuthStateChanged callback fires.',
-				user,
-			); // Step 4
-			dispatch(setLoading(true));
-			console.log('AuthListener: setLoading(true) dispatched');
 			try {
 				if (user) {
-					console.log('AuthListener: user is logged in', user);
 					const userDocRef = doc(db, 'users', user.uid);
-					console.log('AuthListener: userDocRef created', userDocRef);
 					const userDoc = await getDoc(userDocRef);
-					console.log('AuthListener: userDoc fetched', userDoc);
 
-					if (userDoc.exists()) {
-						console.log('5. AuthListener: userDoc exists');
-						// Convert Timestamp to Date BEFORE dispatching
-						const userData = userDoc.data() as User;
-						const last_login =
-							userData.last_login instanceof Timestamp
-								? userData.last_login.toDate().toISOString()
-								: userData.last_login;
-						const createdAt =
-							userData.createdAt instanceof Timestamp
-								? userData.createdAt.toDate().toISOString()
-								: userData.createdAt;
-						const lastSeen =
-							userData.lastSeen instanceof Timestamp
-								? userData.lastSeen.toDate().toISOString()
-								: userData.lastSeen;
-
-						const convertedUserData: User = {
-							...userData,
-							last_login: last_login,
-							createdAt: createdAt,
-							lastSeen: lastSeen,
-						};
-
-						console.log(
-							'AuthListener: userData',
-							convertedUserData,
-						);
-						dispatch(setUser(convertedUserData));
-						console.log('AuthListener: setUser dispatched');
-					} else {
-						console.log('AuthListener: userDoc does not exist');
-						dispatch(setUser(null));
-						console.log('AuthListener: setUser(null) dispatched');
+					if (!userDoc.exists()) {
+						dispatch(authError('User document not found'));
+						await auth.signOut();
+						dispatch(setLoading(false));
+						return;
 					}
+
+					const userData = userDoc.data() as User;
+					dispatch(
+						setUser({
+							...userData,
+							last_login: userData.last_login
+								? convertTimestamp(userData.last_login)
+								: null,
+							createdAt: userData.createdAt
+								? convertTimestamp(userData.createdAt)
+								: null,
+							lastSeen: userData.lastSeen
+								? convertTimestamp(userData.lastSeen)
+								: null,
+						}),
+					);
+					dispatch(setLoading(false));
 				} else {
-					console.log('AuthListener: user is logged out');
 					dispatch(setUser(null));
-					console.log('AuthListener: setUser(null) dispatched');
+					dispatch(setLoading(false));
 				}
-			} catch (err: any) {
-				console.error('AuthListener: Error fetching user data:', err);
-			} finally {
-				dispatch(setLoading(false));
-				console.log('AuthListener: setLoading(false) dispatched');
+			} catch (err) {
+				if (isMounted.current) {
+					dispatch(
+						authError(
+							err instanceof Error ? err.message : 'Auth error',
+						),
+					);
+					dispatch(setUser(null));
+					dispatch(setLoading(false));
+				}
 			}
 		});
 
-		return () => unsubscribe();
+		return () => {
+			isMounted.current = false;
+			unsubscribe();
+		};
 	}, [dispatch]);
 
-	return (
-		<>
-			<AppRoutes />
-		</>
-	);
+	
+
+	return null;
 };
 
 export default AuthListener;

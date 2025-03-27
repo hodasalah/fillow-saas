@@ -1,9 +1,7 @@
-import { doc, getDoc } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router';
 import Logo from '../../../components/logo/logo';
 import MiniLogo from '../../../components/logo/miniLogo';
-import { db } from '../../../firebase';
 import { useAppDispatch, useAppSelector } from '../../../hooks/hooks';
 import { loginUser, loginWithGoogle } from '../../../store/slices/authActions';
 
@@ -14,10 +12,14 @@ const Login: React.FC = () => {
 	const [error, setError] = useState<string | null>(null);
 	const dispatch = useAppDispatch();
 	const {
-		currentUser,
 		status,
 		error: authError,
+		currentUser,
 	} = useAppSelector((state) => state.auth);
+
+	useEffect(() => {
+		if (authError) setError(authError);
+	}, [authError]);
 
 	useEffect(() => {
 		if (currentUser) {
@@ -25,120 +27,95 @@ const Login: React.FC = () => {
 		}
 	}, [currentUser, navigate]);
 
-	useEffect(() => {
-		if (authError) {
-			setError(authError);
-		}
-	}, [authError]);
-
 	const handleLogin = async (e: React.FormEvent) => {
 		e.preventDefault();
 		setError(null);
 
 		try {
-			// 1. Check if the email exists in the database
-			const userDocRef = doc(db, 'users', email);
-			const userDocSnap = await getDoc(userDocRef);
-
-			if (userDocSnap.exists()) {
-				// 2. Email exists, proceed with login
-				await dispatch(loginUser({ email, password }));
-			} else {
-				// 3. Email does not exist, show an error or redirect to signup
-				setError('Email not found. Please sign up.');
-			}
+			await dispatch(loginUser({ email, password }));
 		} catch (err: any) {
 			setError(err.message || 'An error occurred during login.');
 		}
 	};
 
 	const handleGoogleLogin = async () => {
+		setError(null);
 		try {
 			await dispatch(loginWithGoogle());
 		} catch (err: any) {
-			setError(err.message || 'An error occurred during login.');
+			console.error('Google login error:', err);
+			setError(err.message || 'Google login failed');
 		}
 	};
 
 	return (
 		<div className='min-h-screen flex items-center justify-center py-[30px]'>
 			<div className='bg-white max-w-[580px] min-w-[320px] w-full mx-auto py-6 px-4 rounded-lg shadow-lg'>
-				<div className='w-full'>
-					<div className='w-full flex items-center justify-center gap-2 mb-8'>
-						<MiniLogo />
-						<Logo />
-					</div>
-					{error && <p className='text-red-500 px-4'>{error}</p>}
-					<form
-						onSubmit={handleLogin}
-						className='mb-4'
-					>
-						<div className='mb-4 text-[var(--text-dark)] px-2'>
-							<label
-								className='block mb-2'
-								htmlFor='email'
-							>
-								Email:
-							</label>
-							<input
-								className='rounded-[0.625rem] border-[0.0625rem] border-border h-[2.9rem] w-full'
-								type='email'
-								value={email}
-								name='email'
-								onChange={(e) => setEmail(e.target.value)}
-								required
-							/>
-						</div>
-
-						<div className='mb-4 text-[var(--text-dark)] px-2'>
-							<label
-								className='block mb-2'
-								htmlFor='password'
-							>
-								Password:
-							</label>
-							<input
-								type='password'
-								value={password}
-								onChange={(e) => setPassword(e.target.value)}
-								required
-								name='password'
-								className='rounded-[0.625rem] border-[0.0625rem] border-border h-[2.9rem] w-full'
-							/>
-						</div>
-						<div className='px-2'>
-							<button
-								type='submit'
-								className='bg-primary w-full rounded-lg py-2 text-white'
-								disabled={status === 'loading'}
-							>
-								{status === 'loading'
-									? 'Logging in...'
-									: 'Login'}
-							</button>
-						</div>
-						<div className='px-2 mt-2'>
-							<button
-								onClick={handleGoogleLogin}
-								className='text-primary w-full rounded-lg border-primary py-2 bg-rgba-primary-1'
-								disabled={status === 'loading'}
-							>
-								{status === 'loading'
-									? 'Signing up with Google...'
-									: 'Signup with Google'}
-							</button>
-						</div>
-					</form>
-					<p className='px-4'>
-						Don't have an account?{' '}
-						<NavLink
-							to='/signup'
-							className='text-primary'
-						>
-							Sign up
-						</NavLink>
-					</p>
+				<div className='w-full flex items-center justify-center gap-2 mb-8'>
+					<MiniLogo />
+					<Logo />
 				</div>
+
+				{error && <p className='text-red-500 px-4 mb-4'>{error}</p>}
+
+				<form
+					onSubmit={handleLogin}
+					className='mb-4'
+				>
+					<div className='mb-4'>
+						<label className='block mb-2 text-[var(--text-dark)]'>
+							Email:
+						</label>
+						<input
+							type='email'
+							value={email}
+							onChange={(e) => setEmail(e.target.value)}
+							className='auth-input'
+							required
+						/>
+					</div>
+
+					<div className='mb-6'>
+						<label className='block mb-2 text-[var(--text-dark)]'>
+							Password:
+						</label>
+						<input
+							type='password'
+							value={password}
+							onChange={(e) => setPassword(e.target.value)}
+							className='auth-input'
+							required
+						/>
+					</div>
+
+					<button
+						type='submit'
+						className='auth-button primary'
+						disabled={status === 'loading'}
+					>
+						{status === 'loading' ? 'Logging In...' : 'Login'}
+					</button>
+				</form>
+
+				<button
+					onClick={handleGoogleLogin}
+					className='auth-button google hover:bg-primary/10'
+					disabled={status === 'loading'}
+				>
+					{status === 'loading'
+						? 'Processing...'
+						: 'Continue with Google'}
+				</button>
+
+				<p className='text-center mt-6'>
+					Don't have an account?{' '}
+					<NavLink
+						to='/signup'
+						className='text-primary font-semibold'
+					>
+						Sign Up
+					</NavLink>
+				</p>
 			</div>
 		</div>
 	);

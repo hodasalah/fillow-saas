@@ -1,13 +1,13 @@
-// routes.tsx
 import { Route, Routes } from 'react-router';
-import Layout from '../layout/dashboardLayout';
+import DashboardLayout from '../layout/dashboardLayout';
 import DashboardHome from '../layout/dashboardLayout/pages/home';
+import Profile from '../layout/dashboardLayout/pages/profile';
 import Projects from '../layout/dashboardLayout/pages/projects';
 import Login from '../layout/publicLayout/AuthPages/Login';
-import Home from '../layout/publicLayout/Home';
-import PrivateRoute from '../PrivateRoute';
 import Signup from '../layout/publicLayout/AuthPages/SignUp';
-import Profile from '../layout/dashboardLayout/pages/profile';
+import Home from '../layout/publicLayout/Home';
+import NotFound from '../layout/publicLayout/NotFound';
+import PrivateRoute from '../PrivateRoute';
 
 const AppRoutes = () => {
 	return (
@@ -18,10 +18,6 @@ const AppRoutes = () => {
 				element={<Home />}
 			/>
 			<Route
-				path='about'
-				element={<div>About</div>}
-			/>
-			<Route
 				path='login'
 				element={<Login />}
 			/>
@@ -29,12 +25,13 @@ const AppRoutes = () => {
 				path='signup'
 				element={<Signup />}
 			/>
+
 			{/* Protected routes */}
 			<Route
 				path='dashboard'
 				element={
 					<PrivateRoute>
-						<Layout />
+						<DashboardLayout />
 					</PrivateRoute>
 				}
 			>
@@ -48,38 +45,16 @@ const AppRoutes = () => {
 				/>
 				<Route
 					path='profile'
-					element={
-						<Profile />
-					}
-				/>
-				<Route
-					path='settings'
-					element={
-						<div className='h-screen w-full flex items-center pl-[10rem] justify-center'>
-							Settings is here
-						</div>
-					}
-				/>
-				<Route
-					path='*'
-					element={
-						<div className='h-screen w-full flex items-center pl-[10rem] justify-center'>
-							Dashboard Page not found
-						</div>
-					}
+					element={<Profile />}
 				/>
 			</Route>
-			{/* Catch-all route for public pages */}
+
+			{/* Catch-all route */}
 			<Route
 				path='*'
-				element={
-					<div className='h-screen w-full flex items-center pl-[10rem] justify-center'>
-						Public Page not found
-					</div>
-				}
+				element={<NotFound />}
 			/>
 		</Routes>
 	);
 };
-
 export default AppRoutes;

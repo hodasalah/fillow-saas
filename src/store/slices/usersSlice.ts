@@ -22,33 +22,11 @@ const userSlice = createSlice({
 	name: 'users',
 	initialState,
 	reducers: {
-		setUser: (state, action: PayloadAction<User | null>) => {
-			if (action.payload) {
-				const createdAt =
-					action.payload.createdAt instanceof Timestamp
-						? action.payload.createdAt.toDate().toISOString()
-						: action.payload.createdAt;
-				const last_login =
-					action.payload.last_login instanceof Timestamp
-						? action.payload.last_login.toDate().toISOString()
-						: action.payload.last_login;
-				const lastSeen =
-					action.payload.lastSeen instanceof Timestamp
-						? action.payload.lastSeen.toDate().toISOString()
-						: action.payload.lastSeen;
-				state.currentUser = {
-					...action.payload,
-					createdAt: createdAt,
-					last_login: last_login,
-					lastSeen: lastSeen,
-				};
-			} else {
-				state.currentUser = null;
+		setUser: (state, action) => {
+			if (JSON.stringify(state) !== JSON.stringify(action.payload)) {
+				return action.payload;
 			}
-			console.log(
-				'Redux Store Updated: setUser dispatched',
-				action.payload,
-			);
+			return state;
 		},
 		// You can add more reducers here if needed
 	},

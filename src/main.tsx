@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import { BrowserRouter, Route, Routes } from 'react-router';
 import App from './App.tsx';
 import './index.css';
+import AppRoutes from './routes/index.tsx';
 import { store } from './store/store.ts';
 
 createRoot(document.getElementById('root')!).render(
@@ -11,7 +12,12 @@ createRoot(document.getElementById('root')!).render(
 		<BrowserRouter>
 			<Provider store={store}>
 				<Routes>
-					<Route path='*' element={<App />} />
+					<Route element={<App />}>
+						<Route
+							path='/*'
+							element={<AppRoutes />}
+						/>
+					</Route>
 				</Routes>
 			</Provider>
 		</BrowserRouter>

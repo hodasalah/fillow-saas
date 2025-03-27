@@ -5,7 +5,7 @@ export default {
 	theme: {
 		extend: {
 			colors: {
-				primary: 'var(--primary)',
+				primary:{DEFAULT: 'var(--primary)', light: 'var(--primary-light)', dark: 'var(--primary-dark)', hover: 'var(--primary-hover)'},
 				secondary: 'var(--secondary)',
 				'primary-light': 'var(--primary-light)',
 				'secondary-light': 'var(--secondary-light)',

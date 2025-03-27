@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { User as FirebaseUser } from 'firebase/auth';
 import {
 	createUser,
@@ -26,6 +26,10 @@ const authSlice = createSlice({
 	reducers: {
 		setUser: (state, action) => {
 			state.currentUser = action.payload;
+		},
+		authError: (state, action: PayloadAction<string>) => {
+			state.error = action.payload;
+			state.status = 'failed';
 		},
 	},
 	extraReducers: (builder) => {
@@ -81,5 +85,5 @@ const authSlice = createSlice({
 	},
 });
 
-export const { setUser } = authSlice.actions;
+export const { setUser, authError } = authSlice.actions;
 export default authSlice.reducer;

@@ -1,23 +1,9 @@
-import { useSelector } from 'react-redux';
-import { RootState } from '../store/store';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+// components/Loading.tsx
 
-const Loading = () => {
-	const isLoading = useSelector(
-		(state: RootState) => state.loading.isLoading,
-	);
-
-	if (!isLoading) return null;
-
-	return (
-		<div className='fixed inset-0 flex items-center justify-center bg-white/80 z-50'>
-			<FontAwesomeIcon
-				icon={faSpinner}
-				className='text-[var(--primary)] text-4xl animate-spin'
-			/>
-		</div>
-	);
-};
+const Loading = () => (
+	<div className='fixed inset-0 bg-white bg-opacity-90 flex items-center justify-center z-50'>
+		<div className='animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500'></div>
+	</div>
+);
 
 export default Loading;

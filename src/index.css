@@ -3,6 +3,35 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+	.auth-input {
+		@apply rounded-[0.625rem] border-[0.0625rem] border-border h-[2.9rem] w-full px-4;
+	}
+
+	.auth-button {
+		@apply w-full rounded-lg py-3 transition-colors duration-200;
+	}
+
+	.auth-button.primary {
+		@apply bg-primary text-white hover:bg-primary-dark;
+	}
+
+	.auth-button.google {
+		@apply border-2 border-primary text-primary bg-transparent;
+	}
+
+	/* Close the .auth-button.google block */
+
+	/* Add custom hover variant */
+	@layer utilities {
+		.hover\:bg-primary\/10:hover {
+			background-color: rgba(136, 108, 192, 0.1);
+			/* Replace with the actual RGBA value for primary color */
+		}
+	}
+}
+
+
 :root {
 	/* Colors */
 	--primary: #886cc0;
@@ -105,11 +134,13 @@ body>* {
 svg {
 	display: inline-block;
 }
-h6{
+
+h6 {
 	line-height: 1.5;
 	font-weight: 600;
-	color:var(--text-dark);
+	color: var(--text-dark);
 }
+
 .brand-logo {
 	display: flex;
 	height: 100%;
@@ -171,7 +202,29 @@ h6{
 	transition: all 5s ease 0s
 }
 
+/* Use hardware-accelerated properties */
+.loader-overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	will-change: opacity;
+	transition: opacity 0.3s ease;
+}
 
+.spinner {
+	animation: spin 1s linear infinite;
+	will-change: transform;
+}
+
+@keyframes spin {
+	from {
+		transform: rotate(0deg);
+	}
+
+	to {
+		transform: rotate(360deg);
+	}
+}
 
 @keyframes myanimation {
 	0% {

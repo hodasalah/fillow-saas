@@ -1,7 +1,16 @@
-import React from 'react';
-import { faArrowLeft, faArrowRight, faClose, faListDots } from '@fortawesome/free-solid-svg-icons';
+import {
+	faGithub,
+	faLinkedin,
+	faTwitter,
+} from '@fortawesome/free-brands-svg-icons';
+import {
+	faArrowRight,
+	faClose,
+	faListDots,
+} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faGithub, faLinkedin, faTwitter } from '@fortawesome/free-brands-svg-icons';
+import React from 'react';
+import { NavLink } from 'react-router';
 
 function Home() {
 	const [isMenuOpen, setIsMenuOpen] = React.useState(false);
@@ -19,12 +28,12 @@ function Home() {
 						</div>
 						<div className='hidden md:block'>
 							<div className='ml-10 flex items-center space-x-4'>
-								<a
-									href='#'
+								<NavLink
+									to='/'
 									className='text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium'
 								>
 									Home
-								</a>
+								</NavLink>
 								<a
 									href='#'
 									className='text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium'
@@ -43,6 +52,18 @@ function Home() {
 								>
 									Contact
 								</a>
+								<NavLink
+									to='/login'
+									className='text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium'
+								>
+									Login
+								</NavLink>
+								<NavLink
+									to='/signup'
+									className='text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium'
+								>
+									Signup
+								</NavLink>
 							</div>
 						</div>
 						<div className='md:hidden'>
@@ -51,9 +72,15 @@ function Home() {
 								className='inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-indigo-600 focus:outline-none'
 							>
 								{isMenuOpen ? (
-									<FontAwesomeIcon icon={faClose} className='h-6 w-6' />
+									<FontAwesomeIcon
+										icon={faClose}
+										className='h-6 w-6'
+									/>
 								) : (
-									<FontAwesomeIcon icon={faListDots } className='h-6 w-6' />
+									<FontAwesomeIcon
+										icon={faListDots}
+										className='h-6 w-6'
+									/>
 								)}
 							</button>
 						</div>
@@ -63,12 +90,12 @@ function Home() {
 				{isMenuOpen && (
 					<div className='md:hidden'>
 						<div className='px-2 pt-2 pb-3 space-y-1 sm:px-3'>
-							<a
-								href='#'
+							<NavLink
+								to='/'
 								className='text-gray-700 hover:text-indigo-600 block px-3 py-2 rounded-md text-base font-medium'
 							>
 								Home
-							</a>
+							</NavLink>
 							<a
 								href='#'
 								className='text-gray-700 hover:text-indigo-600 block px-3 py-2 rounded-md text-base font-medium'
@@ -87,6 +114,18 @@ function Home() {
 							>
 								Contact
 							</a>
+							<NavLink
+								to='login'
+								className='text-gray-700 hover:text-indigo-600 block px-3 py-2 rounded-md text-base font-medium'
+							>
+								Login
+							</NavLink>
+							<NavLink
+								to='signup'
+								className='text-gray-700 hover:text-indigo-600 block px-3 py-2 rounded-md text-base font-medium'
+							>
+								Signup
+							</NavLink>
 						</div>
 					</div>
 				)}
@@ -110,17 +149,20 @@ function Home() {
 						</p>
 						<div className='mt-10 flex items-center justify-center gap-x-6'>
 							<a
-								href='#'
+								href='#get-started'
 								className='rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
 							>
 								Get started
 							</a>
 							<a
-								href='#'
+								href='#learn-more'
 								className='text-sm font-semibold leading-6 text-gray-900 flex items-center'
 							>
 								Learn more{' '}
-								<FontAwesomeIcon icon={faArrowRight} className='ml-2 h-4 w-4' />
+								<FontAwesomeIcon
+									icon={faArrowRight}
+									className='ml-2 h-4 w-4'
+								/>
 							</a>
 						</div>
 					</div>
@@ -168,24 +210,33 @@ function Home() {
 			<footer className='bg-white border-t'>
 				<div className='mx-auto max-w-7xl px-6 py-12 md:flex md:items-center md:justify-between lg:px-8'>
 					<div className='flex justify-center space-x-6 md:order-2'>
-						<a
-							href='#'
+						<NavLink
+							to='#'
 							className='text-gray-400 hover:text-gray-500'
 						>
-							<FontAwesomeIcon icon={faGithub} className='h-6 w-6' />
-						</a>
-						<a
-							href='#'
+							<FontAwesomeIcon
+								icon={faGithub}
+								className='h-6 w-6'
+							/>
+						</NavLink>
+						<NavLink
+							to='#'
 							className='text-gray-400 hover:text-gray-500'
 						>
-							<FontAwesomeIcon icon={faTwitter} className='h-6 w-6' />
-						</a>
-						<a
-							href='#'
+							<FontAwesomeIcon
+								icon={faTwitter}
+								className='h-6 w-6'
+							/>
+						</NavLink>
+						<NavLink
+							to='#'
 							className='text-gray-400 hover:text-gray-500'
 						>
-							<FontAwesomeIcon icon={faLinkedin} className='h-6 w-6' />
-						</a>
+							<FontAwesomeIcon
+								icon={faLinkedin}
+								className='h-6 w-6'
+							/>
+						</NavLink>
 					</div>
 					<div className='mt-8 md:order-1 md:mt-0'>
 						<p className='text-center text-xs leading-5 text-gray-500'>

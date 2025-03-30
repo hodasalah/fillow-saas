@@ -6,9 +6,8 @@ import './sidebarProfile.css';
 const SidebarProfile = () => {
 	const mode = useAppSelector((state) => state.sidebar.mode);
 	const user = useAppSelector(
-		(state) => state.users.currentUser,
+		(state) => state.auth.currentUser,
 	) as User | null;
-	console.log(user)
 	return (
 		<div
 			className={`${

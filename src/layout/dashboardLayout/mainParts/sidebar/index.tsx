@@ -42,7 +42,7 @@ const Sidebar = () => {
 		window.addEventListener('resize', handleResize);
 		handleResize(); // Initial check
 		return () => window.removeEventListener('resize', handleResize);
-	}, [dispatch]);
+	}, []);
 	return (
 		<aside
 			className={`fixed top-[--dz-header-height] h-[calc(100vh-4.5rem)] z-[1] bg-sidebar-bg border-r-[1px] border-[--border] transition-all duration-300 shadow-[0rem_0.9375rem_1.875rem_0rem_rgba(0,0,0,0.1)]

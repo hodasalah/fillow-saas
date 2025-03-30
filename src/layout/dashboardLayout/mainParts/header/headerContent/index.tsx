@@ -4,9 +4,8 @@ import { useEffect, useRef, useState } from 'react';
 import ProfileDropdown from '../../../../../components/profileDropdown/ProfileDropdown';
 import { useAppSelector } from '../../../../../hooks/hooks';
 
-import { items } from './constants';
 import { useLocation } from 'react-router';
-import ToggleSwitch from './../../../../../components/toggleSwitch/ToggleSwitch';
+import { items } from './constants';
 
 interface HeaderContentProps {
 	setShowSlider: (show: boolean) => void;
@@ -53,8 +52,7 @@ const HeaderContent = ({ setShowSlider }: HeaderContentProps) => {
 				break;
 		}
 	};
-const location = useLocation();
-console.log(location.pathname.split('/').at(-1));
+	const location = useLocation();
 	return (
 		<header
 			className={`relative flex items-center ${
@@ -65,7 +63,9 @@ console.log(location.pathname.split('/').at(-1));
 		>
 			<nav className='flex sm:justify-between justify-end items-center w-full'>
 				<div className='font-bold text-[1.25rem] text-[--text-dark] hidden sm:block'>
-					{(location.pathname.split('/').at(-1) ?? '').charAt(0).toUpperCase() +
+					{(location.pathname.split('/').at(-1) ?? '')
+						.charAt(0)
+						.toUpperCase() +
 						(location.pathname.split('/').at(-1) ?? '').slice(1)}
 				</div>
 				<div className='nav-links flex items-center px-2 sm:px-5'>
@@ -126,6 +126,5 @@ console.log(location.pathname.split('/').at(-1));
 			</nav>
 		</header>
 	);
-
 };
 export default HeaderContent;

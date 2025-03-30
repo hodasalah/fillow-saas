@@ -1,7 +1,9 @@
 // PrivateRoute.tsx
 import React, { useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router';
-import { useAppSelector } from './hooks/hooks';
+import { useLocation, useNavigate } from 'react-router';
+import { useAppDispatch, useAppSelector } from './hooks/hooks';
+import { setLoading } from './store/slices/loadingSlice';
+import Login from './layout/publicLayout/AuthPages/Login';
 
 interface PrivateRouteProps {
 	children: JSX.Element;
@@ -9,16 +11,16 @@ interface PrivateRouteProps {
 
 const PrivateRoute: React.FC<PrivateRouteProps> = ({ children }) => {
 	const navigate = useNavigate();
-	const user = useAppSelector((state) => state.users.currentUser);
+	const user = useAppSelector((state) => state.auth.currentUser);
 	const location = useLocation();
-
+const dispatch = useAppDispatch();
 	useEffect(() => {
-		if (!user) {
-			navigate('/login', { state: { from: location } });
+		if (user) {
+			dispatch(setLoading(false));
 		}
-	}, [user, navigate, location]);
+	}, [user]);
 
-	return user ? <>{children}</> : null;
+	return user ? <>{children}</> : <Login/>;
 };
 
 export default PrivateRoute;

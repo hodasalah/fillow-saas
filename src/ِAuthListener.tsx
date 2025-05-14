@@ -6,13 +6,14 @@ import { authError, setUser } from './store/slices/authSlice';
 import { setAuthLoading, setLoading } from './store/slices/loadingSlice';
 import { User } from './types';
 import { convertTimestamp } from './utils/helpers/convertTimeStamp';
+import { useNavigate } from 'react-router';
 
 const AuthListener = () => {
 	const currentUser = useAppSelector((state) => state.auth.currentUser);
 	const loading = useAppSelector((state) => state.loading.auth);
 	const dispatch = useAppDispatch();
 	const isMounted = useRef(true);
-
+const navigate= useNavigate()
 	useEffect(() => {
 		dispatch(setLoading(true));
 
@@ -26,6 +27,7 @@ const AuthListener = () => {
 						dispatch(authError('User document not found'));
 						await auth.signOut();
 						dispatch(setLoading(false));
+					navigate("/login")
 						return;
 					}
 

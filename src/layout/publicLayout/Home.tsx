@@ -6,14 +6,31 @@ import {
 import {
 	faArrowRight,
 	faClose,
+	faHomeUser,
 	faListDots,
+	faRightFromBracket,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React from 'react';
-import { NavLink } from 'react-router';
+import { useState } from 'react';
+import { NavLink, useNavigate } from 'react-router';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
+import { logoutUser } from '../../store/slices/authActions';
 
 function Home() {
-	const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+	const [isMenuOpen, setIsMenuOpen] = useState(false);
+	const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
+	const currentUser = useAppSelector((state) => state.auth.currentUser);
+	const dispatch = useAppDispatch();
+	const navigate = useNavigate();
+
+	const handleLogout = async () => {
+		try {
+			await dispatch(logoutUser());
+			navigate('/login');
+		} catch (error) {
+			console.error('Logout failed:', error);
+		}
+	};
 
 	return (
 		<div className='min-h-screen bg-white'>
@@ -23,7 +40,7 @@ function Home() {
 					<div className='flex items-center justify-between h-16'>
 						<div className='flex items-center'>
 							<div className='text-2xl font-bold text-indigo-600'>
-								Brand
+								<img src="/assets/logo/1.png" alt="Logo"  />
 							</div>
 						</div>
 						<div className='hidden md:block'>
@@ -52,18 +69,61 @@ function Home() {
 								>
 									Contact
 								</a>
-								<NavLink
-									to='/login'
-									className='text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium'
-								>
-									Login
-								</NavLink>
-								<NavLink
-									to='/signup'
-									className='text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium'
-								>
-									Signup
-								</NavLink>
+								{currentUser ? (
+									<div className='relative'>
+										<button
+											onClick={() =>
+												setIsProfileDropdownOpen(
+													!isProfileDropdownOpen,
+												)
+											}
+											className='text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium flex items-center gap-1'
+										>
+											<FontAwesomeIcon
+												icon={faHomeUser}
+												className='h-4 w-4'
+											/>
+											{currentUser.name}
+										</button>
+										{isProfileDropdownOpen && (
+											<div className='absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10'>
+												<NavLink
+													to='/dashboard'
+													className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100'
+												>
+													Dashboard
+												</NavLink>
+												<button
+													onClick={handleLogout}
+													className='block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100'
+												>
+													<FontAwesomeIcon
+														icon={
+															faRightFromBracket
+														}
+														className='h-4 w-4 mr-2'
+													/>
+													Logout
+												</button>
+											</div>
+										)}
+									</div>
+								) : (
+									<>
+										<NavLink
+											to='/login'
+											className='text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium'
+										>
+											Login
+										</NavLink>
+										<NavLink
+											to='/signup'
+											className='text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium'
+										>
+											Signup
+										</NavLink>
+									</>
+								)}
 							</div>
 						</div>
 						<div className='md:hidden'>
@@ -114,18 +174,37 @@ function Home() {
 							>
 								Contact
 							</a>
-							<NavLink
-								to='login'
-								className='text-gray-700 hover:text-indigo-600 block px-3 py-2 rounded-md text-base font-medium'
-							>
-								Login
-							</NavLink>
-							<NavLink
-								to='signup'
-								className='text-gray-700 hover:text-indigo-600 block px-3 py-2 rounded-md text-base font-medium'
-							>
-								Signup
-							</NavLink>
+							{currentUser ? (
+								<>
+									<NavLink
+										to='/dashboard'
+										className='text-gray-700 hover:text-indigo-600 block px-3 py-2 rounded-md text-base font-medium'
+									>
+										Dashboard
+									</NavLink>
+									<button
+										onClick={handleLogout}
+										className='text-gray-700 hover:text-indigo-600 block px-3 py-2 rounded-md text-base font-medium w-full text-left'
+									>
+										Logout
+									</button>
+								</>
+							) : (
+								<>
+									<NavLink
+										to='/login'
+										className='text-gray-700 hover:text-indigo-600 block px-3 py-2 rounded-md text-base font-medium'
+									>
+										Login
+									</NavLink>
+									<NavLink
+										to='/signup'
+										className='text-gray-700 hover:text-indigo-600 block px-3 py-2 rounded-md text-base font-medium'
+									>
+										Signup
+									</NavLink>
+								</>
+							)}
 						</div>
 					</div>
 				)}

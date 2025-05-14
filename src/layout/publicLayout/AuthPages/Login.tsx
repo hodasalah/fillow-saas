@@ -22,8 +22,9 @@ const Login: React.FC = () => {
 	}, [authError]);
 
 	useEffect(() => {
+		const from = { pathname: '/' }; // Default value for 'from'
 		if (currentUser) {
-			navigate('/dashboard');
+			navigate(from?.pathname || '/dashboard');
 		}
 	}, [currentUser, navigate]);
 

@@ -1,12 +1,21 @@
-import { useState } from 'react';
-import { Outlet } from 'react-router';
+import { useEffect, useState } from 'react';
+import { Outlet, useNavigate } from 'react-router';
 import Chatbox from './mainParts/chatbox';
 import Footer from './mainParts/footer';
 import Header from './mainParts/header';
 import NavHeader from './mainParts/navHeader';
 import Sidebar from './mainParts/sidebar';
+import { useAppSelector } from '../../hooks/hooks';
 
 const DashboardLayout = () => {
+	const currentUser = useAppSelector((state) => state.auth.currentUser);
+	const loading = useAppSelector((state) => state.loading.auth);
+	const navigate = useNavigate();
+	useEffect(()=>{
+		if(!currentUser){
+			navigate("/login")
+		}
+	})
 	const [showSlider, setShowSlider] = useState(false);
 	return (
 		<>

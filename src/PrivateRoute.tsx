@@ -1,25 +1,33 @@
 // PrivateRoute.tsx
 import React, { useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router';
+import { Navigate, Outlet } from 'react-router'; // Import Navigate and Outlet
 import { useAppDispatch, useAppSelector } from './hooks/hooks';
 import { setLoading } from './store/slices/loadingSlice';
 
 interface PrivateRouteProps {
-	children: JSX.Element;
+	// children: JSX.Element; // We will use Outlet instead of children
 }
 
-const PrivateRoute: React.FC<PrivateRouteProps> = ({ children }) => {
-	const navigate = useNavigate();
+const PrivateRoute: React.FC<PrivateRouteProps> = () => {
 	const user = useAppSelector((state) => state.auth.currentUser);
-	const location = useLocation();
 	const dispatch = useAppDispatch();
+
 	useEffect(() => {
 		if (user) {
 			dispatch(setLoading(false));
 		}
-	}, [user]);
+	}, [user, dispatch]);
 
-	return <>{children}</>;
+	if (!user) {
+		return (
+			<Navigate
+				to='/login'
+				replace
+			/>
+		);
+	}
+
+	return <Outlet />;
 };
 
 export default PrivateRoute;

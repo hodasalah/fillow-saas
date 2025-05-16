@@ -39,8 +39,15 @@ function Home() {
 				<div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
 					<div className='flex items-center justify-between h-16'>
 						<div className='flex items-center'>
-							<div className='text-2xl font-bold text-indigo-600'>
-								<img src="/assets/logo/1.png" alt="Logo"  />
+							<div className='flex items-center'>
+								<img
+									src='https://flowbite.com/docs/images/logo.svg'
+									className='h-8 w-8 mr-2'
+									alt='Flowbite Logo'
+								/>
+								<span className='text-2xl font-bold text-indigo-600'>
+									Fillow
+								</span>
 							</div>
 						</div>
 						<div className='hidden md:block'>

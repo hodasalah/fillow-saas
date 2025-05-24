@@ -1,14 +1,18 @@
-import { formatDistanceToNow } from 'date-fns';
 import React, { useEffect, useRef, useState } from 'react';
+import { useAppSelector } from '../../../../../hooks/hooks';
 import { Chat, Message } from '../../../../../services/firebase/chats';
-import { UserData, getUserData } from '../../../../../services/firebase/users';
+import { formatMessageTime } from '../../../../../utils/dateUtils';
+import {
+	getImageLoadErrorHandler,
+	getProfilePictureUrl,
+} from '../../../../../utils/profilePicture';
 
 interface ChatWindowProps {
 	chat: Chat;
 	messages: Message[];
-	currentUserId?: string;
+	currentUserId: string | undefined;
 	onSendMessage: (text: string) => void;
-	error?: string | null;
+	error: string | null;
 }
 
 const ChatWindow: React.FC<ChatWindowProps> = ({
@@ -19,24 +23,18 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
 	error,
 }) => {
 	const [newMessage, setNewMessage] = useState('');
-	const [chatUser, setChatUser] = useState<UserData | null>(null);
 	const messagesEndRef = useRef<HTMLDivElement>(null);
+	const users = useAppSelector((state) => state.users.users);
 
-	// Fetch other user's data
-	useEffect(() => {
-		const fetchUser = async () => {
-			const otherUserId = chat.participants.find(
-				(id) => id !== currentUserId,
-			);
-			if (otherUserId) {
-				const userData = await getUserData(otherUserId);
-				setChatUser(userData);
-			}
-		};
-		fetchUser();
-	}, [chat, currentUserId]);
+	const getUser = (userId: string) => {
+		return users.find((user) => user.uid === userId);
+	};
 
-	// Scroll to bottom when new messages arrive
+	const getUserName = (userId: string) => {
+		const user = getUser(userId);
+		return user?.name || 'Unknown User';
+	};
+
 	useEffect(() => {
 		messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
 	}, [messages]);
@@ -49,41 +47,44 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
 		}
 	};
 
+	const otherUser = getUser(
+		chat.participants.find((id) => id !== currentUserId) || '',
+	);
+
 	return (
 		<div className='flex flex-col h-full'>
 			{/* Chat Header */}
-			<div className='p-4 border-b bg-white flex items-center space-x-3'>
-				<div className='relative'>
+			<div className='p-4 border-b border-gray-200 bg-white rounded-tr-xl'>
+				<div className='flex items-center'>
 					<img
-						src={
-							chatUser?.photoURL ||
-							'https://via.placeholder.com/40'
-						}
-						alt={chatUser?.displayName}
-						className='w-10 h-10 rounded-full'
+						src={getProfilePictureUrl(
+							otherUser?.profilePicture,
+							otherUser?.name || 'User',
+						)}
+						alt={otherUser?.name || 'Unknown User'}
+						className='w-10 h-10 rounded-full object-cover'
+						onError={getImageLoadErrorHandler(
+							otherUser?.name || 'User',
+						)}
 					/>
-					{chatUser?.status === 'online' && (
-						<span className='absolute bottom-0 right-0 w-3 h-3 bg-green-400 border-2 border-white rounded-full'></span>
-					)}
-				</div>
-				<div>
-					<h2 className='font-semibold text-gray-900'>
-						{chatUser?.displayName || 'Loading...'}
-					</h2>
-					<p className='text-sm text-gray-500'>
-						{chatUser?.status === 'online' ? 'Online' : 'Offline'}
-					</p>
+					<div className='ml-3'>
+						<h2 className='text-lg font-semibold text-gray-900'>
+							{otherUser?.name || 'Unknown User'}
+						</h2>
+						<p className='text-sm text-gray-500'>
+							{otherUser?.status === 'online'
+								? 'Online'
+								: 'Offline'}
+						</p>
+					</div>
 				</div>
 			</div>
 
 			{/* Messages */}
 			<div className='flex-1 overflow-y-auto p-4 space-y-4'>
-				{messages.map((message, index) => {
+				{messages.map((message) => {
 					const isCurrentUser = message.senderId === currentUserId;
-					const showAvatar =
-						index === 0 ||
-						messages[index - 1].senderId !== message.senderId;
-
+					const messageUser = getUser(message.senderId);
 					return (
 						<div
 							key={message.id}
@@ -92,35 +93,39 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
 							}`}
 						>
 							<div
-								className={`flex items-end space-x-2 max-w-[70%] ${
-									!isCurrentUser
-										? 'flex-row'
-										: 'flex-row-reverse'
-								}`}
+								className={`flex ${
+									isCurrentUser
+										? 'flex-row-reverse'
+										: 'flex-row'
+								} items-end max-w-[70%]`}
 							>
-								{!isCurrentUser && showAvatar && (
-									<img
-										src={
-											chatUser?.photoURL ||
-											'https://via.placeholder.com/32'
-										}
-										alt={chatUser?.displayName}
-										className='w-8 h-8 rounded-full'
-									/>
-								)}
+								<img
+									src={getProfilePictureUrl(
+										messageUser?.profilePicture,
+										messageUser?.name || 'User',
+									)}
+									alt={messageUser?.name || 'Unknown User'}
+									className='w-8 h-8 rounded-full object-cover mx-2'
+									onError={getImageLoadErrorHandler(
+										messageUser?.name || 'User',
+									)}
+								/>
 								<div
-									className={`rounded-lg p-3 ${
+									className={`px-4 py-2 rounded-2xl ${
 										isCurrentUser
-											? 'bg-purple-500 text-white'
-											: 'bg-white text-gray-900'
+											? 'bg-purple-600 text-white rounded-br-none'
+											: 'bg-gray-200 text-gray-900 rounded-bl-none'
 									}`}
 								>
 									<p>{message.text}</p>
-									<span className='text-xs opacity-75 mt-1 block'>
-										{formatDistanceToNow(
-											message.createdAt,
-											{ addSuffix: true },
-										)}
+									<span
+										className={`text-xs ${
+											isCurrentUser
+												? 'text-purple-200'
+												: 'text-gray-500'
+										}`}
+									>
+										{formatMessageTime(message.createdAt)}
 									</span>
 								</div>
 							</div>
@@ -130,28 +135,24 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
 				<div ref={messagesEndRef} />
 			</div>
 
-			{/* Error Message */}
-			{error && (
-				<div className='px-4 py-2 bg-red-100 text-red-600'>{error}</div>
-			)}
-
 			{/* Message Input */}
 			<form
 				onSubmit={handleSubmit}
-				className='p-4 bg-white border-t'
+				className='p-4 bg-white border-t border-gray-200'
 			>
-				<div className='flex items-center space-x-2'>
+				{error && <p className='text-red-500 mb-2'>{error}</p>}
+				<div className='flex space-x-2'>
 					<input
 						type='text'
 						value={newMessage}
 						onChange={(e) => setNewMessage(e.target.value)}
 						placeholder='Type a message...'
-						className='flex-1 p-2 border border-gray-200 rounded-lg focus:outline-none focus:border-purple-500'
+						className='flex-1 px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:border-purple-500'
 					/>
 					<button
 						type='submit'
 						disabled={!newMessage.trim()}
-						className='px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 disabled:opacity-50 disabled:cursor-not-allowed'
+						className='px-6 py-2 bg-purple-600 text-white rounded-full hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed'
 					>
 						Send
 					</button>

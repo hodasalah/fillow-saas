@@ -1,13 +1,17 @@
-import { formatDistanceToNow } from 'date-fns';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import { useAppSelector } from '../../../../../hooks/hooks';
 import { Chat } from '../../../../../services/firebase/chats';
-import { UserData, getUserData } from '../../../../../services/firebase/users';
+import { formatTimestamp } from '../../../../../utils/dateUtils';
+import {
+	getImageLoadErrorHandler,
+	getProfilePictureUrl,
+} from '../../../../../utils/profilePicture';
 
 interface ChatListProps {
 	chats: Chat[];
 	selectedChat: Chat | null;
 	onSelectChat: (chat: Chat) => void;
-	currentUserId?: string;
+	currentUserId: string | undefined;
 }
 
 const ChatList: React.FC<ChatListProps> = ({
@@ -16,86 +20,65 @@ const ChatList: React.FC<ChatListProps> = ({
 	onSelectChat,
 	currentUserId,
 }) => {
-	const [chatUsers, setChatUsers] = useState<Record<string, UserData>>({});
+	const users = useAppSelector((state) => state.users.users);
 
-	// Fetch user data for each chat
-	useEffect(() => {
-		const fetchUsers = async () => {
-			const users: Record<string, UserData> = {};
-
-			for (const chat of chats) {
-				const otherUserId = chat.participants.find(
-					(id) => id !== currentUserId,
-				);
-				if (otherUserId && !chatUsers[otherUserId]) {
-					const userData = await getUserData(otherUserId);
-					if (userData) {
-						users[otherUserId] = userData;
-					}
-				}
-			}
-
-			setChatUsers((prev) => ({ ...prev, ...users }));
-		};
-
-		fetchUsers();
-	}, [chats, currentUserId]);
-
-	const getChatUser = (chat: Chat) => {
+	const getOtherUserFromChat = (chat: Chat) => {
 		const otherUserId = chat.participants.find(
 			(id) => id !== currentUserId,
 		);
-		return otherUserId ? chatUsers[otherUserId] : null;
+		return users.find((user) => user.uid === otherUserId);
+	};
+
+	const getUserName = (chat: Chat) => {
+		const otherUser = getOtherUserFromChat(chat);
+		return otherUser?.name || 'Unknown User';
 	};
 
 	return (
-		<div className='overflow-y-auto h-[calc(100vh-180px)]'>
+		<div className='overflow-y-auto'>
 			{chats.map((chat) => {
-				const user = getChatUser(chat);
-				const isSelected = selectedChat?.id === chat.id;
-
+				const otherUser = getOtherUserFromChat(chat);
 				return (
 					<div
 						key={chat.id}
-						className={`p-4 cursor-pointer hover:bg-gray-50 ${
-							isSelected ? 'bg-purple-50' : ''
+						className={`flex items-center p-4 cursor-pointer hover:bg-gray-50 ${
+							selectedChat?.id === chat.id ? 'bg-purple-50' : ''
 						}`}
 						onClick={() => onSelectChat(chat)}
 					>
-						<div className='flex items-center space-x-3'>
-							<div className='relative'>
-								<img
-									src={
-										user?.photoURL ||
-										'https://via.placeholder.com/40'
-									}
-									alt={user?.displayName}
-									className='w-10 h-10 rounded-full'
-								/>
-								{user?.status === 'online' && (
-									<span className='absolute bottom-0 right-0 w-3 h-3 bg-green-400 border-2 border-white rounded-full'></span>
+						<div className='relative'>
+							<img
+								src={getProfilePictureUrl(
+									otherUser?.profilePicture,
+									otherUser?.name || 'User',
 								)}
-							</div>
-							<div className='flex-1 min-w-0'>
-								<div className='flex justify-between items-start'>
-									<h3 className='text-sm font-semibold text-gray-900 truncate'>
-										{user?.displayName || 'Loading...'}
-									</h3>
-									{chat.lastMessage?.createdAt && (
-										<span className='text-xs text-gray-500'>
-											{formatDistanceToNow(
-												chat.lastMessage.createdAt,
-												{ addSuffix: true },
-											)}
-										</span>
-									)}
-								</div>
-								<p className='text-sm text-gray-500 truncate'>
-									{chat.lastMessage?.text ||
-										'No messages yet'}
-								</p>
-							</div>
+								alt={getUserName(chat)}
+								className='w-12 h-12 rounded-full object-cover'
+								onError={getImageLoadErrorHandler(
+									otherUser?.name || 'User',
+								)}
+							/>
+							<span
+								className={`absolute bottom-0 right-0 w-3 h-3 ${
+									otherUser?.status === 'online'
+										? 'bg-green-500'
+										: 'bg-gray-400'
+								} border-2 border-white rounded-full`}
+							></span>
 						</div>
+						<div className='ml-4 flex-1'>
+							<h3 className='text-sm font-semibold text-gray-900'>
+								{getUserName(chat)}
+							</h3>
+							<p className='text-sm text-gray-500 truncate'>
+								{chat.lastMessage?.text || 'No messages yet'}
+							</p>
+						</div>
+						{chat.lastMessage && (
+							<div className='text-xs text-gray-400'>
+								{formatTimestamp(chat.lastMessage.createdAt)}
+							</div>
+						)}
 					</div>
 				);
 			})}

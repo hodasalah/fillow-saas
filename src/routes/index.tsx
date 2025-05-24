@@ -1,60 +1,57 @@
-import { Route, Routes } from 'react-router'; 
-import DashboardLayout from '../layout/dashboardLayout';
-import DashboardHome from '../layout/dashboardLayout/pages/home';
-import Profile from '../layout/dashboardLayout/pages/profile';
-import Projects from '../layout/dashboardLayout/pages/projects';
+import { createBrowserRouter } from 'react-router-dom';
+import App from '../App';
+import { NotFound } from '../components/errorPages';
+import PrivateRoute from '../components/privateRoute';
+import { DashboardLayout } from '../layout/dashboardLayout';
+import { DashboardHome } from '../layout/dashboardLayout/pages';
+import ChatPage from '../layout/dashboardLayout/pages/chat';
 import Login from '../layout/publicLayout/AuthPages/Login';
-import Signup from '../layout/publicLayout/AuthPages/SignUp';
-import HomeRedirect from '../layout/publicLayout/HomeRedirect'; 
-import NotFound from '../layout/publicLayout/NotFound';
-import PrivateRoute from '../PrivateRoute';
+import SignUp from '../layout/publicLayout/AuthPages/SignUp';
+import HomeRedirect from '../layout/publicLayout/HomeRedirect';
 
-const AppRoutes = () => {
-	return (
-		<Routes>
-			{/* Public routes */}
-			<Route
-				index
-				element={<HomeRedirect />} // Use HomeRedirect for the index route
-			/>
-			<Route
-				path='login'
-				element={<Login />}
-			/>
-			<Route
-				path='signup'
-				element={<Signup />}
-			/>
+export const router = createBrowserRouter([
+	{
+		path: '/',
+		element: <App />,
+		children: [
+			{
+				path: '',
+				element: <HomeRedirect />,
+			},
+			{
+				path: 'dashboard',
+				element: <PrivateRoute />,
+				children: [
+					{
+						path: '',
+						element: <DashboardLayout />,
+						children: [
+							{
+								index: true,
+								element: <DashboardHome />,
+							},
+							{
+								path: 'chat',
+								element: <ChatPage />,
+							},
+						],
+					},
+				],
+			},
+			{
+				path: 'login',
+				element: <Login />,
+			},
+			{
+				path: 'signup',
+				element: <SignUp />,
+			},
+			{
+				path: '*',
+				element: <NotFound />,
+			},
+		],
+	},
+]);
 
-			{/* Protected routes - Wrapped by PrivateRoute */}
-			{/* Any route nested inside this Route element will be protected */}
-			<Route element={<PrivateRoute />}>
-				{/* The dashboard layout and its children are now protected */}
-				<Route
-					path='dashboard'
-					element={<DashboardLayout />}
-				>
-					<Route
-						index
-						element={<DashboardHome />}
-					/>
-					<Route
-						path='projects'
-						element={<Projects />}
-					/>
-					<Route
-						path='profile'
-						element={<Profile />}
-					/>
-				</Route>
-			</Route>
-
-			{/* Catch-all route */}
-			<Route
-				path='*'
-				element={<NotFound />}
-			/>
-		</Routes>
-	);
-};
-export default AppRoutes;
+export default router;

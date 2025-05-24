@@ -1,10 +1,10 @@
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useRef, useState } from 'react';
-import ProfileDropdown from '../../../../../components/profileDropdown/ProfileDropdown';
-import { useAppSelector } from '../../../../../hooks/hooks';
-
 import { useLocation } from 'react-router';
+import ProfileDropdown from '../../../../../components/profileDropdown/ProfileDropdown';
+import { useAppDispatch, useAppSelector } from '../../../../../hooks/hooks';
+import { toggleDarkMode } from '../../../../../store/slices/themeSlice';
 import { items } from './constants';
 
 interface HeaderContentProps {
@@ -12,6 +12,7 @@ interface HeaderContentProps {
 }
 
 const HeaderContent = ({ setShowSlider }: HeaderContentProps) => {
+	const dispatch = useAppDispatch();
 	const mode = useAppSelector((state) => state.sidebar.mode);
 	const isMobileView = useAppSelector((state) => state.sidebar.isMobileView);
 	const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
@@ -20,6 +21,7 @@ const HeaderContent = ({ setShowSlider }: HeaderContentProps) => {
 	useEffect(() => {
 		setActiveDropdown(null);
 	}, [mode, isMobileView]);
+
 	useEffect(() => {
 		if (!activeDropdown) return;
 
@@ -43,7 +45,7 @@ const HeaderContent = ({ setShowSlider }: HeaderContentProps) => {
 				console.log('Search clicked');
 				break;
 			case 'toggleTheme':
-				console.log('Toggle theme');
+				dispatch(toggleDarkMode());
 				break;
 			case 'messages':
 				setShowSlider(true);
@@ -52,14 +54,16 @@ const HeaderContent = ({ setShowSlider }: HeaderContentProps) => {
 				break;
 		}
 	};
+
 	const location = useLocation();
+
 	return (
 		<header
 			className={`relative flex items-center ${
 				mode === 'wide' || !isMobileView
-					? 'pl-[4rem] md:pl-[5rem] '
+					? 'pl-[4rem] md:pl-[5rem]'
 					: 'lg:pl-[8rem] md:pl-[1.875rem] sm:pl-[8rem]'
-			} pl-1  pr-1 sm:px-[1.875rem] h-full`}
+			} pl-1 pr-1 sm:px-[1.875rem] h-full`}
 		>
 			<nav className='flex sm:justify-between justify-end items-center w-full'>
 				<div className='font-bold text-[1.25rem] text-[--text-dark] hidden sm:block'>
@@ -69,7 +73,7 @@ const HeaderContent = ({ setShowSlider }: HeaderContentProps) => {
 						(location.pathname.split('/').at(-1) ?? '').slice(1)}
 				</div>
 				<div className='nav-links flex items-center px-2 sm:px-5'>
-					<ul className='header-right w-full flex  md:items-center  justify-end'>
+					<ul className='header-right w-full flex md:items-center justify-end'>
 						{items.map((item) => {
 							return item.icon === faSearch ? (
 								<li
@@ -80,14 +84,11 @@ const HeaderContent = ({ setShowSlider }: HeaderContentProps) => {
 									<div className='relative flex items-stretch w-full flex-wrap search-area rounded-[50%]'>
 										<input
 											type='text'
-											className='form-control relative flex-auto w-[1%]  h-[3rem] border-[#eee] border-r-0 rounded-tl-[3.125rem] rounded-bl-[3.125rem] min-w-[3.125rem] flex justify-center font-[400] text-[.825rem] items-center text-[--bs-body-color] leading-6 focus:border-[#eee] px-[1.25rem] py-[0.3125rem] focus:outline-none'
+											className='form-control relative flex-auto w-[1%] h-[3rem] border-[#eee] border-r-0 rounded-tl-[3.125rem] rounded-bl-[3.125rem] min-w-[3.125rem] flex justify-center font-[400] text-[.825rem] items-center text-[--bs-body-color] leading-6 focus:border-[#eee] px-[1.25rem] py-[0.3125rem] focus:outline-none'
 											placeholder='Search here...'
 										/>
-
 										<span className='input-group-text ml-[-1px] rounded-tl-none rounded-bl-none h-[3rem] rounded-[3.125rem] bg-white py-0 px-[0.625rem] sm:px-[1.25rem] border-[#e9e2f8] flex items-center justify-center text-[--bs-body-color]'>
-											<FontAwesomeIcon
-												icon={item.icon}
-											></FontAwesomeIcon>
+											<FontAwesomeIcon icon={item.icon} />
 										</span>
 									</div>
 								</li>
@@ -101,12 +102,10 @@ const HeaderContent = ({ setShowSlider }: HeaderContentProps) => {
 									onClick={() => handleItemClick(item.action)}
 								>
 									<div className='relative p-[0.625rem] sm:p-[0.9375rem] rounded-[.625rem]'>
-										<FontAwesomeIcon
-											icon={item.icon}
-										></FontAwesomeIcon>
+										<FontAwesomeIcon icon={item.icon} />
 										{item.num && (
 											<span
-												className={`absolute  text-white ${item.bg} text-[0.675rem] font-medium me-2 w-[1.2rem] h-[1.2rem] leading-[1rem] text-center p-[.1rem] rounded-full  sm:top-[8px] sm:right-[-1px] top-0 right-[-0.625rem] `}
+												className={`absolute text-white ${item.bg} text-[0.675rem] font-medium me-2 w-[1.2rem] h-[1.2rem] leading-[1rem] text-center p-[.1rem] rounded-full sm:top-[8px] sm:right-[-1px] top-0 right-[-0.625rem]`}
 											>
 												{item.num}
 											</span>
@@ -117,7 +116,6 @@ const HeaderContent = ({ setShowSlider }: HeaderContentProps) => {
 								</li>
 							);
 						})}
-
 						<li className='h-full flex items-center w-[3.5rem]'>
 							<ProfileDropdown />
 						</li>
@@ -127,4 +125,5 @@ const HeaderContent = ({ setShowSlider }: HeaderContentProps) => {
 		</header>
 	);
 };
+
 export default HeaderContent;

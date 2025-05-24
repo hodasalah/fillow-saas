@@ -1,3 +1,4 @@
+import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import {
 	faAngular,
 	faDribbble,
@@ -20,7 +21,15 @@ import Notifications from './Notifications';
 import RelatedApps from './RelatedApps';
 import Timeline from './Timeline';
 
-export const items = [
+export interface HeaderItem {
+	icon: IconDefinition;
+	action: string;
+	num?: number;
+	bg?: string;
+	children?: React.ReactNode;
+}
+
+export const items: HeaderItem[] = [
 	{ icon: faSearch, action: 'search' },
 	{ icon: faMoon, action: 'toggleTheme' },
 	{

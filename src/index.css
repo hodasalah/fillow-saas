@@ -3,6 +3,11 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Add dark mode transition */
+* {
+	transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
 @layer components {
 	.auth-input {
 		@apply rounded-[0.625rem] border-[0.0625rem] border-border h-[2.9rem] w-full px-4;
@@ -64,7 +69,6 @@
 	--tryal-gradient: linear-gradient(212.43deg,
 			#886cc0 19.43%,
 			#aa6cc0 87.63%);
-	--border: #e6e6e6;
 	--nav-headbg: #e9e2f8;
 	--sidebar-bg: #ffffff;
 	--headerbg: #f3f0f9;
@@ -89,6 +93,17 @@
 	--dz-side-info: block;
 	--dz-side-copyright: block;
 	--dz-sidebar-width-mobile: 6rem;
+}
+
+:root.dark {
+	--text-dark: #ffffff;
+	--text-gray: #94A3B8;
+	--body-bg: #1E293B;
+	--card: #334155;
+	--sidebar-bg: #1E293B;
+	--nav-headbg: #0F172A;
+	--headerbg: #1E293B;
+	--border: #334155;
 }
 
 *,

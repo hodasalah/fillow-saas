@@ -1,7 +1,7 @@
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useRef } from 'react';
-import { NavLink } from 'react-router';
+import { NavLink, useLocation } from 'react-router-dom';
 import { MenuItemProps } from '.';
 import './MenuItem.css';
 
@@ -10,6 +10,9 @@ const MenuItem: React.FC<MenuItemProps> = ({
 	setActiveItem,
 	activeItem,
 }) => {
+	const location = useLocation();
+	const ref = useRef<HTMLLIElement>(null);
+
 	useEffect(() => {
 		if (item.id === activeItem) {
 			ref?.current?.classList?.add('mm-active');
@@ -18,7 +21,7 @@ const MenuItem: React.FC<MenuItemProps> = ({
 			ref.current?.classList.remove('mm-active');
 		}
 	}, [item.id, activeItem, setActiveItem]);
-	const ref = useRef<HTMLLIElement>(null);
+
 	return (
 		<li
 			className='menuItem'
@@ -32,26 +35,28 @@ const MenuItem: React.FC<MenuItemProps> = ({
 			<ul className='metismenu relative flex flex-col transition-all duration-300 ease-in-out py-2 px-0'>
 				{item.hasSubMenu &&
 					item.submenu &&
-					item.submenu.map((submenuItem) => (
-						<li
-							className={`flex flex-col my-[5px] mx-0 pr-[5px] transition-all duration-300 ease-in-out`}
-							key={submenuItem.title}
-						>
-							<NavLink
-								to={
-									submenuItem.title === 'Dashboard'
-										? '/dashboard'
-										: `/dashboard/${submenuItem.link}`
-								}
-								className={({ isActive }) =>
-									`nav-link ${isActive ? 'active' : ''}`
-								}
-								end={submenuItem.title === 'Dashboard'}
+					item.submenu.map((submenuItem, index) => {
+						const fullPath = `/dashboard/${submenuItem.link}`;
+						const isActive = location.pathname === fullPath;
+						return (
+							<li
+								key={`${item.id}-submenu-${index}`}
+								className={`flex flex-col my-[5px] mx-0 pr-[5px] transition-all duration-300 ease-in-out ${
+									isActive ? 'mm-active' : ''
+								}`}
 							>
-								{submenuItem.title}
-							</NavLink>
-						</li>
-					))}
+								<NavLink
+									to={fullPath}
+									className={({ isActive }) =>
+										`nav-link ${isActive ? 'active' : ''}`
+									}
+									end={submenuItem.title === 'Dashboard'}
+								>
+									{submenuItem.title}
+								</NavLink>
+							</li>
+						);
+					})}
 			</ul>
 		</li>
 	);

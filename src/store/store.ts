@@ -1,15 +1,19 @@
 import { configureStore } from '@reduxjs/toolkit';
 import authReducer from './slices/authSlice';
+import chatReducer from './slices/chatSlice';
 import loadingReducer from './slices/loadingSlice';
 import sidebarReducer from './slices/sidebarSlice';
-import userReducer from './slices/usersSlice';
+import themeReducer from './slices/themeSlice';
+import usersReducer from './slices/usersSlice';
 
 export const store = configureStore({
 	reducer: {
-		sidebar: sidebarReducer,
-		loading: loadingReducer,
 		auth: authReducer,
-		users: userReducer,
+		chat: chatReducer,
+		loading: loadingReducer,
+		sidebar: sidebarReducer,
+		theme: themeReducer,
+		users: usersReducer,
 
 		// Add other reducers here if needed. For example:
 		// posts: postsReducer,
@@ -20,7 +24,7 @@ export const store = configureStore({
 		getDefaultMiddleware({
 			serializableCheck: {
 				// Ignore these paths in the state
-				ignoredPaths: ['auth.user'],
+				ignoredPaths: ['auth.user', 'chat.messages.timestamp'],
 			},
 		}),
 });

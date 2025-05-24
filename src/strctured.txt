@@ -1,0 +1,41 @@
+src/
+├── components/
+│   ├── authListener/        # Auth state management
+│   │   ├── AuthListener.tsx
+│   │   └── index.ts
+│   ├── privateRoute/        # Route protection
+│   │   ├── PrivateRoute.tsx
+│   │   └── index.ts
+│   ├── buttons/            # Reusable buttons
+│   ├── card/              # Card components
+│   ├── chart/             # Chart components
+│   ├── carousel/          # Carousel components
+│   ├── errorPages/         # All error-related pages
+│   │   ├── NotFound/      # 404 page component
+│   │   │   ├── NotFound.tsx
+│   │   │   └── index.ts
+│   │   └── index.ts       # Exports all error pages
+│   └── ...
+├── layout/
+│   ├── dashboardLayout/    # Dashboard layout
+│   │   ├── components/     # Dashboard-specific components
+│   │   └── pages/         # Dashboard pages
+│   └── publicLayout/       # Public layout
+│       ├── AuthPages/      # Auth pages
+│       ├── Home.tsx       # Main home page
+│       └── HomeRedirect.tsx
+├── store/                 # Redux store
+├── hooks/                 # Custom hooks
+├── services/             # API services
+├── utils/                # Utility functions
+├── routes/               # Route definitions
+└── types/                # TypeScript types
+
+Key improvements made:
+1. Moved PrivateRoute to components/privateRoute/
+2. Moved AuthListener to components/authListener/
+3. Organized auth-related components in layout/publicLayout/AuthPages/
+4. Cleaned up routing in routes/index.tsx
+5. Removed duplicate files (Home.tsx, PrivateRoute.tsx)
+6. Maintained proper component organization with index.ts files
+

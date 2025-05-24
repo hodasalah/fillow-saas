@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useRef } from 'react';
-import { NavLink, useLocation } from 'react-router';
+import { NavLink, useLocation } from 'react-router-dom';
 import { MenuItemProps } from '.';
 
 const MiniMenuItem: React.FC<MenuItemProps> = ({
@@ -13,6 +13,7 @@ const MiniMenuItem: React.FC<MenuItemProps> = ({
 }) => {
 	const dropdownlistRef = useRef<HTMLUListElement>(null);
 	const location = useLocation();
+
 	useEffect(() => {
 		const closeMenu = (e: MouseEvent) => {
 			if (
@@ -20,7 +21,7 @@ const MiniMenuItem: React.FC<MenuItemProps> = ({
 				dropdownlistRef.current &&
 				!dropdownlistRef.current.contains(e.target as Node)
 			) {
-				setOpenDropdown(null);
+				setOpenDropdown('');
 			}
 		};
 		document.addEventListener('mousedown', closeMenu);
@@ -50,29 +51,30 @@ const MiniMenuItem: React.FC<MenuItemProps> = ({
 				>
 					{item.hasSubMenu &&
 						item.submenu &&
-						item.submenu.map((submenuItem) => (
-							<li
-								className={`flex flex-col my-[5px] mx-0 pr-[5px] transition-all duration-300 ease-in-out ${
-									location.pathname === submenuItem.link
-										? 'mm-active'
-										: ''
-								}`}
-							>
-								<NavLink
-									to={
-										submenuItem.title === 'Dashboard'
-											? '/dashboard'
-											: `/dashboard/${submenuItem.link}`
-									}
-									className={({ isActive }) =>
-										`nav-link ${isActive ? 'active' : ''}`
-									}
-									end={submenuItem.title === 'Dashboard'}
+						item.submenu.map((submenuItem, index) => {
+							const fullPath = `/dashboard/${submenuItem.link}`;
+							const isActive = location.pathname === fullPath;
+							return (
+								<li
+									key={`${item.id}-submenu-${index}`}
+									className={`flex flex-col my-[5px] mx-0 pr-[5px] transition-all duration-300 ease-in-out ${
+										isActive ? 'mm-active' : ''
+									}`}
 								>
-									{submenuItem.title}
-								</NavLink>
-							</li>
-						))}
+									<NavLink
+										to={fullPath}
+										className={({ isActive }) =>
+											`nav-link ${
+												isActive ? 'active' : ''
+											}`
+										}
+										end={submenuItem.title === 'Dashboard'}
+									>
+										{submenuItem.title}
+									</NavLink>
+								</li>
+							);
+						})}
 					<div className='absolute left-[-6px] top-[27px] -translate-y-1/2 w-0 h-0 border-t-[6px] border-t-transparent border-b-[6px] border-b-transparent border-r-[6px] border-white'></div>
 				</ul>
 			)}

@@ -1,18 +1,15 @@
-import { Outlet } from 'react-router';
-import Loading from './components/Loading';
-import { useAppSelector } from './hooks/hooks';
-import AuthListener from './ِAuthListener';
+import { Outlet } from 'react-router-dom';
+import AuthListener from './components/authListener';
+import { DarkModeProvider } from './hooks/useDarkMode';
 
-const App = () => {
-	const { isLoading } = useAppSelector((state) => state.loading);
-
+function App() {
 	return (
-		<>
-			<AuthListener />
-			{isLoading  && <Loading />}
-			{!isLoading && <Outlet />}
-		</>
+		<DarkModeProvider>
+			<AuthListener>
+				<Outlet />
+			</AuthListener>
+		</DarkModeProvider>
 	);
-};
+}
 
 export default App;

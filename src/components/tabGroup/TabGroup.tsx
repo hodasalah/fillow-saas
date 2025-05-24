@@ -1,16 +1,15 @@
-import {
-	TabConfig,
-	TimePeriod,
-} from '../layout/dashboardLayout/pages/home/components/projectStatistics/components/types';
+import { TabConfig } from '../../types';
 
-const TabGroup = ({
+interface TabGroupProps {
+	tabs: TabConfig[];
+	activeTab: string;
+	onTabChange: (tab: string) => void;
+}
+
+export const TabGroup: React.FC<TabGroupProps> = ({
 	tabs,
 	activeTab,
 	onTabChange,
-}: {
-	tabs: TabConfig[];
-	activeTab: TimePeriod | string;
-	onTabChange: (tab: TimePeriod | string) => void;
 }) => (
 	<div className='bg-white p-1 rounded-lg flex gap-1'>
 		{tabs.map((tab) => (
@@ -29,4 +28,5 @@ const TabGroup = ({
 		))}
 	</div>
 );
+
 export default TabGroup;

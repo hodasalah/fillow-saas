@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import Card from '../../../../../../components/Card.tsx';
-import LineChart from '../../../../../../components/chart/LineChart.tsx';
-import DropdownDelEditBtn from '../../../../../../components/dropdownDelEditBtn/index.tsx';
-import Modal from '../../../../../../components/Modal.tsx';
-import EditProjectForm from './EditProjectForm.tsx';
+import Card from '../../../../../../components/card/Card';
+import LineChart from '../../../../../../components/chart/LineChart';
+import DropdownDelEditBtn from '../../../../../../components/dropdownDelEditBtn';
+import Modal from '../../../../../../components/modal/Modal';
+import EditProjectForm from './EditProjectForm';
 
 export interface ProjectData {
 	id: number;

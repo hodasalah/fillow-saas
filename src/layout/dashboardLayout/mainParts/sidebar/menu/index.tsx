@@ -13,6 +13,7 @@ import MetisMenu from '@metismenu/react';
 import { useEffect, useRef, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { useAppSelector } from '../../../../../hooks/hooks';
+import { DASHBOARD_ROUTES } from '../../../constants';
 import MenuItem from './MenuItem';
 import './MenuItem.css';
 import MiniMenuItem from './MiniMenuItem';
@@ -22,14 +23,10 @@ export interface MenuItemProps {
 	item: {
 		id: string;
 		icon: IconDefinition;
-
 		name: string;
-
 		hasSubMenu: boolean;
-
 		submenu?: { title: string; link: string }[];
 	};
-
 	index?: number;
 	activeItem: string;
 	setActiveItem?: (id: string) => void;
@@ -46,12 +43,14 @@ const list = [
 		name: 'Dashboard',
 		hasSubMenu: true,
 		submenu: [
-			{ id: uuidv4(), title: 'Dashboard', link: '' },
-			{ id: uuidv4(), title: 'Project', link: 'projects' },
-			{ id: uuidv4(), title: 'Contacts', link: 'contacts' },
-			{ id: uuidv4(), title: 'Kanban', link: 'kanban' },
-			{ id: uuidv4(), title: 'Calendar', link: 'calendar' },
-			{ id: uuidv4(), title: 'Messages', link: 'messages' },
+			{ id: uuidv4(), title: 'Dashboard', link: DASHBOARD_ROUTES.HOME },
+			{ id: uuidv4(), title: 'Chat', link: DASHBOARD_ROUTES.CHAT },
+			{ id: uuidv4(), title: 'Profile', link: DASHBOARD_ROUTES.PROFILE },
+			{
+				id: uuidv4(),
+				title: 'Projects',
+				link: DASHBOARD_ROUTES.PROJECTS,
+			},
 		],
 	},
 	{

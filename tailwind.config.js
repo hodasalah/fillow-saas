@@ -1,17 +1,17 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-	content: ['./src/**/*.{html,ts,tsx,js,jsx}'],
-
+	content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
+	darkMode: 'class',
 	theme: {
 		extend: {
 			colors: {
-				primary:{DEFAULT: 'var(--primary)', light: 'var(--primary-light)', dark: 'var(--primary-dark)', hover: 'var(--primary-hover)'},
+				primary: 'var(--primary)',
+				'primary-hover': 'var(--primary-hover)',
+				'primary-dark': 'var(--primary-dark)',
 				secondary: 'var(--secondary)',
 				'primary-light': 'var(--primary-light)',
 				'secondary-light': 'var(--secondary-light)',
 				'danger-light': 'var(--danger-light)',
-				'primary-hover': 'var(--primary-hover)',
-				'primary-dark': 'var(--primary-dark)',
 				'rgba-primary-1': 'var(--rgba-primary-1)',
 				'rgba-primary-2': 'var(--rgba-primary-2)',
 				'rgba-primary-3': 'var(--rgba-primary-3)',

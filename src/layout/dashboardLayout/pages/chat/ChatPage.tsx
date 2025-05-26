@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useAppSelector } from '../../../../hooks/hooks';
+import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
 import {
 	Chat,
 	Message,
@@ -9,10 +9,15 @@ import {
 	subscribeToMessages,
 } from '../../../../services/firebase/chats';
 import { UserData, getAllUsers } from '../../../../services/firebase/users';
+import {
+	getImageLoadErrorHandler,
+	getProfilePictureUrl,
+} from '../../../../utils/profilePicture';
 import ChatList from './components/ChatList';
 import ChatWindow from './components/ChatWindow';
 
 const ChatPage: React.FC = () => {
+	const dispatch = useAppDispatch();
 	const currentUser = useAppSelector((state) => state.auth.currentUser);
 	const mode = useAppSelector((state) => state.sidebar.mode);
 	const isMobileView = useAppSelector((state) => state.sidebar.isMobileView);
@@ -142,7 +147,7 @@ const ChatPage: React.FC = () => {
 			} transition-all duration-300`}
 		>
 			{/* Left Sidebar - Chat List */}
-			<div className='w-80 border-r border-gray-200 bg-white rounded-tl-xl flex flex-col h-full'>
+			<div className='w-80 border-r border-gray-200 bg-white rounded-tl-xl flex flex-col '>
 				<div className='p-4 border-b border-gray-200'>
 					<div className='relative'>
 						<input
@@ -229,16 +234,19 @@ const ChatPage: React.FC = () => {
 									className='w-full text-left p-3 hover:bg-gray-100 rounded-lg flex items-center space-x-3'
 								>
 									<img
-										src={
-											user.photoURL ||
-											'https://via.placeholder.com/40'
-										}
-										alt={user.displayName}
-										className='w-10 h-10 rounded-full'
+										src={getProfilePictureUrl(
+											user.profilePicture,
+											user.name,
+										)}
+										alt={user.name}
+										className='w-10 h-10 rounded-full object-cover'
+										onError={getImageLoadErrorHandler(
+											user.name,
+										)}
 									/>
 									<div>
 										<p className='font-medium'>
-											{user.displayName}
+											{user.name}
 										</p>
 										<p className='text-sm text-gray-500'>
 											{user.email}

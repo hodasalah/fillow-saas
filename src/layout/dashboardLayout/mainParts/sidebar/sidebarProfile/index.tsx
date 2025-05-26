@@ -3,11 +3,25 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useAppSelector } from '../../../../../hooks/hooks';
 import { User } from '../../../../../types';
 import './sidebarProfile.css';
+
 const SidebarProfile = () => {
 	const mode = useAppSelector((state) => state.sidebar.mode);
 	const user = useAppSelector(
 		(state) => state.auth.currentUser,
 	) as User | null;
+
+	const handleImageError = (
+		e: React.SyntheticEvent<HTMLImageElement, Event>,
+	) => {
+		const target = e.target as HTMLImageElement;
+		const fallbackUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(
+			user?.name || 'User',
+		)}&background=random&color=fff&size=200&bold=true&format=png`;
+		if (target.src !== fallbackUrl) {
+			target.src = fallbackUrl;
+		}
+	};
+
 	return (
 		<div
 			className={`${
@@ -18,7 +32,8 @@ const SidebarProfile = () => {
 				<div className='side-bar-profile-img'>
 					<img
 						src={user?.profilePicture}
-						alt={user?.name}
+						alt={user?.name || 'Profile'}
+						onError={handleImageError}
 					/>
 				</div>
 				<div className='overflow-hidden'>

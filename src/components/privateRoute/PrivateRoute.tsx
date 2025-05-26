@@ -1,16 +1,24 @@
+import { memo } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 import { useAppSelector } from '../../hooks/hooks';
 
-const PrivateRoute = () => {
-	const currentUser = useAppSelector((state) => state.auth.currentUser);
-	const isLoading = useAppSelector((state) => state.loading.isLoading);
+// Create a memoized selector
+const selectAuthState = (state: any) => ({
+	currentUser: state.auth.currentUser,
+	isLoading: state.loading.isLoading,
+});
 
-	// If still loading, don't redirect yet
+const PrivateRoute = memo(() => {
+	const { currentUser, isLoading } = useAppSelector(selectAuthState);
+
 	if (isLoading) {
-		return null; // or a loading spinner component
+		return (
+			<div className='flex items-center justify-center min-h-screen'>
+				<div className='w-8 h-8 border-4 border-purple-600 rounded-full animate-spin border-t-transparent'></div>
+			</div>
+		);
 	}
 
-	// If not authenticated, redirect to login
 	if (!currentUser) {
 		return (
 			<Navigate
@@ -20,8 +28,9 @@ const PrivateRoute = () => {
 		);
 	}
 
-	// If authenticated, render child routes
 	return <Outlet />;
-};
+});
+
+PrivateRoute.displayName = 'PrivateRoute';
 
 export default PrivateRoute;

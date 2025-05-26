@@ -4,6 +4,7 @@ import Card from '../../../../../../components/card/Card';
 import LineChart from '../../../../../../components/chart/LineChart';
 import DropdownDelEditBtn from '../../../../../../components/dropdownDelEditBtn';
 import Modal from '../../../../../../components/modal/Modal';
+import { Project } from '../../../../../../types';
 import EditProjectForm from './EditProjectForm';
 
 export interface ProjectData {
@@ -17,16 +18,22 @@ export interface ProjectData {
 		completion: number;
 	}>;
 }
+
+interface CompleteProjectProps {
+	projects: Project[];
+}
+
 const links: { id: string; name: string }[] = [
 	{ id: uuidv4(), name: 'Edit' },
 	{ id: uuidv4(), name: 'Delete' },
 ];
-const CompleteProject = () => {
+
+const CompleteProject = ({ projects }: CompleteProjectProps) => {
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
 	const [showEditModal, setShowEditModal] = useState(false);
 	const [selectedProject, setSelectedProject] = useState<ProjectData>({
 		id: 1,
-		name: 'Website Redesign',
+		name: projects[0]?.name || 'Website Redesign',
 		startDate: '2024-01-01',
 		endDate: '2024-06-30',
 		targetCompletion: 100,

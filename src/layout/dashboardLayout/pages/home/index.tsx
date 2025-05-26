@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react';
+import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { useAppSelector } from '../../../../hooks/hooks';
-import {
+import type { Project } from '../../../../types';
+import type {
 	DashboardData,
 	Email,
 	Message,
-	Project,
+	Statistics,
 } from '../../../../types/dashboard';
 import {
 	fetchEmails,
@@ -22,110 +23,158 @@ import ProjectStatistics from './components/projectStatistics';
 import RecentEmails from './components/recentEmails';
 import TotalClients from './components/totalClientsComponents';
 
+// Component interfaces
+interface ProjectStatisticsProps {
+	statistics: Statistics;
+}
+
+interface CompleteProjectProps {
+	projects: Project[];
+}
+
+interface RecentEmailsProps {
+	emails: Email[];
+}
+
+interface EmailCategoriesProps {
+	emails: Email[];
+}
+
+interface ImportantProjectsProps {
+	projects: Project[];
+}
+
+interface MessagesProps {
+	messages: Message[];
+}
+
+// Memoized loading component
+const LoadingSpinner = memo(() => (
+	<div className='flex items-center justify-center min-h-screen'>
+		<div className='w-8 h-8 border-4 border-purple-600 rounded-full animate-spin border-t-transparent'></div>
+	</div>
+));
+
+LoadingSpinner.displayName = 'LoadingSpinner';
+
+// Memoized error component
+const ErrorDisplay = memo(({ message }: { message: string }) => (
+	<div className='flex items-center justify-center min-h-screen'>
+		<p className='text-red-500'>{message}</p>
+	</div>
+));
+
+ErrorDisplay.displayName = 'ErrorDisplay';
+
+interface ColumnProps {
+	data: DashboardData;
+}
+
+// Memoized layout components
+const FirstColumn = memo(({ data }: ColumnProps) => (
+	<div className='flex flex-col xl:gap-8 gap-4 max-w-[600px] w-full'>
+		<GradiantCard />
+		<ProjectStatistics statistics={data.statistics} />
+		<CompleteProject projects={data.projects} />
+		<RecentEmails emails={data.emails} />
+	</div>
+));
+
+FirstColumn.displayName = 'FirstColumn';
+
+const SecondColumn = memo(({ data }: ColumnProps) => (
+	<div className='flex flex-col xl:gap-8 gap-4 max-w-[600px] w-full'>
+		<TotalClients />
+		<DognutArea />
+		<EmailCategories emails={data.emails} />
+		<ImportantProjects projects={data.projects} />
+		<Messages messages={data.messages} />
+	</div>
+));
+
+SecondColumn.displayName = 'SecondColumn';
+
+const initialDashboardData: DashboardData = {
+	messages: [],
+	emails: [],
+	projects: [],
+	statistics: {
+		total: 0,
+		ongoing: 0,
+		unfinished: 0,
+		chartData: [],
+		userId: 'local',
+	},
+};
+
 const DashboardHome = () => {
 	const mode = useAppSelector((state) => state.sidebar.mode);
 	const isMobileView = useAppSelector((state) => state.sidebar.isMobileView);
 	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
-	const [dashboardData, setDashboardData] = useState<DashboardData>({
-		messages: [] as Message[],
-		emails: [] as Email[],
-		projects: [] as Project[],
-		statistics: {
-			total: 0,
-			ongoing: 0,
-			unfinished: 0,
-			chartData: [],
-			userId: 'local',
-		},
-	});
+	const [dashboardData, setDashboardData] =
+		useState<DashboardData>(initialDashboardData);
 
-	useEffect(() => {
-		const loadDashboardData = async () => {
-			setIsLoading(true);
-			setError(null);
+	const loadDashboardData = useCallback(async () => {
+		setIsLoading(true);
+		setError(null);
 
-			try {
-				const [messages, emails, projects, statistics] =
-					await Promise.all([
-						fetchMessages(),
-						fetchEmails(),
-						fetchProjects(),
-						fetchStatistics(),
-					]);
+		try {
+			const [messagesData, emailsData, projectsData, statisticsData] =
+				await Promise.all([
+					fetchMessages(),
+					fetchEmails(),
+					fetchProjects(),
+					fetchStatistics(),
+				]);
 
-				setDashboardData({
-					messages,
-					emails,
-					projects,
-					statistics,
-				});
-			} catch (error) {
-				console.error('Error loading dashboard data:', error);
-				setError(
-					'Failed to load dashboard data. Please try again later.',
-				);
-			} finally {
-				setIsLoading(false);
-			}
-		};
+			// Since fetchProjects is an async thunk, we need to handle it differently
+			const projects = await projectsData.unwrap();
 
-		loadDashboardData();
+			setDashboardData({
+				messages: messagesData,
+				emails: emailsData,
+				projects,
+				statistics: statisticsData,
+			});
+		} catch (error) {
+			console.error('Error loading dashboard data:', error);
+			setError('Failed to load dashboard data. Please try again later.');
+		} finally {
+			setIsLoading(false);
+		}
 	}, []);
 
-	if (isLoading) {
-		return (
-			<div className='flex items-center justify-center h-full'>
-				<p className='text-gray-500'>Loading dashboard...</p>
-			</div>
-		);
-	}
+	useEffect(() => {
+		loadDashboardData();
+	}, [loadDashboardData]);
 
-	if (error) {
-		return (
-			<div className='flex items-center justify-center h-full'>
-				<p className='text-red-500'>{error}</p>
-			</div>
-		);
-	}
-
-	return (
-		<div
-			className={`
+	const containerClassName = useMemo(
+		() =>
+			`
         ${
 			isMobileView
 				? 'px-3'
 				: mode === 'wide'
 				? 'pl-[var(--dz-sidebar-width)]'
 				: 'pl-[var(--dz-sidebar-width-mobile)]'
-		} w-full bg-body-bg text-[0.875rem] min-h-[calc(100vh-5.3rem)]  pt-[--dz-header-height]`}
-		>
+		} w-full bg-body-bg text-[0.875rem] min-h-[calc(100vh-5.3rem)]  pt-[--dz-header-height]`,
+		[isMobileView, mode],
+	);
+
+	if (isLoading) return <LoadingSpinner />;
+	if (error) return <ErrorDisplay message={error} />;
+
+	return (
+		<div className={containerClassName}>
 			<div className='md:pl-[1.875rem] md:pr-[1.875rem] pt-[1.875rem] flex  justify-center'>
 				<div className='grid grid-cols-1 md:grid-cols-2  gap-4 xl:gap-8  '>
-					{/* first column */}
-					<div className='flex flex-col xl:gap-8 gap-4 max-w-[600px] w-full'>
-						{' '}
-						{/* added w-full here */}
-						<GradiantCard />
-						<ProjectStatistics
-							statistics={dashboardData.statistics}
-						/>
-						<CompleteProject projects={dashboardData.projects} />
-						<RecentEmails emails={dashboardData.emails} />
-					</div>
-					{/* second column */}
-					<div className='flex flex-col xl:gap-8 gap-4  max-w-[600px] w-full'>
-						{' '}
-						{/* added w-full here */}
-						<TotalClients />
-						<DognutArea />
-						<EmailCategories emails={dashboardData.emails} />
-						<ImportantProjects projects={dashboardData.projects} />
-						<Messages messages={dashboardData.messages} />
-					</div>
+					<FirstColumn data={dashboardData} />
+					<SecondColumn data={dashboardData} />
 				</div>
 			</div>
 		</div>
 	);
 };
-export default DashboardHome;
+
+export default memo(DashboardHome);

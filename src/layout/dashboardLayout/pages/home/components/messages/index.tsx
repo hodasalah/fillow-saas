@@ -2,20 +2,16 @@ import { useEffect, useState } from 'react';
 import { PrimaryBtn } from '../../../../../../components/buttons';
 import { useAppDispatch } from '../../../../../../hooks/hooks';
 import { setLoading } from '../../../../../../store/slices/loadingSlice';
+import { Message } from '../../../../../../types/dashboard';
 import { fetchMessages } from '../../../../../../utils/fetchMessages';
 import MessageItem from './MessageItem';
 
-export interface Message {
-	id: string;
-	profileImage: string;
-	name: string;
-	lastMessage: string;
-	lastMessageTime: string;
-	active: boolean;
+interface MessagesProps {
+	messages: Message[];
 }
 
-const Messages = () => {
-	const [messages, setMessages] = useState<Message[]>([]);
+const Messages = ({ messages: initialMessages }: MessagesProps) => {
+	const [messages, setMessages] = useState<Message[]>(initialMessages);
 	const [error, setError] = useState<string | null>(null);
 	const [retryCount, setRetryCount] = useState(0);
 	const MAX_RETRIES = 3;
@@ -38,6 +34,15 @@ const Messages = () => {
 			setError('Retry attempt failed. Please try again later.');
 		}
 	};
+
+	const handleMessageRead = (id: string) => {
+		setMessages((prevMessages) =>
+			prevMessages.map((message) =>
+				message.id === id ? { ...message, isRead: true } : message,
+			),
+		);
+	};
+
 	useEffect(() => {
 		const fetchData = async () => {
 			dispatch(setLoading(true));
@@ -47,6 +52,7 @@ const Messages = () => {
 		};
 		fetchData();
 	}, [dispatch]);
+
 	return (
 		<div className='w-full shadow-custom-shadow mb-10'>
 			<div className='bg-white rounded-lg shadow-sm'>
@@ -84,6 +90,7 @@ const Messages = () => {
 								<MessageItem
 									key={message.id}
 									message={message}
+									onRead={handleMessageRead}
 								/>
 							))}
 					</div>
@@ -92,4 +99,5 @@ const Messages = () => {
 		</div>
 	);
 };
+
 export default Messages;

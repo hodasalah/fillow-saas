@@ -2,46 +2,22 @@ import { useEffect, useState } from 'react';
 import { PrimaryOutlineBtn } from '../../../../../../components/buttons';
 import { useAppDispatch } from '../../../../../../hooks/hooks';
 import { setLoading } from '../../../../../../store/slices/loadingSlice';
+import { Email } from '../../../../../../types/dashboard';
 import { fetchEmails } from '../../../../../../utils/fetchEmails';
 import EmailItem from './EmailItem';
 
-interface EmailFile {
-	name: string;
-	type: 'file' | 'image';
+interface RecentEmailsProps {
+	emails: Email[];
 }
 
-export interface Email {
-	id: string;
-	name: string;
-	email: string;
-	title: string;
-	body: string;
-	profileImage: string;
-	files: EmailFile[];
-	pinned: boolean;
-}
-
-const RecentEmails = () => {
-	const [emails, setEmails] = useState<Email[]>([]);
+const RecentEmails = ({ emails: initialEmails }: RecentEmailsProps) => {
+	const [emails, setEmails] = useState<Email[]>(initialEmails);
 	const [error, setError] = useState<string | null>(null);
-
 	const dispatch = useAppDispatch();
 
 	useEffect(() => {
-		const fetchData = async () => {
-			dispatch(setLoading(true));
-			try {
-				const emailsData = await fetchEmails();
-				setEmails(emailsData);
-			} catch (error) {
-				console.error('Failed to fetch emails:', error);
-				setError('Failed to fetch emails. Please try again later.');
-			} finally {
-				dispatch(setLoading(false));
-			}
-		};
-		fetchData();
-	}, [dispatch]);
+		setEmails(initialEmails);
+	}, [initialEmails]);
 
 	const MAX_RETRIES = 3;
 	const [retryCount, setRetryCount] = useState(0);
@@ -63,6 +39,7 @@ const RecentEmails = () => {
 			setError('Retry attempt failed. Please try again later.');
 		}
 	};
+
 	const handlePinnedEmail = (id: string) => {
 		const email = emails.find((email) => email.id === id);
 		const updatedEmails = emails.map((email) =>
@@ -72,6 +49,7 @@ const RecentEmails = () => {
 			setEmails([...updatedEmails]);
 		}
 	};
+
 	return (
 		<div className='w-full shadow-custom-shadow'>
 			<div className='bg-white rounded-lg shadow-sm'>
@@ -105,7 +83,6 @@ const RecentEmails = () => {
 					)}
 
 					{/* emails */}
-
 					<div className='px-0 pt-2'>
 						{emails.length > 0 &&
 							emails.map((email: Email) => (
@@ -121,4 +98,5 @@ const RecentEmails = () => {
 		</div>
 	);
 };
+
 export default RecentEmails;

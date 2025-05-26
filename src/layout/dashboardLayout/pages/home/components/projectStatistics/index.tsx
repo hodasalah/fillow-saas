@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import Card from '../../../../../../components/Card';
 import Modal from '../../../../../../components/Modal';
+import { Statistics } from '../../../../../../types/dashboard';
 import { generateChartData } from '../../../../../../utils/helpers/generateChartData';
 import ChartSection from './components/ChartSection';
 import { DEFAULT_DATA, links } from './components/constants';
@@ -9,7 +10,11 @@ import { Header } from './components/Header';
 import { StatisticsOverview } from './components/StatisticsOverview';
 import { StatisticsData, TimePeriod } from './components/types';
 
-const ProjectStatistics = () => {
+interface ProjectStatisticsProps {
+	statistics: Statistics;
+}
+
+const ProjectStatistics = ({ statistics }: ProjectStatisticsProps) => {
 	const [data, setData] = useState(DEFAULT_DATA);
 	const [activeTab, setActiveTab] = useState<TimePeriod>('monthly');
 	const [showEditModal, setShowEditModal] = useState(false);

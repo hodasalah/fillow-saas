@@ -129,7 +129,7 @@ const DashboardHome = () => {
 				]);
 
 			// Since fetchProjects is an async thunk, we need to handle it differently
-			const projects = await projectsData.unwrap();
+			const projects = await projectsData;
 
 			setDashboardData({
 				messages: messagesData,

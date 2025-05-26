@@ -1,16 +1,10 @@
-import { memo } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 import { useAppSelector } from '../../hooks/hooks';
 
 // Create a memoized selector
-const selectAuthState = (state: any) => ({
-	currentUser: state.auth.currentUser,
-	isLoading: state.loading.isLoading,
-});
-
-const PrivateRoute = memo(() => {
-	const { currentUser, isLoading } = useAppSelector(selectAuthState);
-
+const PrivateRoute = () => {
+	const currentUser = useAppSelector((state) => state.auth.currentUser);
+	const isLoading = useAppSelector((state) => state.auth.isLoading);
 	if (isLoading) {
 		return (
 			<div className='flex items-center justify-center min-h-screen'>
@@ -29,8 +23,6 @@ const PrivateRoute = memo(() => {
 	}
 
 	return <Outlet />;
-});
-
-PrivateRoute.displayName = 'PrivateRoute';
+};
 
 export default PrivateRoute;

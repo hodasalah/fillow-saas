@@ -8,6 +8,7 @@ import PinkRectDot from '../../../../../../components/svgs/rectDots/PinkRectDot'
 import PurpleRectDot from '../../../../../../components/svgs/rectDots/PurpleRectDot';
 import YellowRectDot from '../../../../../../components/svgs/rectDots/YellowRectDot';
 import { Email } from '../../../../../../types/dashboard';
+import EmailChart from '../../../../../../components/chart/EmailChart';
 
 interface EmailCategoriesProps {
 	emails: Email[];
@@ -62,7 +63,7 @@ const EmailCategories = ({ emails }: EmailCategoriesProps) => {
 						</span>
 					</div>
 					<div className='flex flex-1 overflow-hidden'>
-						<DognutChart data={chartData} />
+						<EmailChart data={chartData} />
 					</div>
 					<div className='mb-3 mt-4'>
 						<h4 className='text-[1.125rem] leading-[1.5] text-[var(--text-dark)] font-semibold'>

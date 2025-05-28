@@ -8,14 +8,18 @@
 	font-size: 1.4rem;
 	padding: 0.125rem 0.5rem 0;
 	border-radius: 0.125rem;
+	height: 100%;
+	width: 2rem;
+	background: var(--body-bg);
 }
 
 .hamburger {
 	display: inline-block;
+	position: absolute;
 	cursor: pointer;
 	transition: all 0.2s ease-in-out;
 	left: 0;
-	top: 0;
+	top: 30%;
 }
 
 .hamburger .line {
@@ -96,5 +100,6 @@
 @media only screen and (max-width: 47.9375rem) {
 	.nav-control {
 		right: -2rem;
+		width: 2rem;
 	}
 }

@@ -1,14 +1,13 @@
 import { useMemo } from 'react';
 import { PrimaryOutlineBtn } from '../../../../../../components/buttons';
 import Card from '../../../../../../components/Card';
-import DoughnutChart from '../../../../../../components/chart/DoughnutChart';
+import EmailChart from '../../../../../../components/chart/EmailChart';
 import BlueRectDot from '../../../../../../components/svgs/rectDots/BlueRectDot';
 import GreenRectDot from '../../../../../../components/svgs/rectDots/GreenRectDot';
 import PinkRectDot from '../../../../../../components/svgs/rectDots/PinkRectDot';
 import PurpleRectDot from '../../../../../../components/svgs/rectDots/PurpleRectDot';
 import YellowRectDot from '../../../../../../components/svgs/rectDots/YellowRectDot';
 import { Email } from '../../../../../../types/dashboard';
-import EmailChart from '../../../../../../components/chart/EmailChart';
 
 interface EmailCategoriesProps {
 	emails: Email[];

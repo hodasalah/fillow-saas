@@ -4,6 +4,7 @@ import App from '../App';
 import { NotFound } from '../components/errorPages';
 import PrivateRoute from '../components/privateRoute';
 import HomeRedirect from '../layout/publicLayout/HomeRedirect';
+import { Profile, Projects } from '../layout/dashboardLayout/pages';
 
 // Lazy load components
 const DashboardLayout = lazy(() =>
@@ -61,6 +62,22 @@ export const router = createBrowserRouter([
 								element: (
 									<Suspense fallback={<LoadingSpinner />}>
 										<ChatPage />
+									</Suspense>
+								),
+							},
+							{
+								path: 'projects',
+								element: (
+									<Suspense fallback={<LoadingSpinner />}>
+										<Projects />
+									</Suspense>
+								),
+							},
+							{
+								path: 'profile',
+								element: (
+									<Suspense fallback={<LoadingSpinner />}>
+										<Profile />
 									</Suspense>
 								),
 							},

@@ -1,6 +1,8 @@
 import { faBolt, faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Timestamp } from 'firebase/firestore';
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import Card from '../../../../components/Card';
 import TabGroup from '../../../../components/TabGroup';
 import { PrimaryBtn } from '../../../../components/buttons';
@@ -8,8 +10,6 @@ import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
 import { setLoading } from '../../../../store/slices/loadingSlice';
 import { Project } from '../../../../types';
 import { fetchProjects } from '../../../../utils/fetchProjects';
-import { v4 as uuidv4 } from 'uuid';
-import { Timestamp } from 'firebase/firestore';
 import NewProject from './NewProject';
 
 const Projects = () => {
@@ -19,8 +19,7 @@ const Projects = () => {
 	const [projects, setProjects] = useState<Project[]>([]);
 	const [openDropdownId, setOpenDropdownId] = useState<string | null>(null);
 	const dropdownRef = useRef<HTMLDivElement>(null);
-	    const [isOverlayOpen, setIsOverlayOpen] = useState(false);
-
+	const [isOverlayOpen, setIsOverlayOpen] = useState(false);
 
 	const [activeTab, setActiveTab] = useState<string>('All Status');
 	const TABS = [
@@ -71,23 +70,9 @@ const Projects = () => {
 
 	useEffect(() => {
 		dispatch(setLoading(true));
-		dispatch(fetchProjects())
-			.unwrap()
-			.then((projectsData) => {
-				setProjects(
-					projectsData.map((project) => ({
-						...project,
-						id: project.id || uuidv4(),
-						clientName: project.client.name,
-						clientImg: project.client.image,
-						chargerName: project.personInCharge.name,
-						chargerImg: project.personInCharge.image,
-						desc: project.description,
-						status: project.status,
-						createdAt: formatDate(project.createdAt),
-						deadline: formatDate(project.deadline),
-					})),
-				);
+		fetchProjects()
+			.then((projectsData) =>{ 
+				setProjects(projectsData)
 				setError(null);
 			})
 			.catch((error) => {
@@ -99,21 +84,21 @@ const Projects = () => {
 			});
 	}, [dispatch]);
 
-	 const handleProjectAdded = (newProject: Project) => {
-			setProjects((prevProjects) => [
-				{
-					...newProject,
-					clientName: newProject.client.name,
-					clientImg: newProject.client.image,
-					chargerName: newProject.personInCharge.name,
-					chargerImg: newProject.personInCharge.image,
-					desc: newProject.description,
-					createdAt: formatDate(newProject.createdAt),
-					deadline: formatDate(newProject.deadline),
-				},
-				...prevProjects,
-			]);
-		};
+	const handleProjectAdded = (newProject: Project) => {
+		setProjects((prevProjects) => [
+			{
+				...newProject,
+				clientName: newProject.client.name,
+				clientImg: newProject.client.image,
+				chargerName: newProject.personInCharge.name,
+				chargerImg: newProject.personInCharge.image,
+				desc: newProject.description,
+				createdAt: formatDate(newProject.createdAt),
+				deadline: newProject.deadline,
+			},
+			...prevProjects,
+		]);
+	};
 
 	return (
 		<div

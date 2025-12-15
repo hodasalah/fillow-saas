@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useAppSelector } from '../../../../hooks/hooks';
 import AboutMeCard from './AboutMeCard';
 import ActivitiesCard from './ActivitiesCard';
@@ -11,9 +11,7 @@ import TeamCard from './TeamCard';
 const Profile: React.FC = () => {
 	const mode = useAppSelector((state) => state.sidebar.mode);
 	const isMobileView = useAppSelector((state) => state.sidebar.isMobileView);
-	const [activeTab, setActiveTab] = useState('Profile');
-	const [currentSlide, setCurrentSlide] = useState(0);
-	const [isFollowing, setIsFollowing] = useState(false);
+	// Removed unused state variables: activeTab, currentSlide, isFollowing
 
 	const sliderImages = [
 		'https://source.unsplash.com/random/800x600?nature1',
@@ -24,8 +22,13 @@ const Profile: React.FC = () => {
 		'https://source.unsplash.com/random/800x600?nature6',
 	];
 
-	const visibleSlides = 3;
-	const totalSlides = Math.ceil(sliderImages.length / visibleSlides);
+	const projects = [
+		{ id: '1', title: 'Modern UI', imageUrl: 'https://via.placeholder.com/600x400?text=Modern+UI' },
+		{ id: '2', title: 'E-Commerce', imageUrl: 'https://via.placeholder.com/600x400?text=E-Commerce' },
+		{ id: '3', title: 'Dashboard', imageUrl: 'https://via.placeholder.com/600x400?text=Dashboard' },
+		{ id: '4', title: 'Mobile App', imageUrl: 'https://via.placeholder.com/600x400?text=Mobile+App' },
+		{ id: '5', title: 'Landing Page', imageUrl: 'https://via.placeholder.com/600x400?text=Landing+Page' },
+	];
 
 	return (
 		<div
@@ -49,8 +52,8 @@ const Profile: React.FC = () => {
 
 					{/* Middle Column - Desktop */}
 					<div className='hidden lg:block space-y-6'>
-						<FeaturedStories />
-						<ProjectsGallery />
+						<FeaturedStories stories={sliderImages} />
+						<ProjectsGallery projects={projects} />
 					</div>
 
 					{/* Right Column - Desktop */}
@@ -79,12 +82,12 @@ const Profile: React.FC = () => {
 						</div>
 						{/* Third Row - Featured Stories (Full Width) */}
 						<div>
-							<FeaturedStories />
+							<FeaturedStories stories={sliderImages} />
 						</div>
 
 						{/* Fourth Row - Projects Gallery (Full Width) */}
 						<div>
-							<ProjectsGallery />
+							<ProjectsGallery projects={projects} />
 						</div>
 					</div>
 				</div>

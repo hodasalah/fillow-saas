@@ -1,22 +1,16 @@
 import {
-	faChevronLeft,
-	faChevronRight,
+    faChevronLeft,
+    faChevronRight,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState } from 'react';
 
-const FeaturedStories: React.FC = () => {
+interface FeaturedStoriesProps {
+	stories: string[];
+}
+
+const FeaturedStories: React.FC<FeaturedStoriesProps> = ({ stories }) => {
 	const [currentSlide, setCurrentSlide] = useState(0);
-	const stories = [
-		'https://source.unsplash.com/random/800x600?nature1',
-		'https://source.unsplash.com/random/800x600?nature2',
-		'https://source.unsplash.com/random/800x600?nature3',
-		'https://source.unsplash.com/random/800x600?nature4',
-		'https://source.unsplash.com/random/800x600?nature5',
-		'https://source.unsplash.com/random/800x600?nature6',
-		'https://source.unsplash.com/random/800x600?nature7',
-		'https://source.unsplash.com/random/800x600?nature8',
-	];
 
 	const slidesCount = Math.ceil(stories.length / 4);
 

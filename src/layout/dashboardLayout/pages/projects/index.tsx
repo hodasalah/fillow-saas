@@ -2,7 +2,6 @@ import { faBolt, faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Timestamp } from 'firebase/firestore';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 import Card from '../../../../components/Card';
 import TabGroup from '../../../../components/TabGroup';
 import { PrimaryBtn } from '../../../../components/buttons';
@@ -71,9 +70,10 @@ const Projects = () => {
 	useEffect(() => {
 		dispatch(setLoading(true));
 		fetchProjects()
-			.then((projectsData) =>{ 
-				setProjects(projectsData)
+			.then((projectsData) => {
+				setProjects(projectsData);
 				setError(null);
+				console.log(projectsData);
 			})
 			.catch((error) => {
 				console.error('Error fetching projects:', error);
@@ -85,19 +85,8 @@ const Projects = () => {
 	}, [dispatch]);
 
 	const handleProjectAdded = (newProject: Project) => {
-		setProjects((prevProjects) => [
-			{
-				...newProject,
-				clientName: newProject.client.name,
-				clientImg: newProject.client.image,
-				chargerName: newProject.personInCharge.name,
-				chargerImg: newProject.personInCharge.image,
-				desc: newProject.description,
-				createdAt: formatDate(newProject.createdAt),
-				deadline: newProject.deadline,
-			},
-			...prevProjects,
-		]);
+		setProjects((prevProjects) => [...prevProjects, newProject]);
+		setOpenDropdownId(null);
 	};
 
 	return (
@@ -125,7 +114,7 @@ const Projects = () => {
 						onTabChange={setActiveTab}
 					/>
 					<div className='flex items-center max-w-[150px]'>
-						<PrimaryBtn onClick={() => setIsOverlayOpen(true)}>
+						<PrimaryBtn onBtnClick={() => setIsOverlayOpen(true)}>
 							+ New Project
 						</PrimaryBtn>
 					</div>
@@ -147,18 +136,18 @@ const Projects = () => {
 										{project.name}
 									</p>
 									<h6 className='max-w-[75%] text-[--text-dark]  text-sm overflow-hidden whitespace-nowrap text-ellipsis'>
-										{project.desc}
+										{project.description}
 									</h6>
 								</div>
 								<div className='text-gray-500 text-sm'>
-									Created at: {formatDate(project.createdAt)}
+									Created at: {formatDate(project.startDate)}
 								</div>
 							</div>
 							{/* block 2 client info */}
 							<div className='flex items-center gap-2'>
 								<img
-									src={project.clientImg}
-									alt={project.clientName}
+									src={project.client.image}
+									alt={project.client.name}
 									className='w-8 h-8 rounded-full bg-black'
 								/>
 								<div>
@@ -166,15 +155,15 @@ const Projects = () => {
 										Client
 									</p>
 									<h6 className='mb-0'>
-										{project.clientName}
+										{project.client.name}
 									</h6>
 								</div>
 							</div>
 							{/* block 3 person in charge info */}
 							<div className='flex items-center gap-2'>
 								<img
-									src={project.chargerImg}
-									alt={project.chargerName}
+									src={project.personInCharge.image}
+									alt={project.personInCharge.name}
 									className='w-8 h-8 rounded-full bg-black'
 								/>
 								<div>
@@ -182,7 +171,7 @@ const Projects = () => {
 										Person in charge
 									</p>
 									<h6 className='mb-0'>
-										{project.chargerName}
+										{project.personInCharge.name}
 									</h6>
 								</div>
 							</div>
@@ -198,7 +187,7 @@ const Projects = () => {
 									<p className='text-gray-500 text-sm'>
 										Deadline
 									</p>
-									<h6>{project.deadline}</h6>
+									<h6>{formatDate(project.deadline)}</h6>
 								</div>
 							</div>
 							{/* block 5 project status and dropdown */}

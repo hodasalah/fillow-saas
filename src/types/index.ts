@@ -40,7 +40,8 @@ export interface Project {
 		name: string;
 		image: string;
 	};
-	createdAt: Date;
+	startDate: Date;
+	endDate: Date;
 	deadline: Date;
 }
 

@@ -1,17 +1,9 @@
-import {
-	addDoc,
-	collection,
-	serverTimestamp,
-	getDocs,
-	query,
-	where,
-} from 'firebase/firestore';
-import React, { useState, useEffect } from 'react';
+import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
+import React, { useEffect, useState } from 'react';
 import { db } from '../../../../firebase';
-import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
+import { useAppDispatch } from '../../../../hooks/hooks';
 import { setLoading } from '../../../../store/slices/loadingSlice';
 import { Project, User } from '../../../../types';
-import { fetchProjects } from '../../../../utils/fetchProjects';
 import { fetchUsers } from '../../../../utils/fetchUsers';
 import { fetchClients } from '../../../../utils/userUtils';
 
@@ -48,6 +40,7 @@ const NewProject: React.FC<NewProjectProps> = ({ onClose, onProjectAdded }) => {
 			try {
 				const clientsData = await fetchClients();
 				setClients(clientsData);
+				//console.log(clientsData);
 			} catch (error) {
 				console.error('Error loading clients:', error);
 			}
@@ -60,8 +53,11 @@ const NewProject: React.FC<NewProjectProps> = ({ onClose, onProjectAdded }) => {
 	useEffect(() => {
 		const loadAllUsers = async () => {
 			try {
-				const usersData = await fetchUsers();
-				setAllUsers(usersData);
+				const actionResult = await dispatch(fetchUsers());
+				const usersData = fetchUsers.fulfilled.match(actionResult)
+					? actionResult.payload
+					: [];
+				setAllUsers(usersData as User[]);
 			} catch (error) {
 				console.error('Error loading all users:', error);
 			}
@@ -69,7 +65,6 @@ const NewProject: React.FC<NewProjectProps> = ({ onClose, onProjectAdded }) => {
 
 		loadAllUsers();
 	}, []);
-
 	const handleInputChange = (
 		event:
 			| React.ChangeEvent<HTMLInputElement>
@@ -139,7 +134,7 @@ const NewProject: React.FC<NewProjectProps> = ({ onClose, onProjectAdded }) => {
 				},
 				deadline: projectFormData.deadline!,
 				status: projectFormData.status,
-				createdAt: new Date(),
+				startDate: new Date(),
 				members: [],
 				ownerId: '',
 			};

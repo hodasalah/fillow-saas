@@ -1,5 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Timestamp } from 'firebase/firestore';
+import { createSlice } from '@reduxjs/toolkit';
 import { User } from '../../types';
 import { fetchUsers } from '../../utils/fetchUsers';
 import { updateUser } from '../../utils/userUtils';
@@ -41,37 +40,7 @@ const userSlice = createSlice({
 				state.status = 'succeeded';
 				// Ensure that the payload is an array of users
 				if (Array.isArray(action.payload)) {
-					state.users = action.payload.map((user) => {
-						const createdAt =
-							user.createdAt instanceof Timestamp
-								? user.createdAt.toDate().toISOString()
-								: user.createdAt;
-						const last_login =
-							user.last_login instanceof Timestamp
-								? user.last_login.toDate().toISOString()
-								: user.last_login;
-						const lastSeen =
-							user.lastSeen instanceof Timestamp
-								? user.lastSeen.toDate().toISOString()
-								: user.lastSeen;
-
-						return {
-							...user,
-							createdAt: createdAt,
-							last_login: last_login,
-							lastSeen: lastSeen,
-							role: user.role ?? 'employee',
-							projects: user.projects ?? [],
-							tags: user.tags ?? ['google-user'],
-							preferences: user.preferences ?? {
-								theme: 'light',
-								language: 'en-US',
-							},
-							taskProgress: user.taskProgress ?? 25,
-							teams: user.teams ?? [],
-							status: user.status ?? 'active',
-						};
-					});
+					state.users = action.payload; // Data is already normalized by fetchUsers
 				} else {
 					console.error(
 						'fetchUsers.fulfilled: Payload is not an array:',
@@ -102,24 +71,7 @@ const userSlice = createSlice({
 					user.uid === action.payload.uid ? action.payload : user,
 				);
 				if (state.currentUser?.uid === action.payload.uid) {
-					const createdAt =
-						action.payload.createdAt instanceof Timestamp
-							? action.payload.createdAt.toDate().toISOString()
-							: action.payload.createdAt;
-					const last_login =
-						action.payload.last_login instanceof Timestamp
-							? action.payload.last_login.toDate().toISOString()
-							: action.payload.last_login;
-					const lastSeen =
-						action.payload.lastSeen instanceof Timestamp
-							? action.payload.lastSeen.toDate().toISOString()
-							: action.payload.lastSeen;
-					state.currentUser = {
-						...action.payload,
-						createdAt: createdAt,
-						last_login: last_login,
-						lastSeen: lastSeen,
-					};
+					state.currentUser = action.payload;
 				}
 			})
 			.addCase(updateUser.rejected, (state, action) => {

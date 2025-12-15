@@ -1,22 +1,24 @@
-import { v4 as uuidv4 } from 'uuid';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../firebase';
 import { Project } from '../types';
 
 export const fetchProjects = async () => {
 	try {
-		const response = await fetch('/datas/projects.json');
-		if (!response.ok) {
-			throw new Error('Failed to fetch projects from server');
-		}
-		const data = await response.json();
-		const projectsData: Project[] = data.projects.map(
-			(project: Omit<Project, 'id'>) => ({
-				...project,
-				id: uuidv4(),
-			}),
-		);
+        const querySnapshot = await getDocs(collection(db, 'projects'));
+        const projectsData: Project[] = querySnapshot.docs.map((doc) => {
+            const data = doc.data();
+            const toDate = (val: any) => (val?.toDate ? val.toDate() : new Date(val));
+            return {
+                id: doc.id,
+                ...data,
+                startDate: toDate(data.startDate),
+                endDate: toDate(data.endDate),
+                deadline: toDate(data.deadline),
+            } as Project;
+        });
 		return projectsData;
 	} catch (error) {
-		console.error('Error fetching messages:', error);
+		console.error('Error fetching projects:', error);
 		throw error;
 	}
 };

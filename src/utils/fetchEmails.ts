@@ -1,16 +1,19 @@
-import { v4 as uuidv4 } from 'uuid';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../firebase';
+import { Email } from '../types/dashboard';
 
 export const fetchEmails = async () => {
 	try {
-		const response = await fetch('/datas/emails.json');
-		if (!response.ok) {
-			throw new Error('Failed to fetch emails');
-		}
-		const data = await response.json();
-		const emailsData: Email[] = data.emailsData.map((email: Omit<Email, 'id'>) => ({
-			...email,
-			id: uuidv4(),
-		}));
+        const querySnapshot = await getDocs(collection(db, 'emails'));
+        const emailsData: Email[] = querySnapshot.docs.map((doc) => {
+             const data = doc.data();
+             const toDate = (val: any) => (val?.toDate ? val.toDate() : new Date(val));
+             return {
+                id: doc.id,
+                ...data,
+                timestamp: toDate(data.timestamp),
+            } as Email;
+        });
 		return emailsData;
 	} catch (error) {
 		console.error('Error fetching emails:', error);

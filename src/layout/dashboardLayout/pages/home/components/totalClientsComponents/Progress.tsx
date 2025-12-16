@@ -6,13 +6,14 @@ const Progress = () => {
 					Total Clients
 				</h4>
 
-				<div className='w-full h-[8px] bg-[#f6f6f6] overflow-hidden rounded-[.7rem]'>
+				<div className='w-full h-[8px] bg-[var(--border)] overflow-hidden rounded-[.7rem]'>
 					<div
 						role='progressbar'
-						className='striped-gradient bg-[var(--primary)] w-[40%] h-[8px]'
+						className='striped-gradient bg-[rgb(214,83,193)] w-[40%] h-[8px]'
 						aria-valuenow={40}
 						aria-valuemin={20}
 						aria-valuemax={100}
+                        style={{ backgroundColor: 'rgb(214, 83, 193)' }}
 					/>
 				</div>
 

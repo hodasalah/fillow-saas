@@ -1,20 +1,20 @@
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import {
-	faAngular,
-	faDribbble,
-	faFigma,
-	faInstagram,
-	faLaravel,
-	faReact,
+    faAngular,
+    faDribbble,
+    faFigma,
+    faInstagram,
+    faLaravel,
+    faReact,
 } from '@fortawesome/free-brands-svg-icons';
 import {
-	faBell,
-	faEnvelope,
-	faHomeAlt,
-	faMoon,
-	faSearch,
-	faShoppingBag,
-	faStar,
+    faBell,
+    faEnvelope,
+    faHomeAlt,
+    faMoon,
+    faSearch,
+    faShoppingBag,
+    faStar,
 } from '@fortawesome/free-solid-svg-icons';
 import { v4 as uuidv4 } from 'uuid';
 import Notifications from './Notifications';

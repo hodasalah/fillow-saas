@@ -1,22 +1,25 @@
 import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
 import {
-	Chat,
-	Message,
-	getUserChats,
-	initializeChatCollection,
-	sendMessage,
-	subscribeToMessages,
+    Chat,
+    Message,
+    getChat,
+    getUserChats,
+    initializeChatCollection,
+    sendMessage,
+    subscribeToMessages
 } from '../../../../services/firebase/chats';
 import { UserData, getAllUsers } from '../../../../services/firebase/users';
 import {
-	getImageLoadErrorHandler,
-	getProfilePictureUrl,
+    getImageLoadErrorHandler,
+    getProfilePictureUrl,
 } from '../../../../utils/profilePicture';
 import ChatList from './components/ChatList';
 import ChatWindow from './components/ChatWindow';
 
 const ChatPage: React.FC = () => {
+    const location = useLocation();
 	const dispatch = useAppDispatch();
 	const currentUser = useAppSelector((state) => state.auth.currentUser);
 	const mode = useAppSelector((state) => state.sidebar.mode);
@@ -37,7 +40,19 @@ const ChatPage: React.FC = () => {
 				setIsLoading(true);
 				setError(null);
 				try {
-					const userChats = await getUserChats(currentUser.uid);
+					let userChats = await getUserChats(currentUser.uid);
+                    
+                    // Auto-Seed chats in Firebase if none exist (so the list isn't empty for new users)
+                    if (userChats.length === 0) {
+                        try {
+                            await seedDefaultChats(currentUser.uid);
+                            // Re-fetch after seeding
+                            userChats = await getUserChats(currentUser.uid);
+                        } catch (seedErr) {
+                            console.warn("Seeding failed, proceeding with empty list:", seedErr);
+                        }
+                    }
+
 					setChats(userChats);
 				} catch (error) {
 					console.error('Error loading chats:', error);
@@ -49,6 +64,60 @@ const ChatPage: React.FC = () => {
 			loadChats();
 		}
 	}, [currentUser]);
+
+     // Check for navigation state (from sidebar click)
+    useEffect(() => {
+        const state = location.state as { chatId?: string; recruitUser?: { otherUserId: string } };
+        if (state?.chatId) {
+            const existingChat = chats.find(c => c.id === state.chatId);
+            if (existingChat) {
+                setSelectedChat(existingChat);
+                window.history.replaceState({}, document.title);
+            } else {
+                // Chat not in current list (maybe new, or list is fallback). 
+                // Try to resolve it.
+                const resolveChat = async () => {
+                     let newChat: Chat | null = null;
+                     
+                     // 1. Try fetching from DB
+                     try {
+                         newChat = await getChat(state.chatId!);
+                     } catch (e) {
+                         console.warn("Could not fetch individual chat:", e);
+                     }
+
+                     // 2. If not found, try optimistic construction if we have user details
+                     if (!newChat && state.recruitUser && state.recruitUser.otherUserId && currentUser) {
+                         console.log("Constructing optimistic chat for", state.recruitUser.otherUserId);
+                         const recruitId = state.recruitUser.otherUserId;
+                         newChat = {
+                             id: state.chatId!,
+                             participants: [currentUser.uid, recruitId],
+                             createdAt: new Date(),
+                             updatedAt: new Date(),
+                             lastMessage: {
+                                 id: 'optimistic_init',
+                                 text: 'Start of conversation',
+                                 senderId: currentUser.uid,
+                                 createdAt: new Date(),
+                                 read: true
+                             }
+                         };
+                     }
+
+                     if (newChat) {
+                         setChats(prev => {
+                             // dedupe just in case
+                             if (prev.find(c => c.id === newChat!.id)) return prev;
+                             return [newChat!, ...prev];
+                         });
+                         setSelectedChat(newChat);
+                     }
+                };
+                resolveChat();
+            }
+        }
+    }, [location.state, chats]);
 
 	// Load available users for new chat
 	useEffect(() => {
@@ -235,18 +304,18 @@ const ChatPage: React.FC = () => {
 								>
 									<img
 										src={getProfilePictureUrl(
-											user.profilePicture,
-											user.name,
+											user.photoURL,
+											user.displayName,
 										)}
-										alt={user.name}
+										alt={user.displayName}
 										className='w-10 h-10 rounded-full object-cover'
 										onError={getImageLoadErrorHandler(
-											user.name,
+											user.displayName,
 										)}
 									/>
 									<div>
 										<p className='font-medium'>
-											{user.name}
+											{user.displayName}
 										</p>
 										<p className='text-sm text-gray-500'>
 											{user.email}

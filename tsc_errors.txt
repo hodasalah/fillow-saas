@@ -1,0 +1,215 @@
+
+> new@0.0.0 npx
+> tsc -b
+
+src/components/Card/index.ts(1,15): error TS1149: File name 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/components/Card/Card.tsx' differs from already included file name 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/components/card/Card.tsx' only in casing.
+  The file is in the program because:
+    Imported via '../../../../../../components/card/Card' from file 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/layout/dashboardLayout/pages/home/components/completeProject/index.tsx'
+    Imported via './Card' from file 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/components/Card/index.ts'
+    Imported via './Card' from file 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/components/Card/index.ts'
+    Matched by include pattern 'src' in 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/tsconfig.app.json'
+src/components/Card/index.ts(2,25): error TS1149: File name 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/components/Card/Card.tsx' differs from already included file name 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/components/card/Card.tsx' only in casing.
+  The file is in the program because:
+    Imported via '../../../../../../components/card/Card' from file 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/layout/dashboardLayout/pages/home/components/completeProject/index.tsx'
+    Imported via './Card' from file 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/components/Card/index.ts'
+    Imported via './Card' from file 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/components/Card/index.ts'
+    Matched by include pattern 'src' in 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/tsconfig.app.json'
+src/components/carousel/Carousel.tsx(61,19): error TS6133: 's' is declared but its value is never read.
+src/components/chart/Barchart.tsx(168,5): error TS2353: Object literal may only specify known properties, and 'endingShape' does not exist in type '{ horizontal?: boolean | undefined; columnWidth?: string | number | undefined; barHeight?: string | number | undefined; distributed?: boolean | undefined; borderRadius?: number | undefined; ... 10 more ...; dataLabels?: { ...; } | undefined; }'.
+src/components/chart/StackedBarChart.tsx(125,5): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: Props): ReactApexChart', gave the following error.
+    Type '{ series: { name: string; data: number[]; }[]; chart: { type: string; height: number; width: number; stacked: boolean; toolbar: { show: boolean; }; }; responsive: ({ breakpoint: number; options: { chart: { width: number; height: string; }; legend: { ...; }; }; } | { ...; })[]; ... 8 more ...; fill: { ...; }; }' is not assignable to type 'ApexOptions'.
+      The types of 'chart.type' are incompatible between these types.
+        Type 'string' is not assignable to type '"line" | "area" | "bar" | "pie" | "donut" | "radialBar" | "scatter" | "bubble" | "heatmap" | "candlestick" | "boxPlot" | "radar" | "polarArea" | "rangeBar" | "rangeArea" | "treemap" | undefined'.
+  Overload 2 of 2, '(props: Props, context: any): ReactApexChart', gave the following error.
+    Type '{ series: { name: string; data: number[]; }[]; chart: { type: string; height: number; width: number; stacked: boolean; toolbar: { show: boolean; }; }; responsive: ({ breakpoint: number; options: { chart: { width: number; height: string; }; legend: { ...; }; }; } | { ...; })[]; ... 8 more ...; fill: { ...; }; }' is not assignable to type 'ApexOptions'.
+      The types of 'chart.type' are incompatible between these types.
+        Type 'string' is not assignable to type '"line" | "area" | "bar" | "pie" | "donut" | "radialBar" | "scatter" | "bubble" | "heatmap" | "candlestick" | "boxPlot" | "radar" | "polarArea" | "rangeBar" | "rangeArea" | "treemap" | undefined'.
+src/components/counter/counter.tsx(2,48): error TS2307: Cannot find module '../hooks/hooks' or its corresponding type declarations.
+src/components/counter/counter.tsx(7,8): error TS2307: Cannot find module '../store/slices/counterSlice' or its corresponding type declarations.
+src/components/counter/counter.tsx(8,32): error TS2307: Cannot find module '../store/store' or its corresponding type declarations.
+src/components/counter/index.ts(2,10): error TS2305: Module '"./counter"' has no exported member 'default'.
+src/components/hamburger/hamburgerBtn.test.tsx(4,10): error TS2614: Module '"../../store/slices/sidebarSlice"' has no exported member 'setToggleActiveSidebar'. Did you mean to use 'import setToggleActiveSidebar from "../../store/slices/sidebarSlice"' instead?
+src/components/hamburger/hamburgerBtn.test.tsx(24,19): error TS2322: Type '{ OnBtnClick: Mock<any, any, any>; }' is not assignable to type 'IntrinsicAttributes & { onHandleClick: () => void; }'.
+  Property 'OnBtnClick' does not exist on type 'IntrinsicAttributes & { onHandleClick: () => void; }'.
+src/components/hamburger/hamburgerBtn.test.tsx(33,19): error TS2322: Type '{ OnBtnClick: Mock<any, any, any>; }' is not assignable to type 'IntrinsicAttributes & { onHandleClick: () => void; }'.
+  Property 'OnBtnClick' does not exist on type 'IntrinsicAttributes & { onHandleClick: () => void; }'.
+src/components/hamburger/hamburgerBtn.test.tsx(48,19): error TS2322: Type '{ OnBtnClick: Mock<any, any, any>; }' is not assignable to type 'IntrinsicAttributes & { onHandleClick: () => void; }'.
+  Property 'OnBtnClick' does not exist on type 'IntrinsicAttributes & { onHandleClick: () => void; }'.
+src/components/index.ts(4,15): error TS1261: Already included file name 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/components/Loading/index.ts' differs from file name 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/components/loading/index.ts' only in casing.
+  The file is in the program because:
+    Imported via './Loading' from file 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/components/index.ts'
+    Matched by include pattern 'src' in 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/tsconfig.app.json'
+src/components/index.ts(6,15): error TS1261: Already included file name 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/components/PrivateRoute/index.ts' differs from file name 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/components/privateRoute/index.ts' only in casing.
+  The file is in the program because:
+    Imported via './PrivateRoute' from file 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/components/index.ts'
+    Matched by include pattern 'src' in 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/tsconfig.app.json'
+src/components/index.ts(9,15): error TS1261: Already included file name 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/components/Tooltip/index.ts' differs from file name 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/components/tooltip/index.ts' only in casing.
+  The file is in the program because:
+    Imported via './Tooltip' from file 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/components/index.ts'
+    Matched by include pattern 'src' in 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/tsconfig.app.json'
+src/components/index.ts(12,15): error TS2307: Cannot find module './carousel' or its corresponding type declarations.
+src/components/index.ts(13,15): error TS2307: Cannot find module './chart' or its corresponding type declarations.
+src/components/index.ts(15,15): error TS2307: Cannot find module './hamburger' or its corresponding type declarations.
+src/components/index.ts(16,15): error TS2307: Cannot find module './layouts' or its corresponding type declarations.
+src/components/index.ts(17,15): error TS2307: Cannot find module './logo' or its corresponding type declarations.
+src/components/index.ts(18,15): error TS2307: Cannot find module './profileDropdown' or its corresponding type declarations.
+src/components/index.ts(19,15): error TS2307: Cannot find module './svgs' or its corresponding type declarations.
+src/components/Loading/index.ts(1,15): error TS1261: Already included file name 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/components/Loading/Loading.tsx' differs from file name 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/components/loading/Loading.tsx' only in casing.
+  The file is in the program because:
+    Imported via './Loading' from file 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/components/Loading/index.ts'
+    Imported via './Loading' from file 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/components/Loading/index.ts'
+    Matched by include pattern 'src' in 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/tsconfig.app.json'
+src/components/Modal/index.ts(1,15): error TS1149: File name 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/components/Modal/Modal.tsx' differs from already included file name 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/components/modal/Modal.tsx' only in casing.
+  The file is in the program because:
+    Imported via '../../../../../../components/modal/Modal' from file 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/layout/dashboardLayout/pages/home/components/completeProject/index.tsx'
+    Imported via './Modal' from file 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/components/Modal/index.ts'
+    Imported via './Modal' from file 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/components/Modal/index.ts'
+    Matched by include pattern 'src' in 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/tsconfig.app.json'
+src/components/Modal/index.ts(2,25): error TS1149: File name 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/components/Modal/Modal.tsx' differs from already included file name 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/components/modal/Modal.tsx' only in casing.
+  The file is in the program because:
+    Imported via '../../../../../../components/modal/Modal' from file 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/layout/dashboardLayout/pages/home/components/completeProject/index.tsx'
+    Imported via './Modal' from file 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/components/Modal/index.ts'
+    Imported via './Modal' from file 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/components/Modal/index.ts'
+    Matched by include pattern 'src' in 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/tsconfig.app.json'
+src/components/PrivateRoute/index.ts(1,25): error TS1261: Already included file name 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/components/PrivateRoute/PrivateRoute.tsx' differs from file name 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/components/privateRoute/PrivateRoute.tsx' only in casing.
+  The file is in the program because:
+    Imported via './PrivateRoute' from file 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/components/PrivateRoute/index.ts'
+    Matched by include pattern 'src' in 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/tsconfig.app.json'
+src/components/PrivateRoute/PrivateRoute.tsx(7,57): error TS2339: Property 'isLoading' does not exist on type 'AuthState'.
+src/components/profileDropdown/ProfileDropdown.tsx(71,4): error TS2322: Type 'RefObject<HTMLLIElement>' is not assignable to type 'LegacyRef<HTMLDivElement> | undefined'.
+  Type 'RefObject<HTMLLIElement>' is not assignable to type 'RefObject<HTMLDivElement>'.
+    Property 'align' is missing in type 'HTMLLIElement' but required in type 'HTMLDivElement'.
+src/components/ProgressBar/index.ts(1,15): error TS1261: Already included file name 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/components/ProgressBar/ProgressBar.tsx' differs from file name 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/components/progressBar/ProgressBar.tsx' only in casing.
+  The file is in the program because:
+    Imported via './ProgressBar' from file 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/components/ProgressBar/index.ts'
+    Imported via './ProgressBar' from file 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/components/ProgressBar/index.ts'
+    Matched by include pattern 'src' in 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/tsconfig.app.json'
+src/components/ProgressBar/ProgressBar.tsx(20,5): error TS2322: Type '{ children: Element; role: "progressbar"; "aria-valuenow": number; "aria-valuemin": string; "aria-valuemax": number; className: string; style: { width: string; }; onMouseOver: () => void; onMouseLeave: () => void; }' is not assignable to type 'DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>'.
+  Type '{ children: Element; role: "progressbar"; "aria-valuenow": number; "aria-valuemin": string; "aria-valuemax": number; className: string; style: { width: string; }; onMouseOver: () => void; onMouseLeave: () => void; }' is not assignable to type 'HTMLAttributes<HTMLDivElement>'.
+    Types of property '"aria-valuemin"' are incompatible.
+      Type 'string' is not assignable to type 'number'.
+src/components/svgs/rectDots/PurpleRectDot.tsx(1,1): error TS6133: 'React' is declared but its value is never read.
+src/components/TabGroup/index.ts(1,35): error TS1261: Already included file name 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/components/TabGroup/TabGroup.tsx' differs from file name 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/components/tabGroup/TabGroup.tsx' only in casing.
+  The file is in the program because:
+    Imported via './TabGroup' from file 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/components/TabGroup/index.ts'
+    Matched by include pattern 'src' in 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/tsconfig.app.json'
+src/components/Tooltip/index.ts(1,15): error TS1149: File name 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/components/Tooltip/Tooltip.tsx' differs from already included file name 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/components/tooltip/Tooltip.tsx' only in casing.
+  The file is in the program because:
+    Imported via '../tooltip/Tooltip' from file 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/components/ProgressBar/ProgressBar.tsx'
+    Imported via './Tooltip' from file 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/components/Tooltip/index.ts'
+    Imported via './Tooltip' from file 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/components/Tooltip/index.ts'
+    Matched by include pattern 'src' in 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/tsconfig.app.json'
+src/components/Tooltip/index.ts(2,25): error TS1149: File name 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/components/Tooltip/Tooltip.tsx' differs from already included file name 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/components/tooltip/Tooltip.tsx' only in casing.
+  The file is in the program because:
+    Imported via '../tooltip/Tooltip' from file 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/components/ProgressBar/ProgressBar.tsx'
+    Imported via './Tooltip' from file 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/components/Tooltip/index.ts'
+    Imported via './Tooltip' from file 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/components/Tooltip/index.ts'
+    Matched by include pattern 'src' in 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/tsconfig.app.json'
+src/firebase.ts(45,7): error TS6133: 'analytics' is declared but its value is never read.
+src/hooks/useDarkMode.tsx(32,18): error TS7006: Parameter 'prev' implicitly has an 'any' type.
+src/hooks/useEmailData.ts(1,23): error TS2307: Cannot find module '@/types/dashboard' or its corresponding type declarations.
+src/hooks/useEmailData.ts(2,29): error TS2307: Cannot find module '@/utils/fetchData' or its corresponding type declarations.
+src/hooks/useMessagesData.ts(1,25): error TS2307: Cannot find module '@/types/dashboard' or its corresponding type declarations.
+src/hooks/useMessagesData.ts(2,29): error TS2307: Cannot find module '@/utils/dataFetcher' or its corresponding type declarations.
+src/hooks/useMessagesData.ts(3,31): error TS2307: Cannot find module '@/utils/fetchData' or its corresponding type declarations.
+src/hooks/useMessagesData.ts(37,5): error TS7006: Parameter 'data' implicitly has an 'any' type.
+src/hooks/useProjectsData.ts(1,25): error TS2307: Cannot find module '@/types' or its corresponding type declarations.
+src/hooks/useProjectsData.ts(2,29): error TS2307: Cannot find module '@/utils/dataFetcher' or its corresponding type declarations.
+src/hooks/useProjectsData.ts(3,31): error TS2307: Cannot find module '@/utils/fetchData' or its corresponding type declarations.
+src/hooks/useProjectsData.ts(37,5): error TS7006: Parameter 'data' implicitly has an 'any' type.
+src/layout/dashboardLayout/mainParts/chatbox/chatboxContent/index.tsx(4,1): error TS6133: 'NotesTabPanel' is declared but its value is never read.
+src/layout/dashboardLayout/mainParts/footer/index.tsx(4,57): error TS2339: Property 'isOpen' does not exist on type 'SidebarState'.
+src/layout/dashboardLayout/mainParts/header/headerContent/Timeline.tsx(17,10): error TS2353: Object literal may only specify known properties, and ''--after-color'' does not exist in type 'Properties<string | number, string & {}>'.
+src/layout/dashboardLayout/mainParts/header/headerContent/Timeline.tsx(26,10): error TS2353: Object literal may only specify known properties, and ''--after-color'' does not exist in type 'Properties<string | number, string & {}>'.
+src/layout/dashboardLayout/pages/chat/ChatPage.tsx(20,8): error TS6133: 'dispatch' is declared but its value is never read.
+src/layout/dashboardLayout/pages/chat/ChatPage.tsx(237,11): error TS2322: Type 'Promise<string>' is not assignable to type 'string'.
+src/layout/dashboardLayout/pages/chat/ChatPage.tsx(238,17): error TS2339: Property 'profilePicture' does not exist on type 'UserData'.
+src/layout/dashboardLayout/pages/chat/ChatPage.tsx(239,17): error TS2339: Property 'name' does not exist on type 'UserData'.
+src/layout/dashboardLayout/pages/chat/ChatPage.tsx(241,21): error TS2339: Property 'name' does not exist on type 'UserData'.
+src/layout/dashboardLayout/pages/chat/ChatPage.tsx(244,17): error TS2339: Property 'name' does not exist on type 'UserData'.
+src/layout/dashboardLayout/pages/chat/ChatPage.tsx(249,18): error TS2339: Property 'name' does not exist on type 'UserData'.
+src/layout/dashboardLayout/pages/chat/components/ChatList.tsx(51,9): error TS2322: Type 'Promise<string>' is not assignable to type 'string'.
+src/layout/dashboardLayout/pages/chat/components/ChatWindow.tsx(40,6): error TS2322: Type 'Promise<string>' is not assignable to type 'string'.
+src/layout/dashboardLayout/pages/chat/components/ChatWindow.tsx(125,7): error TS2322: Type 'Promise<string>' is not assignable to type 'string'.
+src/layout/dashboardLayout/pages/home/components/dognutArea/index.tsx(1,18): error TS1261: Already included file name 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/components/Card/index.ts' differs from file name 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/components/card/index.ts' only in casing.
+  The file is in the program because:
+    Imported via '../../../../../../components/Card' from file 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/layout/dashboardLayout/pages/home/components/dognutArea/index.tsx'
+    Imported via '../../../../../../components/Card' from file 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/layout/dashboardLayout/pages/home/components/emailCategories/index.tsx'
+    Imported via '../../../../../../components/Card' from file 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/layout/dashboardLayout/pages/home/components/ImportantProjects/index.tsx'
+    Imported via '../../../../../../components/Card' from file 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/layout/dashboardLayout/pages/home/components/projectStatistics/index.tsx'
+    Imported via '../../../../../../components/Card' from file 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/layout/dashboardLayout/pages/home/components/totalClientsComponents/index.tsx'
+    Imported via '../../../../components/Card' from file 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/layout/dashboardLayout/pages/projects/index.tsx'
+    Imported via '../../../../../components/Card' from file 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/layout/dashboardLayout/mainParts/header/headerContent/Notifications.tsx'
+    Imported via '../../../../../components/Card' from file 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/layout/dashboardLayout/mainParts/header/headerContent/RelatedApps.tsx'
+    Imported via '../../../../../components/Card' from file 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/layout/dashboardLayout/mainParts/header/headerContent/Timeline.tsx'
+    Imported via './Card' from file 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/components/index.ts'
+    Matched by include pattern 'src' in 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/tsconfig.app.json'
+src/layout/dashboardLayout/pages/home/components/emailCategories/index.tsx(65,19): error TS2322: Type '{ data: { labels: string[]; datasets: { data: number[]; backgroundColor: string[]; }[]; }; }' is not assignable to type 'IntrinsicAttributes'.
+  Property 'data' does not exist on type 'IntrinsicAttributes'.
+src/layout/dashboardLayout/pages/home/components/ImportantProjects/ProjectItem.tsx(3,25): error TS1261: Already included file name 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/components/ProgressBar/index.ts' differs from file name 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/components/progressBar/index.ts' only in casing.
+  The file is in the program because:
+    Imported via '../../../../../../components/ProgressBar' from file 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/layout/dashboardLayout/pages/home/components/ImportantProjects/ProjectItem.tsx'
+    Imported via './ProgressBar' from file 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/components/index.ts'
+    Matched by include pattern 'src' in 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/tsconfig.app.json'
+src/layout/dashboardLayout/pages/home/components/ImportantProjects/ProjectItem.tsx(7,7): error TS6133: 'dropdownMenuLinks' is declared but its value is never read.
+src/layout/dashboardLayout/pages/home/components/ImportantProjects/ProjectItem.tsx(24,45): error TS2339: Property 'createdAt' does not exist on type 'Project'.
+src/layout/dashboardLayout/pages/home/components/ImportantProjects/ProjectItem.tsx(26,22): error TS2339: Property 'createdAt' does not exist on type 'Project'.
+src/layout/dashboardLayout/pages/home/components/ImportantProjects/ProjectItem.tsx(65,13): error TS2339: Property 'tags' does not exist on type 'Project'.
+src/layout/dashboardLayout/pages/home/components/ImportantProjects/ProjectItem.tsx(67,15): error TS2339: Property 'tags' does not exist on type 'Project'.
+src/layout/dashboardLayout/pages/home/components/ImportantProjects/ProjectItem.tsx(67,25): error TS7006: Parameter 'tag' implicitly has an 'any' type.
+src/layout/dashboardLayout/pages/home/components/ImportantProjects/ProjectTag.tsx(2,10): error TS2614: Module '"."' has no exported member 'Tag'. Did you mean to use 'import Tag from "."' instead?
+src/layout/dashboardLayout/pages/home/components/messages/index.tsx(93,10): error TS2322: Type '{ key: string; message: Message; onRead: (id: string) => void; }' is not assignable to type 'IntrinsicAttributes & { message: Message; }'.
+  Property 'onRead' does not exist on type 'IntrinsicAttributes & { message: Message; }'.
+src/layout/dashboardLayout/pages/home/components/messages/MessageItem.tsx(2,10): error TS2614: Module '"."' has no exported member 'Message'. Did you mean to use 'import Message from "."' instead?
+src/layout/dashboardLayout/pages/home/components/projectStatistics/components/Header.tsx(2,22): error TS1261: Already included file name 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/components/TabGroup/index.ts' differs from file name 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/components/tabGroup/index.ts' only in casing.
+  The file is in the program because:
+    Imported via '../../../../../../../components/TabGroup' from file 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/layout/dashboardLayout/pages/home/components/projectStatistics/components/Header.tsx'
+    Imported via '../../../../components/TabGroup' from file 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/layout/dashboardLayout/pages/projects/index.tsx'
+    Imported via './TabGroup' from file 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/components/index.ts'
+    Matched by include pattern 'src' in 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/tsconfig.app.json'
+src/layout/dashboardLayout/pages/home/components/projectStatistics/components/Header.tsx(29,5): error TS2322: Type '(tab: TimePeriod) => void' is not assignable to type '(tab: string) => void'.
+  Types of parameters 'tab' and 'tab' are incompatible.
+    Type 'string' is not assignable to type 'TimePeriod'.
+src/layout/dashboardLayout/pages/home/components/projectStatistics/components/StatisticsOverview.tsx(3,27): error TS1261: Already included file name 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/layout/dashboardLayout/pages/home/components/projectStatistics/components/statisticsItem.tsx' differs from file name 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/layout/dashboardLayout/pages/home/components/projectStatistics/components/StatisticsItem.tsx' only in casing.
+  The file is in the program because:
+    Imported via './statisticsItem' from file 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/layout/dashboardLayout/pages/home/components/projectStatistics/components/StatisticsOverview.tsx'
+    Matched by include pattern 'src' in 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/tsconfig.app.json'
+src/layout/dashboardLayout/pages/home/components/projectStatistics/index.tsx(3,19): error TS1261: Already included file name 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/components/Modal/index.ts' differs from file name 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/components/modal/index.ts' only in casing.
+  The file is in the program because:
+    Imported via '../../../../../../components/Modal' from file 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/layout/dashboardLayout/pages/home/components/projectStatistics/index.tsx'
+    Imported via './Modal' from file 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/components/index.ts'
+    Matched by include pattern 'src' in 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/tsconfig.app.json'
+src/layout/dashboardLayout/pages/home/components/projectStatistics/index.tsx(17,28): error TS6133: 'statistics' is declared but its value is never read.
+src/layout/dashboardLayout/pages/home/components/recentEmails/EmailItem.tsx(8,10): error TS2614: Module '"./index"' has no exported member 'Email'. Did you mean to use 'import Email from "./index"' instead?
+src/layout/dashboardLayout/pages/home/components/recentEmails/EmailItem.tsx(54,38): error TS7006: Parameter 'file' implicitly has an 'any' type.
+src/layout/dashboardLayout/pages/home/components/recentEmails/EmailItem.tsx(54,44): error TS7006: Parameter 'index' implicitly has an 'any' type.
+src/layout/dashboardLayout/pages/home/components/recentEmails/EmailItem.tsx(78,26): error TS7006: Parameter 'file' implicitly has an 'any' type.
+src/layout/dashboardLayout/pages/home/components/recentEmails/EmailItem.tsx(78,32): error TS7006: Parameter 'index' implicitly has an 'any' type.
+src/layout/dashboardLayout/pages/home/components/totalClientsComponents/Linear.tsx(62,5): error TS2353: Object literal may only specify known properties, and 'value' does not exist in type '{ type?: string | undefined; }'.
+src/layout/dashboardLayout/pages/home/components/totalClientsComponents/Linear.tsx(69,5): error TS2353: Object literal may only specify known properties, and 'value' does not exist in type '{ type?: string | undefined; }'.
+src/layout/dashboardLayout/pages/home/components/totalClientsComponents/Linear.tsx(109,3): error TS2322: Type 'string' is not assignable to type 'any[]'.
+src/layout/dashboardLayout/pages/home/index.tsx(27,11): error TS6196: 'ProjectStatisticsProps' is declared but never used.
+src/layout/dashboardLayout/pages/home/index.tsx(31,11): error TS6196: 'CompleteProjectProps' is declared but never used.
+src/layout/dashboardLayout/pages/home/index.tsx(35,11): error TS6196: 'RecentEmailsProps' is declared but never used.
+src/layout/dashboardLayout/pages/home/index.tsx(39,11): error TS6196: 'EmailCategoriesProps' is declared but never used.
+src/layout/dashboardLayout/pages/home/index.tsx(43,11): error TS6196: 'ImportantProjectsProps' is declared but never used.
+src/layout/dashboardLayout/pages/home/index.tsx(47,11): error TS6196: 'MessagesProps' is declared but never used.
+src/layout/dashboardLayout/pages/projects/NewProject.tsx(104,29): error TS2339: Property 'image' does not exist on type 'User'.
+src/layout/dashboardLayout/pages/projects/NewProject.tsx(109,37): error TS2339: Property 'image' does not exist on type 'User'.
+src/layout/dashboardLayout/pages/projects/NewProject.tsx(127,29): error TS2339: Property 'image' does not exist on type 'User'.
+src/layout/dashboardLayout/pages/projects/NewProject.tsx(128,6): error TS2353: Object literal may only specify known properties, and 'id' does not exist in type '{ name: string; image: string; }'.
+src/layout/dashboardLayout/pages/projects/NewProject.tsx(132,37): error TS2339: Property 'image' does not exist on type 'User'.
+src/layout/dashboardLayout/pages/projects/NewProject.tsx(133,6): error TS2353: Object literal may only specify known properties, and 'id' does not exist in type '{ name: string; image: string; }'.
+src/routes/index.tsx(41,15): error TS2304: Cannot find name 'PrivateRoute'.
+src/services/firebase/chats.ts(57,61): error TS2339: Property 'id' does not exist on type 'never'.
+src/services/firebase/chats.ts(58,24): error TS2339: Property 'id' does not exist on type 'never'.
+src/store/slices/authActions.ts(98,14): error TS2339: Property 'updateProfile' does not exist on type 'User'.
+src/store/slices/authActions.ts(110,37): error TS6133: 'rejectValue' is declared but its value is never read.
+src/store/slices/authActions.ts(110,39): error TS2339: Property 'rejectValue' does not exist on type 'GetThunkAPI<{ rejectValue: string; state?: unknown; dispatch?: ThunkDispatch<unknown, unknown, UnknownAction> | undefined; extra?: unknown; serializedErrorType?: unknown; pendingMeta?: unknown; fulfilledMeta?: unknown; rejectedMeta?: unknown; }>'.
+src/store/slices/authActions.ts(126,10): error TS2552: Cannot find name 'rejectWithValue'. Did you mean 'rejectValue'?
+src/store/slices/authActions.ts(135,32): error TS6133: 'rejectValue' is declared but its value is never read.
+src/store/slices/authActions.ts(135,34): error TS2339: Property 'rejectValue' does not exist on type 'GetThunkAPI<{ rejectValue: string; state?: unknown; dispatch?: ThunkDispatch<unknown, unknown, UnknownAction> | undefined; extra?: unknown; serializedErrorType?: unknown; pendingMeta?: unknown; fulfilledMeta?: unknown; rejectedMeta?: unknown; }>'.
+src/store/slices/authActions.ts(140,10): error TS2552: Cannot find name 'rejectWithValue'. Did you mean 'rejectValue'?
+src/store/slices/authSlice.ts(2,1): error TS6133: 'FirebaseUser' is declared but its value is never read.
+src/store/slices/loadingSlice.ts(15,28): error TS2339: Property 'setAuthLoading' does not exist on type 'CaseReducerActions<{ setLoading: (state: WritableDraft<{ isLoading: boolean; }>, action: { payload: any; type: string; }) => void; }, "loading">'.

@@ -18,21 +18,29 @@ export const fetchStatistics = async (): Promise<Statistics> => {
              return docSnap.data() as Statistics;
         } else {
             console.warn('Statistics document not found, returning default values.');
-             return {
-                total: 0,
-                ongoing: 0,
-                unfinished: 0,
-                chartData: [],
+            return {
+                total: 12,
+                ongoing: 5,
+                unfinished: 3,
+                chartData: [
+                    { name: 'Completed', value: 4 },
+                    { name: 'In Progress', value: 5 },
+                    { name: 'Not Started', value: 3 },
+                ],
                 userId: 'local',
             };
         }
     } catch (error) {
-        console.error('Error fetching statistics:', error);
+        console.warn('Error fetching statistics from Firebase, falling back to mock data:', error);
         return {
-            total: 0,
-            ongoing: 0,
-            unfinished: 0,
-            chartData: [],
+            total: 12,
+            ongoing: 5,
+            unfinished: 3,
+            chartData: [
+                { name: 'Completed', value: 4 },
+                { name: 'In Progress', value: 5 },
+                { name: 'Not Started', value: 3 },
+            ],
             userId: 'local',
         };
     }

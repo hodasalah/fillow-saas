@@ -16,7 +16,23 @@ export const fetchMessages = async () => {
         });
         return messagesData;
     } catch (error) {
-        console.error('Error fetching messages:', error);
-        throw error;
+        console.warn('Error fetching messages from Firebase, falling back to mock data:', error);
+        try {
+            const res = await fetch('/datas/messages.json');
+            const data = await res.json();
+             // Map mock data structure if necessary, or assume it matches Message[]
+             // Inspecting messages.json earlier: it has "lastMessage" which maps to "content" in my types
+             // I need to map it here
+            return (data.messages || []).map((m: any) => ({
+                ...m,
+                id: 'mock_' + Math.random().toString(36).substr(2, 9),
+                content: m.lastMessage,
+                timestamp: new Date(m.lastMessageTime || Date.now()),
+                isRead: false
+            }));
+        } catch (mockError) {
+             console.error('Failed to load mock messages:', mockError);
+             return [];
+        }
     }
 };

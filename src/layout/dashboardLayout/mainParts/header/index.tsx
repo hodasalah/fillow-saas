@@ -10,7 +10,7 @@ const Header: React.FC<HeaderProps> = ({ setShowSlider }) => {
 	const isMobileView = useAppSelector((state) => state.sidebar.isMobileView);
 	return (
 		<div
-			className={`fixed  h-[--dz-header-height] bg-[#f3f0f9]  ${
+			className={`fixed  h-[--dz-header-height] bg-[var(--headerbg)]  ${
 				mode !== 'wide' || isMobileView
 					? 'w-[calc(100vw-6rem)] ml-[6rem]'
 					: 'w-[calc(100vw-16.5rem)] ml-[16.5rem]'

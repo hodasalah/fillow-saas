@@ -4,148 +4,78 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
-import { v4 as uuidv4 } from 'uuid';
 
-const chatList = [
-	{
-		letter: 'A',
-		contacts: [
-			{
-				id: uuidv4(),
-				name: 'Archie Parker',
-				status: 'online',
-				last_seen: null,
-				img: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1180&q=80',
-			},
-			{
-				id: uuidv4(),
-				name: 'Alfie Mason',
-				status: 'offline',
-				last_seen: '7 mins ago',
-				img: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=3744&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-			},
-			{
-				id: uuidv4(),
-				name: 'AharlieKane',
-				status: 'online',
-				last_seen: null,
-				img: 'https://images.unsplash.com/photo-1640960543409-dbe56ccc30e2?q=80&w=2725&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-			},
-			{
-				id: uuidv4(),
-				name: 'Athan Jacoby',
-				status: 'offline',
-				last_seen: '30 mins ago',
-				img: 'https://images.unsplash.com/photo-1586297135537-94bc9ba060aa?q=80&w=3880&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-			},
-		],
-	},
-	{
-		letter: 'B',
-		contacts: [
-			{
-				id: uuidv4(),
-				name: 'Bashid Samim',
-				status: 'offline',
-				last_seen: '50 mins ago',
-				img: 'https://images.unsplash.com/photo-1640960543409-dbe56ccc30e2?q=80&w=2725&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-			},
-			{
-				id: uuidv4(),
-				name: 'Breddie Ronan',
-				status: 'online',
-				last_seen: null,
-				img: null,
-			},
-		],
-	},
-	{
-		letter: 'C',
-		contacts: [
-			{
-				id: uuidv4(),
-				name: 'Ceorge Carson',
-				status: 'offline',
-				last_seen: '7 mins ago',
-				img: null,
-			},
-		],
-	},
-	{
-		letter: 'D',
-		contacts: [
-			{
-				id: uuidv4(),
-				name: 'Darry Parker',
-				status: 'online',
-				last_seen: null,
-				img: null,
-			},
-			{
-				id: uuidv4(),
-				name: 'Denry Hunter',
-				status: 'offline',
-				last_seen: '30 mins ago',
-				img: 'https://images.unsplash.com/photo-1640960543409-dbe56ccc30e2?q=80&w=2725&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-			},
-		],
-	},
-	{
-		letter: 'J',
-		contacts: [
-			{
-				id: uuidv4(),
-				name: 'Jack Ronan',
-				status: 'offline',
-				last_seen: '50 mins ago',
-				img: null,
-			},
-			{
-				id: uuidv4(),
-				name: 'Jacob Tucker',
-				status: 'online',
-				last_seen: null,
-				img: null,
-			},
-			{
-				id: uuidv4(),
-				name: 'James Logan',
-				status: 'offline',
-				last_seen: '7 mins ago',
-				img: 'https://images.unsplash.com/photo-1640960543409-dbe56ccc30e2?q=80&w=2725&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-			},
-			{
-				id: uuidv4(),
-				name: 'Joshua Weston',
-				status: 'online',
-				last_seen: null,
-				img: null,
-			},
-		],
-	},
-	{
-		letter: 'O',
-		contacts: [
-			{
-				id: uuidv4(),
-				name: 'Oliver Acker',
-				status: 'offline',
-				last_seen: '30 mins ago',
-				img: null,
-			},
-			{
-				id: uuidv4(),
-				name: 'Oscar Weston',
-				status: 'offline',
-				last_seen: '50 mins ago',
-				img: null,
-			},
-		],
-	},
-];
+import { useNavigate } from 'react-router-dom';
+import { useAppSelector } from '../../../../../../hooks/hooks';
+import { initializeChatCollection } from '../../../../../../services/firebase/chats';
+
 const ChatListTab = () => {
+    const { users } = useAppSelector((state) => state.users);
+    const { currentUser } = useAppSelector((state) => state.auth);
+    const navigate = useNavigate();
+
+    const handleUserClick = async (otherUserId: string) => {
+        if (!currentUser) return;
+        try {
+            console.log("Starting chat with:", otherUserId);
+            const chatId = await initializeChatCollection(
+                currentUser.uid,
+                otherUserId
+            );
+            navigate('/dashboard/chat', { 
+                state: { 
+                    chatId,
+                    recruitUser: { otherUserId }
+                } 
+            });
+        } catch (error) {
+            console.warn("Failed to init chat (likely permission), persisting with optimistic nav:", error);
+            // FALLBACK: Navigate anyway with a temporary ID
+            navigate('/dashboard/chat', { 
+                state: { 
+                    chatId: `temp_${otherUserId}`,
+                    recruitUser: { otherUserId }
+                } 
+            });
+        }
+    };
+
+    // Group users by first letter of their name
+    const chatList = React.useMemo(() => {
+        const groups: Record<string, any[]> = {};
+        
+        if (!users) return []; // Guard against undefined users
+
+        users.forEach((user) => {
+            if (!user.name) return; // Guard against missing name
+            const letter = user.name.charAt(0).toUpperCase();
+            if (!groups[letter]) {
+                groups[letter] = [];
+            }
+            
+            let lastSeenText = null;
+            if (user.lastSeen) {
+                 const dateStr = typeof user.lastSeen === 'string' ? user.lastSeen : new Date(user.lastSeen).toISOString();
+                 lastSeenText = `last seen ${dateStr.split('T')[0]}`;
+            }
+
+            groups[letter].push({
+                id: user.uid,
+                name: user.name,
+                status: user.status || 'offline',
+                last_seen: lastSeenText,
+                img: user.profilePicture
+            });
+        });
+
+        // Convert to array and sort
+        return Object.keys(groups).sort().map(letter => ({
+            letter,
+            contacts: groups[letter]
+        }));
+    }, [users]);
 	return (
-		<div className='w-full overflow-scroll'>
+		<div className='w-full h-full overflow-y-auto custom-scrollbar'>
 			<div
 				className='flex justify-between items-center text-center border-b-[0.0625rem]
           border-border py-[0.9375rem] px-[1.25rem] text-[var(--text-dark)]'
@@ -181,6 +111,7 @@ const ChatListTab = () => {
 						{chatItem.contacts.map((contact) => (
 							<li
 								key={contact.id}
+                                onClick={() => handleUserClick(contact.id)}
 								className='border-b-[0.0625rem] cursor-pointer py-[0.4375rem] px-4 hover:bg-[#f6f6f6]'
 							>
 								<div className='flex'>

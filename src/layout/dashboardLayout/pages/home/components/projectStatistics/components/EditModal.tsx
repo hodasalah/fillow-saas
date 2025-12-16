@@ -3,7 +3,7 @@ import { EditModalProps } from './types';
 const EditModal = ({data, onSave, onClose, onChange}:EditModalProps) => {
   return (
 		<div className='fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-[1003]'>
-			<div className='bg-white p-6 rounded-lg space-y-4 w-[400px]'>
+			<div className='card-dynamic-bg p-6 rounded-lg space-y-4 w-[400px]'>
 				<h3 className='text-lg font-semibold'>Edit Data</h3>
 				<div>
 					<label className='block text-sm font-medium'>

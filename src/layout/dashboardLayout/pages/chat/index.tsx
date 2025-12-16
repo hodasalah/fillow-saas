@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useAppSelector } from '../../../../hooks/hooks';
 import {
-	Chat,
-	Message,
-	getUserChats,
-	sendMessage,
-	subscribeToMessages,
+    Chat,
+    Message,
+    getUserChats,
+    sendMessage,
+    subscribeToMessages,
 } from '../../../../services/firebase/chats';
 import ChatList from './components/ChatList';
 import ChatWindow from './components/ChatWindow';
@@ -31,6 +31,15 @@ const ChatPage: React.FC = () => {
 			loadChats();
 		}
 	}, [currentUser]);
+
+    useEffect(() => {
+        // @ts-ignore
+        import('../../../../utils/seeder').then(({ seedDatabase }) => {
+            // @ts-ignore
+            window.seed = seedDatabase;
+            console.log('Seeder ready in ChatPage: window.seed()');
+        });
+    }, []);
 
 	// Subscribe to messages when a chat is selected
 	useEffect(() => {

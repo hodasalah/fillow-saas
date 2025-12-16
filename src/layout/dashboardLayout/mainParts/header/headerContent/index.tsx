@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router';
 import ProfileDropdown from '../../../../../components/profileDropdown/ProfileDropdown';
 import { useAppDispatch, useAppSelector } from '../../../../../hooks/hooks';
+import { Alert, subscribeToAlerts } from '../../../../../services/firebase/alerts';
 import { toggleDarkMode } from '../../../../../store/slices/themeSlice';
 import { items } from './constants';
 
@@ -15,8 +16,18 @@ const HeaderContent = ({ setShowSlider }: HeaderContentProps) => {
 	const dispatch = useAppDispatch();
 	const mode = useAppSelector((state) => state.sidebar.mode);
 	const isMobileView = useAppSelector((state) => state.sidebar.isMobileView);
+    const currentUser = useAppSelector((state) => state.auth.currentUser);
 	const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
 	const dropdownRefs = useRef<Record<string, HTMLLIElement | null>>({});
+    const [alerts, setAlerts] = useState<Alert[]>([]);
+
+    useEffect(() => {
+        if (!currentUser) return;
+        const unsubscribe = subscribeToAlerts(currentUser.uid, (data) => {
+            setAlerts(data);
+        });
+        return () => unsubscribe();
+    }, [currentUser]);
 
 	useEffect(() => {
 		setActiveDropdown(null);
@@ -75,6 +86,13 @@ const HeaderContent = ({ setShowSlider }: HeaderContentProps) => {
 				<div className='nav-links flex items-center px-2 sm:px-5'>
 					<ul className='header-right w-full flex md:items-center justify-end'>
 						{items.map((item) => {
+                            // Dynamic Badge override
+                            let dynamicNum = item.num;
+                            if (item.action === 'notifications') {
+                                // dynamicNum = alerts.filter(a => !a.read).length; 
+                                dynamicNum = alerts.length;
+                            }
+
 							return item.icon === faSearch ? (
 								<li
 									key={item.action}
@@ -103,11 +121,11 @@ const HeaderContent = ({ setShowSlider }: HeaderContentProps) => {
 								>
 									<div className='relative p-[0.625rem] sm:p-[0.9375rem] rounded-[.625rem]'>
 										<FontAwesomeIcon icon={item.icon} />
-										{item.num && (
+										{dynamicNum !== undefined && dynamicNum > 0 && (
 											<span
 												className={`absolute text-white ${item.bg} text-[0.675rem] font-medium me-2 w-[1.2rem] h-[1.2rem] leading-[1rem] text-center p-[.1rem] rounded-full sm:top-[8px] sm:right-[-1px] top-0 right-[-0.625rem]`}
 											>
-												{item.num}
+												{dynamicNum}
 											</span>
 										)}
 									</div>

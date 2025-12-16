@@ -2,6 +2,7 @@ import { lazy, Suspense } from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 import App from '../App';
 import { NotFound } from '../components/errorPages';
+import PrivateRoute from '../components/privateRoute';
 import { Profile, Projects } from '../layout/dashboardLayout/pages';
 import HomeRedirect from '../layout/publicLayout/HomeRedirect';
 

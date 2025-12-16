@@ -19,7 +19,7 @@ const Chatbox: React.FC<ChatboxProps> = ({ showSlider, setShowSlider }) => {
 				onClick={onClose}
 			/>
 			<div className={`chatbox ${showSlider ? 'active' : ''}`}>
-				<div className='chatbox-content'>
+				<div className='chatbox-content h-full'>
 					<ChatboxContent />
 				</div>
 			</div>

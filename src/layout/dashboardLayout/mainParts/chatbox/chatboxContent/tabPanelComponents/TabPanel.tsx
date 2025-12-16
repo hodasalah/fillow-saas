@@ -6,6 +6,7 @@ const TabPanel = ({ children, id, activeTab, index }: { children: ReactNode, id:
 		id={`panel-${id}`}
 		aria-labelledby={`tab-${id}`}
 		hidden={activeTab !== index}
+        className='h-full'
 	>
 		{children}
 	</div>

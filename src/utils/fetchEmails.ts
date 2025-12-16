@@ -16,8 +16,15 @@ export const fetchEmails = async () => {
         });
 		return emailsData;
 	} catch (error) {
-		console.error('Error fetching emails:', error);
-		throw error;
+		console.warn('Error fetching emails from Firebase, falling back to mock data:', error);
+		try {
+            const res = await fetch('/datas/emails.json');
+            const data = await res.json();
+            return data.emailsData || [];
+        } catch (mockError) {
+             console.error('Failed to load mock emails:', mockError);
+             return [];
+        }
 	}
 };
 

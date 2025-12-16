@@ -52,7 +52,7 @@ const RecentEmails = ({ emails: initialEmails }: RecentEmailsProps) => {
 
 	return (
 		<div className='w-full shadow-custom-shadow'>
-			<div className='bg-white rounded-lg shadow-sm'>
+			<div className='card-dynamic-bg rounded-lg shadow-sm'>
 				<div className='py-[1.875rem] pb-0'>
 					{/* header */}
 					<div className='flex justify-between items-center mb-4 px-[1.875rem] pt-[1.5rem]'>

@@ -64,7 +64,7 @@ const EditProjectForm: React.FC<EditProjectFormProps> = ({
 
 	return (
 		<div className='fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50'>
-			<div className='bg-white p-6 rounded-lg shadow-lg max-w-md'>
+			<div className='card-dynamic-bg p-6 rounded-lg shadow-lg max-w-md'>
 				<h3 className='text-lg font-semibold mb-4'>Edit Project</h3>
 				<form
 					onSubmit={handleSubmit}

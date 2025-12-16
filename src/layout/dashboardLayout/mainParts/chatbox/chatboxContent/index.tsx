@@ -1,15 +1,15 @@
 import React from 'react';
-import NavTabs, { NavList } from './NavTabs'
-import TabPanel from './tabPanelComponents/TabPanel'
-import NotesTabPanel from './tabPanelComponents/NotesTabPanel';
+import NavTabs, { NavList } from './NavTabs';
+import TabPanel from './tabPanelComponents/TabPanel';
 
 const ChatboxContent = () => {
   const [activeTab, setActiveTab] = React.useState(0);
   return (
-    <div>
+    <div className='h-full flex flex-col'>
       {/* header nav tabs */}
       <NavTabs activeTab={activeTab} setActiveTab={setActiveTab} />
       {/* chatbox content */}
+      <div className='flex-1 overflow-hidden'> 
       {
 	NavList.map((item, index) => (
 		<TabPanel
@@ -22,8 +22,7 @@ const ChatboxContent = () => {
 		</TabPanel>
     ))
   }
-
-      
+      </div>
     </div>
   )
 }

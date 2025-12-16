@@ -4,6 +4,7 @@ import { auth } from '../../firebase';
 import { useAppDispatch } from '../../hooks/hooks';
 import { setUser } from '../../store/slices/authSlice';
 import { setLoading } from '../../store/slices/loadingSlice';
+import { fetchUsers } from '../../utils/fetchUsers';
 
 interface AuthListenerProps {
 	children: React.ReactNode;
@@ -14,7 +15,7 @@ const AuthListener = ({ children }: AuthListenerProps) => {
 
 	useEffect(() => {
 		dispatch(setLoading(true));
-		const unsubscribe = onAuthStateChanged(auth, (user) => {
+		const unsubscribe = onAuthStateChanged(auth, async (user) => {
 			if (user) {
 				dispatch(
 					setUser({
@@ -24,8 +25,17 @@ const AuthListener = ({ children }: AuthListenerProps) => {
 						photoURL: user.photoURL,
 					}),
 				);
+                dispatch(fetchUsers());
 			} else {
 				dispatch(setUser(null));
+                // Allow explicit logout if needed, but for now we auto-signin for DB access if not logged in
+                // Trying to sign in anonymously
+                try {
+                    const { signInAnonymously } = await import('firebase/auth');
+                    await signInAnonymously(auth);
+                } catch (error) {
+                    console.error("Anonymous auth failed", error);
+                }
 			}
 			dispatch(setLoading(false));
 		});

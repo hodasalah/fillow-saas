@@ -18,7 +18,21 @@ export const fetchProjects = async () => {
         });
 		return projectsData;
 	} catch (error) {
-		console.error('Error fetching projects:', error);
-		throw error;
+		console.warn('Error fetching projects from Firebase, falling back to mock data:', error);
+		try {
+            const res = await fetch('/datas/projects.json');
+            const data = await res.json();
+            // Need to map strings to Dates for Project type compatibility
+            return (data.projects || []).map((p: any) => ({
+                ...p,
+                id: 'mock_' + (p.id || Math.random().toString(36).substr(2, 9)),
+                startDate: new Date(p.startDate),
+                endDate: new Date(p.endDate),
+                deadline: new Date(p.deadline),
+            }));
+        } catch (mockError) {
+             console.error('Failed to load mock projects:', mockError);
+             return [];
+        }
 	}
 };

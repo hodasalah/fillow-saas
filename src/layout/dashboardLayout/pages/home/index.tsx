@@ -2,16 +2,16 @@ import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { useAppSelector } from '../../../../hooks/hooks';
 import type { Project } from '../../../../types';
 import type {
-	DashboardData,
-	Email,
-	Message,
-	Statistics,
+    DashboardData,
+    Email,
+    Message,
+    Statistics,
 } from '../../../../types/dashboard';
 import {
-	fetchEmails,
-	fetchMessages,
-	fetchProjects,
-	fetchStatistics,
+    fetchEmails,
+    fetchMessages,
+    fetchProjects,
+    fetchStatistics,
 } from '../../../../utils/fetchData';
 import CompleteProject from './components/completeProject';
 import DognutArea from './components/dognutArea';

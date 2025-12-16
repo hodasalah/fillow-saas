@@ -35,14 +35,6 @@ const Messages = ({ messages: initialMessages }: MessagesProps) => {
 		}
 	};
 
-	const handleMessageRead = (id: string) => {
-		setMessages((prevMessages) =>
-			prevMessages.map((message) =>
-				message.id === id ? { ...message, isRead: true } : message,
-			),
-		);
-	};
-
 	useEffect(() => {
 		const fetchData = async () => {
 			dispatch(setLoading(true));
@@ -55,7 +47,7 @@ const Messages = ({ messages: initialMessages }: MessagesProps) => {
 
 	return (
 		<div className='w-full shadow-custom-shadow mb-10'>
-			<div className='bg-white rounded-lg shadow-sm'>
+			<div className='card-dynamic-bg rounded-lg shadow-sm'>
 				<div className='py-[1.875rem] pb-0 w-full'>
 					{/* header */}
 					<div className='flex w-full justify-between gap-8 items-center mb-4 px-[1.875rem] pt-[1.5rem]'>
@@ -90,7 +82,6 @@ const Messages = ({ messages: initialMessages }: MessagesProps) => {
 								<MessageItem
 									key={message.id}
 									message={message}
-									onRead={handleMessageRead}
 								/>
 							))}
 					</div>

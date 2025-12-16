@@ -16,7 +16,7 @@ const options: ApexOptions = {
 			startAngle: -130,
 			endAngle: 130,
 			track: {
-				background: '#F1EAFF',
+				background: 'var(--border)', // Dynamic track color
 				strokeWidth: '100%',
 				margin: 5,
 			},
@@ -24,7 +24,7 @@ const options: ApexOptions = {
 			hollow: {
 				margin: 30,
 				size: '45%',
-				background: '#F1EAFF',
+				background: 'transparent', // Transparent to show card bg
 				image: undefined,
 				imageOffsetX: 0,
 				imageOffsetY: 0,
@@ -38,7 +38,7 @@ const options: ApexOptions = {
 				value: {
 					offsetY: 5,
 					fontSize: '22px',
-					color: '#886CC0',
+					color: 'var(--text-dark)', // Dynamic text color
 					fontWeight: 700,
 				},
 			},
@@ -59,21 +59,10 @@ const options: ApexOptions = {
 			top: -10,
 		},
 	},
-	/* stroke: {
-          dashArray: 4,
-		  colors:'#6EC51E'
-        }, */
 	fill: {
-		type: 'gradient',
-		colors: ['#FF63E6'],
-		gradient: {
-			shade: 'white',
-			shadeIntensity: 0.15,
-			inverseColors: false,
-			opacityFrom: 1,
-			opacityTo: 1,
-			stops: [0, 50, 65, 91],
-		},
+		type: 'solid', 
+		colors: ['rgb(214, 83, 193)'], // Requested color
+        opacity: 1
 	},
 	labels: ['Average Results'],
 };

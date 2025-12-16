@@ -152,7 +152,9 @@ const Barchart = ({ showOngoing, showUnfinished ,data}: { showOngoing: boolean, 
 		},
 	];
 
-	// Chart options
+	// Determine colors based on dark mode - usually handled via CSS vars or state, 
+    // but explicit hex/rgb requested.
+    
 	const options: ApexOptions = {
 		chart: {
 			type: 'bar',
@@ -160,6 +162,7 @@ const Barchart = ({ showOngoing, showUnfinished ,data}: { showOngoing: boolean, 
 			toolbar: {
 				show: false,
 			},
+            foreColor: 'var(--text-dark)', 
 		},
 		plotOptions: {
 			bar: {
@@ -181,27 +184,40 @@ const Barchart = ({ showOngoing, showUnfinished ,data}: { showOngoing: boolean, 
 				'Friday',
 				'Saturday',
 			],
+            labels: {
+                style: {
+                    colors: 'var(--text-dark)', 
+                }
+            }
 		},
 		yaxis: {
 			title: {
 				text: 'Projects',
+                style: { color: 'var(--text-dark)' }
 			},
 			labels: {
-				formatter: (value: number) => value.toFixed(0), // No decimals on the Y-axis
+				formatter: (value: number) => value.toFixed(0),
+                style: { colors: 'var(--text-dark)' }
 			},
 		},
 		legend: {
 			position: 'top',
 			horizontalAlign: 'center',
+            labels: { colors: 'var(--text-dark)' }
 		},
-		colors: ['#FFA500', '#FF69B4'], // Colors for ongoing and unfinished datasets
+        // User requested: rgb(214, 83, 193) which is roughly #D653C1
+		colors: ['#ffffff', 'rgb(214, 83, 193)'], 
 		tooltip: {
 			shared: true,
 			intersect: false,
+            theme: 'dark', 
 			y: {
-				formatter: (value: number) => `${value.toFixed(0)} Projects`, // Tooltip formatting
+				formatter: (value: number) => `${value.toFixed(0)} Projects`,
 			},
 		},
+        grid: {
+            borderColor: 'var(--border)',
+        }
 	};
 
 	return (

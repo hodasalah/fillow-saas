@@ -69,7 +69,7 @@ const options = {
 			},
 		},
 	},
-	colors: ['#ECECEC', '#886CC0', '#6128d180'],
+	colors: ['#ECECEC', 'rgb(214, 83, 193)', 'rgba(214, 83, 193, 0.5)'],
 	xaxis: {
 		show: false,
 		axisBorder: {

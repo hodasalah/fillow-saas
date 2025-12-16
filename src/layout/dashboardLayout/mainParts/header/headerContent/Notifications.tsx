@@ -1,7 +1,7 @@
 import { faBell } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useState } from 'react';
-import Card from '../../../../../components/Card';
+import Card from '../../../../../components/card';
 import { useAppSelector } from '../../../../../hooks/hooks';
 import { Alert, subscribeToAlerts } from '../../../../../services/firebase/alerts';
 

@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
-import Card from '../../../../../../components/Card';
-import Modal from '../../../../../../components/Modal';
+import Card from '../../../../../../components/card';
+import Modal from '../../../../../../components/modal';
 import { Statistics } from '../../../../../../types/dashboard';
 import { generateChartData } from '../../../../../../utils/helpers/generateChartData';
 import ChartSection from './components/ChartSection';

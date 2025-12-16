@@ -1,6 +1,6 @@
 import { memo } from 'react';
-import Card from '../../../../../../components/Card';
 import { PrimaryOutlineBtn } from '../../../../../../components/buttons';
+import Card from '../../../../../../components/card';
 import { Project } from '../../../../../../types';
 import ProjectItem from './ProjectItem';
 

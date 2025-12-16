@@ -71,8 +71,8 @@
 			"tags": [
 				{
 					"name": "Mobile",
-					"color": "#006E91",
-					"background": "#61CFF1"
+					"color": "#333",
+					"background": "#f680c6"
 				}
 			],
 			"image": "/assets/Solutions.png",
@@ -116,8 +116,8 @@
 			"tags": [
 				{
 					"name": "E-commerce",
-					"color": "#006E91",
-					"background": "#61CFF1"
+					"color": "#333",
+					"background": "#f6d989"
 				}
 			],
 			"image": "/assets/Solutions.png",

@@ -1,7 +1,26 @@
+// Helper to convert Firestore Timestamp to Date
+const toDate = (date: any): Date => {
+	// If it's already a Date, return it
+	if (date instanceof Date) {
+		return date;
+	}
+	// If it's a Firestore Timestamp, convert it
+	if (date && typeof date.toDate === 'function') {
+		return date.toDate();
+	}
+	// If it's a number (timestamp in ms), convert it
+	if (typeof date === 'number') {
+		return new Date(date);
+	}
+	// Fallback to current date
+	return new Date();
+};
+
 // Format a date to a relative time string (e.g., "2 hours ago", "just now", etc.)
-export const formatRelativeTime = (date: Date): string => {
+export const formatRelativeTime = (date: Date | any): string => {
+	const dateObj = toDate(date);
 	const now = new Date();
-	const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
+	const diffInSeconds = Math.floor((now.getTime() - dateObj.getTime()) / 1000);
 
 	if (diffInSeconds < 60) {
 		return 'just now';
@@ -23,13 +42,14 @@ export const formatRelativeTime = (date: Date): string => {
 	}
 
 	// For older messages, return the actual date
-	return date.toLocaleDateString();
+	return dateObj.toLocaleDateString();
 };
 
 // Format a timestamp for chat list and messages
-export const formatTimestamp = (date: Date): string => {
+export const formatTimestamp = (date: Date | any): string => {
+	const dateObj = toDate(date);
 	const now = new Date();
-	const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
+	const diffInSeconds = Math.floor((now.getTime() - dateObj.getTime()) / 1000);
 
 	// Less than a minute ago
 	if (diffInSeconds < 60) {
@@ -49,15 +69,15 @@ export const formatTimestamp = (date: Date): string => {
 	}
 
 	// If it's this year, show date without year
-	if (now.getFullYear() === date.getFullYear()) {
-		return date.toLocaleDateString(undefined, {
+	if (now.getFullYear() === dateObj.getFullYear()) {
+		return dateObj.toLocaleDateString(undefined, {
 			month: 'short',
 			day: 'numeric',
 		});
 	}
 
 	// If it's a different year, include the year
-	return date.toLocaleDateString(undefined, {
+	return dateObj.toLocaleDateString(undefined, {
 		year: 'numeric',
 		month: 'short',
 		day: 'numeric',
@@ -65,23 +85,24 @@ export const formatTimestamp = (date: Date): string => {
 };
 
 // Format a date for chat messages
-export const formatMessageTime = (date: Date): string => {
+export const formatMessageTime = (date: Date | any): string => {
+	const dateObj = toDate(date);
 	const now = new Date();
-	const isToday = now.toDateString() === date.toDateString();
+	const isToday = now.toDateString() === dateObj.toDateString();
 
 	if (isToday) {
-		return date.toLocaleTimeString([], {
+		return dateObj.toLocaleTimeString([], {
 			hour: '2-digit',
 			minute: '2-digit',
 		});
 	}
 
-	const isThisYear = now.getFullYear() === date.getFullYear();
+	const isThisYear = now.getFullYear() === dateObj.getFullYear();
 	if (isThisYear) {
-		return date.toLocaleDateString([], { month: 'short', day: 'numeric' });
+		return dateObj.toLocaleDateString([], { month: 'short', day: 'numeric' });
 	}
 
-	return date.toLocaleDateString([], {
+	return dateObj.toLocaleDateString([], {
 		year: 'numeric',
 		month: 'short',
 		day: 'numeric',
@@ -89,8 +110,9 @@ export const formatMessageTime = (date: Date): string => {
 };
 
 // Format a date to show full date and time
-export const formatDateTime = (date: Date): string => {
-	return date.toLocaleString([], {
+export const formatDateTime = (date: Date | any): string => {
+	const dateObj = toDate(date);
+	return dateObj.toLocaleString([], {
 		year: 'numeric',
 		month: 'short',
 		day: 'numeric',
@@ -100,14 +122,16 @@ export const formatDateTime = (date: Date): string => {
 };
 
 // Check if a date is today
-export const isToday = (date: Date): boolean => {
+export const isToday = (date: Date | any): boolean => {
+	const dateObj = toDate(date);
 	const today = new Date();
-	return date.toDateString() === today.toDateString();
+	return dateObj.toDateString() === today.toDateString();
 };
 
 // Check if a date is within the last 7 days
-export const isWithinLastWeek = (date: Date): boolean => {
+export const isWithinLastWeek = (date: Date | any): boolean => {
+	const dateObj = toDate(date);
 	const now = new Date();
 	const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
-	return date > weekAgo;
+	return dateObj > weekAgo;
 };

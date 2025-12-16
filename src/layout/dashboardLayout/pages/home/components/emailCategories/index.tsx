@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { PrimaryOutlineBtn } from '../../../../../../components/buttons';
-import Card from '../../../../../../components/Card';
+import Card from '../../../../../../components/card';
 import EmailChart from '../../../../../../components/chart/EmailChart';
 import BlueRectDot from '../../../../../../components/svgs/rectDots/BlueRectDot';
 import GreenRectDot from '../../../../../../components/svgs/rectDots/GreenRectDot';

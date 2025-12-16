@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Card from '../../../../../components/Card';
+import Card from '../../../../../components/card';
 import { relatedApps } from './constants';
 
 const RelatedApps = () => {

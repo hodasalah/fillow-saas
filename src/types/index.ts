@@ -43,6 +43,7 @@ export interface Project {
 	startDate: Date;
 	endDate: Date;
 	deadline: Date;
+	tags: { name: string; color: string; background: string }[];
 }
 
 // Team

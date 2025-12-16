@@ -10,7 +10,7 @@ interface CarouselButtonProps {
 const CarouselButton = ({ onClick, icon }: CarouselButtonProps) => (
 	<button
 		onClick={onClick}
-		className='w-[2.3125rem] h-[2.3125rem] leading-[2.3125rem] rounded-full text-center shadow bg-[#d7d7d7] hover:bg-slate-600 text-white'
+		className='w-[2.3125rem] h-[2.3125rem] leading-[2.3125rem] rounded-full text-center shadow dark:bg-secondary bg-[#d7d7d7] hover:bg-slate-600 text-white'
 	>
 		<FontAwesomeIcon icon={icon} />
 	</button>

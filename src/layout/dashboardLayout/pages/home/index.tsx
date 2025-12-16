@@ -149,6 +149,16 @@ const DashboardHome = () => {
 		loadDashboardData();
 	}, [loadDashboardData]);
 
+	// Make seeder available globally
+	useEffect(() => {
+		// @ts-ignore
+		import('../../../../utils/seeder').then(({ seedDatabase }) => {
+			// @ts-ignore
+			window.seed = seedDatabase;
+			console.log('✅ Seeder ready! Run window.seed() in console to populate Firebase');
+		});
+	}, []);
+
 	const containerClassName = useMemo(
 		() =>
 			`

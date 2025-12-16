@@ -1,6 +1,6 @@
 import { FC, memo } from 'react';
 import DropdownDelEditBtn from '../../../../../../components/dropdownDelEditBtn';
-import ProgressBar from '../../../../../../components/ProgressBar';
+import ProgressBar from '../../../../../../components/progressBar';
 import { Project } from '../../../../../../types';
 import ProjectTag from './ProjectTag';
 
@@ -21,9 +21,9 @@ interface ProjectItemProps {
 
 const ProjectItem: FC<ProjectItemProps> = memo(({ project }) => {
 	const progress = Math.round(
-		((new Date().getTime() - new Date(project.createdAt).getTime()) /
+		((new Date().getTime() - new Date(project.startDate).getTime()) /
 			(new Date(project.deadline).getTime() -
-				new Date(project.createdAt).getTime())) *
+				new Date(project.startDate).getTime())) *
 			100,
 	);
 

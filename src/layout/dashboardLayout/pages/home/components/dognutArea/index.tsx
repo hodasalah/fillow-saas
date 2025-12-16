@@ -1,4 +1,4 @@
-import Card from '../../../../../../components/Card';
+import Card from '../../../../../../components/card';
 import Carousel from '../../../../../../components/carousel/Carousel';
 import Radial from '../../../../../../components/chart/Radial';
 
@@ -29,10 +29,10 @@ const DognutArea = () => {
 										className='min-w-full p-4 pl-4'
 										key={s.title}
 									>
-										<h4 className='max-w-full leading-8 text-[1.5rem] font-bold mb-4 text-black text-wrap'>
+										<h4 className='max-w-full leading-8 text-[1.5rem] font-bold mb-4 text-black dark:text-secondary  text-wrap'>
 											{s.title}
 										</h4>
-										<p className='max-w-full leading-[1.8] text-black text-[0.875rem] text-wrap'>
+										<p className='max-w-full leading-[1.8] text-black dark:text-white text-[0.875rem] text-wrap'>
 											{s.text}
 										</p>
 									</div>
@@ -45,7 +45,7 @@ const DognutArea = () => {
 						<Radial />
 						<span className='text-center block text-lg font-bold'>
 							On Progress{' '}
-							<small className='text-[#20903f]'>70%</small>
+							<small className='text-[#20903f] dark:text-secondary'>70%</small>
 						</span>
 					</div>
 				</div>

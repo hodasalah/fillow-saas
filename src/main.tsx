@@ -11,6 +11,16 @@ import './utils/seedProfile'; // Enable window.seedMyProfile()
 // @ts-ignore
 window.__REDUX_STORE__ = store;
 
+// Expose seeding utilities in development mode
+if (import.meta.env.DEV) {
+	(window as any).clearAllData = clearAllData;
+	(window as any).seedAllData = seedAllData;
+	console.log('🛠️  Dev utilities available:');
+	console.log('   window.clearAllData() - Clear all Firebase data');
+	console.log('   window.seedAllData() - Seed database with Faker data');
+	console.log('   window.seedMyProfile() - Seed current user profile');
+}
+
 createRoot(document.getElementById('root')!).render(
 	<StrictMode>
 		<Provider store={store}>

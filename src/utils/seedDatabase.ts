@@ -224,6 +224,51 @@ const generateAlert = (userId: string): Omit<Alert, 'id'> => {
   };
 };
 
+
+// Generate Project
+const generateProject = (ownerId: string, memberIds: string[]): any => {
+    const startDate = faker.date.past();
+    const endDate = faker.date.future();
+    const deadline = faker.date.future();
+    
+    return {
+        name: faker.commerce.productName() + ' Project',
+        description: faker.commerce.productDescription(),
+        ownerId,
+        members: faker.helpers.arrayElements(memberIds, randomInt(2, 5)),
+        status: randomItem(['active', 'completed', 'pending']),
+        client: {
+            name: faker.company.name(),
+            image: faker.image.avatar()
+        },
+        personInCharge: {
+            name: faker.person.fullName(),
+            image: faker.image.avatar()
+        },
+        startDate: startDate,
+        endDate: endDate,
+        deadline: deadline,
+        tags: Array.from({ length: randomInt(1, 4) }, () => ({
+            name: faker.hacker.adjective(),
+            color: faker.color.rgb(),
+            background: faker.color.rgb({ prefix: '#', casing: 'lower' }) + '20'
+        })),
+        createdAt: serverTimestamp(),
+        image: `https://picsum.photos/seed/${faker.string.uuid()}/600/400` // For profile gallery
+    };
+};
+
+// Generate Story
+const generateStory = (userId: string, userName: string) => {
+    return {
+        userId,
+        imageUrl: `https://picsum.photos/seed/${faker.string.uuid()}/400/600`,
+        title: faker.lorem.words(3),
+        authorName: userName,
+        createdAt: serverTimestamp()
+    };
+};
+
 /**
  * Seed all database collections with realistic data
  */
@@ -249,62 +294,118 @@ export const seedAllData = async (): Promise<void> => {
     
     // Step 2: Create User Profiles
     console.log('📋 Creating user profiles...');
-    const profileBatch = writeBatch(db);
-    
-    for (const user of users) {
-      const profile = generateUserProfile(user);
-      const profileRef = doc(db, 'userProfiles', user.id);
-      profileBatch.set(profileRef, {
-        ...profile,
-        createdAt: serverTimestamp(),
-        updatedAt: serverTimestamp()
-      });
+    try {
+      const profileBatch = writeBatch(db);
+      
+      for (const user of users) {
+        const profile = generateUserProfile(user);
+        const profileRef = doc(db, 'userProfiles', user.id);
+        profileBatch.set(profileRef, {
+          ...profile,
+          createdAt: serverTimestamp(),
+          updatedAt: serverTimestamp()
+        });
+      }
+      
+      await profileBatch.commit();
+      console.log(`✅ Created ${users.length} user profiles\n`);
+    } catch (e) {
+      console.warn('⚠️ Failed to create user profiles (permission error?):', e);
     }
-    
-    await profileBatch.commit();
-    console.log(`✅ Created ${users.length} user profiles\n`);
     
     // Step 3: Create Conversations
     console.log('💬 Creating conversations...');
     let conversationCount = 0;
     
-    for (let i = 0; i < users.length; i++) {
-      for (let j = 0; j < CONFIG.CONVERSATIONS_PER_USER && i + j + 1 < users.length; j++) {
-        await generateConversation(users[i].id, users[i + j + 1].id);
-        conversationCount++;
+    try {
+      for (let i = 0; i < users.length; i++) {
+        for (let j = 0; j < CONFIG.CONVERSATIONS_PER_USER && i + j + 1 < users.length; j++) {
+          await generateConversation(users[i].id, users[i + j + 1].id);
+          conversationCount++;
+        }
       }
+      console.log(`✅ Created ${conversationCount} conversations with messages\n`);
+    } catch (e) {
+      console.warn('⚠️ Failed to create conversations:', e);
     }
-    
-    console.log(`✅ Created ${conversationCount} conversations with messages\n`);
     
     // Step 4: Create Alerts
     console.log('🔔 Creating alerts...');
-    const alertBatch = writeBatch(db);
     let alertCount = 0;
     
-    for (const user of users) {
-      const alertsToCreate = randomInt(2, CONFIG.ALERTS_PER_USER);
-      for (let i = 0; i < alertsToCreate; i++) {
-        const alert = generateAlert(user.id);
-        const alertRef = doc(collection(db, 'alerts'));
-        alertBatch.set(alertRef, {
-          ...alert,
-          createdAt: serverTimestamp()
-        });
-        alertCount++;
+    try {
+      const alertBatch = writeBatch(db);
+      
+      for (const user of users) {
+        const alertsToCreate = randomInt(2, CONFIG.ALERTS_PER_USER);
+        for (let i = 0; i < alertsToCreate; i++) {
+          const alert = generateAlert(user.id);
+          const alertRef = doc(collection(db, 'alerts'));
+          alertBatch.set(alertRef, {
+            ...alert,
+            createdAt: serverTimestamp()
+          });
+          alertCount++;
+        }
       }
+      
+      await alertBatch.commit();
+      console.log(`✅ Created ${alertCount} alerts\n`);
+    } catch (e) {
+      console.warn('⚠️ Failed to create alerts:', e);
+    }
+
+    // Step 5: Create Projects
+    console.log('🚀 Creating projects...');
+    let projectCount = 0;
+    try {
+        const projectBatch = writeBatch(db);
+        const allUserIds = users.map(u => u.id);
+        
+        for (const user of users) {
+            const projectsToCreate = randomInt(1, 3);
+            for(let p=0; p<projectsToCreate; p++) {
+                const project = generateProject(user.id, allUserIds);
+                const projRef = doc(collection(db, 'projects'));
+                projectBatch.set(projRef, project);
+                projectCount++;
+            }
+        }
+        await projectBatch.commit();
+        console.log(`✅ Created ${projectCount} projects\n`);
+    } catch (e) {
+        console.warn('⚠️ Failed to create projects:', e);
+    }
+
+    // Step 6: Create Stories
+    console.log('📸 Creating stories...');
+    let storyCount = 0;
+    try {
+        const storyBatch = writeBatch(db);
+        for (const user of users) {
+            const storiesToCreate = randomInt(0, 2);
+            for (let s=0; s<storiesToCreate; s++) {
+                const story = generateStory(user.id, user.displayName);
+                const storyRef = doc(collection(db, 'stories'));
+                storyBatch.set(storyRef, story);
+                storyCount++;
+            }
+        }
+        await storyBatch.commit();
+        console.log(`✅ Created ${storyCount} stories\n`);
+    } catch (e) {
+        console.warn('⚠️ Failed to create stories:', e);
     }
     
-    await alertBatch.commit();
-    console.log(`✅ Created ${alertCount} alerts\n`);
-    
     const duration = ((Date.now() - startTime) / 1000).toFixed(2);
-    console.log(`\n🎉 Database seeded successfully in ${duration}s!`);
+    console.log(`\n🎉 Database seeding finished in ${duration}s! (Check logs for any partial failures)`);
     console.log(`\n📊 Summary:`);
     console.log(`   - ${users.length} users`);
     console.log(`   - ${users.length} profiles`);
     console.log(`   - ${conversationCount} conversations`);
     console.log(`   - ${alertCount} alerts`);
+    console.log(`   - ${projectCount} projects`);
+    console.log(`   - ${storyCount} stories`);
     
   } catch (error) {
     console.error('❌ Error seeding database:', error);

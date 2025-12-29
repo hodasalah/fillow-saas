@@ -15,6 +15,13 @@ const AuthListener = ({ children }: AuthListenerProps) => {
 
 	useEffect(() => {
 		dispatch(setLoading(true));
+        
+        if (!auth) {
+            console.error("AuthListener: Firebase auth object is missing!");
+            dispatch(setLoading(false));
+            return;
+        }
+
 		const unsubscribe = onAuthStateChanged(auth, async (user) => {
 			if (user) {
 				dispatch(

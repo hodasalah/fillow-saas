@@ -1,8 +1,10 @@
 import {
+    collection,
     doc,
     getDoc,
     serverTimestamp,
-    setDoc
+    setDoc,
+    writeBatch
 } from 'firebase/firestore';
 import { db } from '../../firebase';
 
@@ -341,6 +343,69 @@ export const seedUserProfile = async (
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp()
     });
+
+    // Seed Projects Collection (for Projects Gallery)
+    try {
+        const projectsBatch = writeBatch(db);
+        
+        // Use the same projects we defined for the profile
+        for (const proj of profileData.projects) {
+            const projectRef = doc(collection(db, 'projects'));
+            // Map profile project structure to global projects collection structure
+            projectsBatch.set(projectRef, {
+                name: proj.name,
+                description: proj.description,
+                ownerId: userId,
+                status: proj.status, // "completed", "in-progress", "planned"
+                client: {
+                    name: "Acme Corp",
+                    image: `https://ui-avatars.com/api/?name=Acme+Corp&background=random`
+                },
+                personInCharge: {
+                     name: userName,
+                     image: userPhoto || ''
+                },
+                // Fake dates based on status
+                startDate: new Date(Date.now() - 90 * 24 * 60 * 60 * 1000),
+                endDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+                deadline: new Date(Date.now() + 60 * 24 * 60 * 60 * 1000),
+                tags: proj.tags.map(t => ({ name: t, color: '#6851ff', background: '#e0e7ff' })),
+                image: proj.image,
+                createdAt: serverTimestamp()
+            });
+        }
+        await projectsBatch.commit();
+        console.log("✅ Seeded projects collection");
+    } catch (err) {
+        console.warn("Failed to seed projects collection:", err);
+    }
+
+    // Seed Stories Collection (for Featured Stories)
+    try {
+        const sBatch = writeBatch(db);
+        const storyImages = [
+            'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&h=600&fit=crop',
+            'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400&h=600&fit=crop',
+            'https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=400&h=600&fit=crop',
+            'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=400&h=600&fit=crop',
+            'https://images.unsplash.com/photo-1517487881594-2787fef5ebf7?w=400&h=600&fit=crop'
+        ];
+        
+        for (const img of storyImages) {
+             const sRef = doc(collection(db, 'stories'));
+             sBatch.set(sRef, {
+                 userId: userId,
+                 imageUrl: img,
+                 title: "My Story",
+                 authorName: userName,
+                 createdAt: serverTimestamp()
+             });
+        }
+        await sBatch.commit();
+        console.log("✅ Seeded stories collection");
+    } catch (err) {
+        console.warn("Failed to seed stories collection:", err);
+    }
 
     return {
       ...profileData,

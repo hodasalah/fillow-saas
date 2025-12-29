@@ -5,6 +5,8 @@ import { RouterProvider } from 'react-router-dom';
 import './index.css';
 import { router } from './routes/index.tsx';
 import { store } from './store/store.ts';
+import { clearAllData } from './utils/clearDatabase';
+import { seedAllData } from './utils/seedDatabase';
 import './utils/seedProfile'; // Enable window.seedMyProfile()
 
 // Make store available globally for utilities

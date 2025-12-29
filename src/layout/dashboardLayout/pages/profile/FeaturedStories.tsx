@@ -5,8 +5,15 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState } from 'react';
 
+interface Story {
+	id: string;
+	imageUrl: string;
+	title: string;
+	authorName: string;
+}
+
 interface FeaturedStoriesProps {
-	stories: string[];
+	stories: Story[];
 }
 
 const FeaturedStories: React.FC<FeaturedStoriesProps> = ({ stories }) => {
@@ -63,25 +70,23 @@ const FeaturedStories: React.FC<FeaturedStoriesProps> = ({ stories }) => {
 							>
 								{stories
 									.slice(slideIndex * 4, slideIndex * 4 + 4)
-									.map((img, index) => (
+									.map((story, index) => (
 										<div
-											key={index}
+											key={story.id || index}
 											className='relative group overflow-hidden rounded-xl aspect-square'
 										>
 											<img
-												src={img}
-												alt={`Story ${
-													slideIndex * 4 + index + 1
-												}`}
+												src={story.imageUrl}
+												alt={story.title || `Story ${slideIndex * 4 + index + 1}`}
 												className='w-full h-full object-cover transform group-hover:scale-105 transition-all duration-300'
 											/>
 											<div className='absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent' />
 											<div className='absolute bottom-0 left-0 p-4 text-white'>
 												<h3 className='font-semibold text-lg'>
-													Story Title
+													{story.title || 'Story Title'}
 												</h3>
 												<p className='text-sm'>
-													Author Name
+													{story.authorName || 'Author Name'}
 												</p>
 											</div>
 										</div>

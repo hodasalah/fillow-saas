@@ -18,6 +18,7 @@ export const fetchUsers = createAsyncThunk<
             return {
 			    uid: doc.id,
 			    ...data,
+                name: data.displayName || data.name || 'Unknown',
                 createdAt: convertTimestamp(data.createdAt),
                 last_login: convertTimestamp(data.last_login),
                 lastSeen: convertTimestamp(data.lastSeen),

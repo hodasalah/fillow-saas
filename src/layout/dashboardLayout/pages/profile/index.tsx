@@ -13,7 +13,7 @@ import TeamCard from './TeamCard';
 const Profile: React.FC = () => {
     const mode = useAppSelector((state) => state.sidebar.mode);
     const isMobileView = useAppSelector((state) => state.sidebar.isMobileView);
-    const [stories, setStories] = React.useState<string[]>([]);
+    const [stories, setStories] = React.useState<any[]>([]);
     const [projects, setProjects] = React.useState<any[]>([]);
 
     React.useEffect(() => {

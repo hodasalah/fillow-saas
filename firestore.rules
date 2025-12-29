@@ -7,6 +7,11 @@ service cloud.firestore {
       allow read, write: if true;
     }
     
+    // User Profile Data (Extended)
+    match /userProfiles/{userId} {
+      allow read, write: if true;
+    }
+    
     // Conversations and Messages
     match /conversations/{conversationId} {
       allow read, write: if true;

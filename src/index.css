@@ -47,6 +47,45 @@
 		/* Dark gray background for dark mode */
 		color: white;
 	}
+
+	/* Chat Enhancements */
+	.message-bubble-gradient {
+		background: linear-gradient(135deg, #886cc0 0%, #ff7eb3 100%);
+	}
+
+	.message-enter {
+		animation: messageSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+	}
+
+	@keyframes messageSlideIn {
+		from {
+			opacity: 0;
+			transform: translateY(10px) scale(0.98);
+		}
+
+		to {
+			opacity: 1;
+			transform: translateY(0) scale(1);
+		}
+	}
+
+	/* Custom Chat Scrollbar */
+	.chat-scroll::-webkit-scrollbar {
+		width: 6px;
+	}
+
+	.chat-scroll::-webkit-scrollbar-track {
+		background: transparent;
+	}
+
+	.chat-scroll::-webkit-scrollbar-thumb {
+		background-color: rgba(136, 108, 192, 0.2);
+		border-radius: 20px;
+	}
+
+	.chat-scroll:hover::-webkit-scrollbar-thumb {
+		background-color: rgba(136, 108, 192, 0.5);
+	}
 }
 
 
@@ -109,18 +148,21 @@
 }
 
 :root.dark {
-	--text-dark: #ffffff;
-	--text-gray: #e2e8f0;
+	--text-dark: #f3f4f6;
+	--text-gray: #9ca3af;
 	/* Lighter gray for readability on dark */
-	--body-bg: #353535;
+	--body-bg: #111827;
+	/* Premium Slate 900 */
 	/* Requested color */
-	--card: #444444;
+	--card: #1f2937;
+	/* Slate 800 */
 	/* Slightly lighter than body for contrast */
-	--sidebar-bg: #353535;
-	--nav-headbg: #353535;
-	--headerbg: #353535;
-	--border: #555555;
-	--bs-body-color: #ffffff;
+	--sidebar-bg: #111827;
+	--nav-headbg: #1f2937;
+	--headerbg: #111827;
+	--border: #374151;
+	/* Slate 700 */
+	--bs-body-color: #f3f4f6;
 }
 
 *,
@@ -134,7 +176,7 @@
 body {
 	margin: 0;
 	overflow-x: hidden;
-	height: 100%;
+	height: 100vh;
 	position: relative;
 	max-width: 100%;
 	font-size: 0.875rem;

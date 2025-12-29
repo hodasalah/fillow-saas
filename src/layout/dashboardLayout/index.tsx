@@ -26,41 +26,34 @@ export const DashboardLayout = () => {
 	}, [isDarkMode]);
 
 	return (
-		<div className={`min-h-screen`}>
-			<div
-				className={`main-wrapper flex ${
-					mode === 'wide' || !isMobileView
-						? 'flex-row'
-						: 'flex-col items-center'
-				} transition-all duration-300 ease-in-out`}
-			>
-				{/* nav-header here */}
+		<div className="h-screen overflow-hidden flex flex-col bg-[var(--body-bg)]">
+			{/* Main layout wrapper */}
+			<div className="flex flex-1 overflow-hidden">
+				{/* NavHeader - fixed positioned */}
 				<NavHeader />
 
-				{/* sidebar here */}
+				{/* Sidebar - fixed positioned */}
 				<Sidebar />
 
-                {/*
-                   Removed hardcoded inline bg colors (bg-gray-900 / bg-[#f8f7fa])
-                   to let index.css variables (--body-bg) control the background.
-                */}
-				<div
+				{/* Main content column */}
+				<div 
 					data-action='main-content'
-					className={`min-h-screen w-full transition-all duration-300 ease-in-out bg-[var(--body-bg)]`}
+					className="flex flex-col flex-1"
 				>
-					{/* start header here */}
+					{/* Header - fixed positioned */}
 					<Header setShowSlider={setShowSlider} />
 
-					{/* body-content here */}
-					<div className='container-fluid'>
-						<Outlet />
+					{/* Scrollable content area - ONLY this scrolls */}
+					<div className="flex-1 overflow-y-auto">
+						<div className="container-fluid">
+							<Outlet />
+						</div>
 					</div>
+
+					{/* Footer - always visible at bottom */}
+					<Footer />
 				</div>
 			</div>
-			{/* end body-content here */}
-
-			{/* footer here */}
-			<Footer />
 
 			{/* Chat Box */}
 			<Chatbox

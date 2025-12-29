@@ -1,5 +1,6 @@
-export * from './users';
 export * from './chats';
+export * from './profile';
+export * from './users';
 
 // Re-export Firebase instances
-export { db, auth } from '../../firebase'; 
+export { auth, db } from '../../firebase';

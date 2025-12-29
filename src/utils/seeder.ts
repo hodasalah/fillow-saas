@@ -179,3 +179,51 @@ export const seedDatabase = async () => {
 		alert('Error seeding database. Check console.');
 	}
 };
+import { collection, getDocs, writeBatch, query, limit } from 'firebase/firestore';
+import { db } from '../firebase';
+
+export const clearCollection = async (collectionPath: string) => {
+    const colRef = collection(db, collectionPath);
+    const snapshot = await getDocs(colRef);
+    
+    if (snapshot.empty) return;
+
+    const batch = writeBatch(db);
+    snapshot.docs.forEach((doc) => {
+        batch.delete(doc.ref);
+    });
+
+    await batch.commit();
+    console.log(`Cleared collection: ${collectionPath}`);
+};
+
+export const resetDatabase = async () => {
+    // Safety check: Only run in development
+    if (process.env.NODE_ENV === 'production') {
+        console.error("Attempted to clear database in production! Aborting.");
+        return;
+    }
+
+    try {
+        console.log('Resetting database...');
+        
+        const collectionsToClear = [
+            'projects', 
+            'emails', 
+            'messages', 
+            'statistics', 
+            'users', 
+            'stories', 
+            'notifications', 
+            'conversations'
+        ];
+
+        for (const path of collectionsToClear) {
+            await clearCollection(path);
+        }
+
+        console.log('Database successfully cleared.');
+    } catch (error) {
+        console.error('Error clearing database:', error);
+    }
+};

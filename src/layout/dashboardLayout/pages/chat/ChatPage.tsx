@@ -7,13 +7,15 @@ import {
     getChat,
     getUserChats,
     initializeChatCollection,
+    seedDefaultChats,
     sendMessage,
     subscribeToMessages
 } from '../../../../services/firebase/chats';
 import { UserData, getAllUsers } from '../../../../services/firebase/users';
+import { fetchUsers } from '../../../../utils/fetchUsers';
 import {
     getImageLoadErrorHandler,
-    getProfilePictureUrl,
+    getImmediateProfilePictureUrl
 } from '../../../../utils/profilePicture';
 import ChatList from './components/ChatList';
 import ChatWindow from './components/ChatWindow';
@@ -29,16 +31,18 @@ const ChatPage: React.FC = () => {
 	const [messages, setMessages] = useState<Message[]>([]);
 	const [searchQuery, setSearchQuery] = useState('');
 	const [isLoading, setIsLoading] = useState(true);
-	const [error, setError] = useState<string | null>(null);
+	const [chatListError, setChatListError] = useState<string | null>(null);
+    const [sendError, setSendError] = useState<string | null>(null);
 	const [showNewChatModal, setShowNewChatModal] = useState(false);
 	const [availableUsers, setAvailableUsers] = useState<UserData[]>([]);
 
 	// Fetch user's chats
 	useEffect(() => {
 		if (currentUser) {
+            dispatch(fetchUsers()); // Ensure we have the user directory loaded
 			const loadChats = async () => {
 				setIsLoading(true);
-				setError(null);
+				setChatListError(null);
 				try {
 					let userChats = await getUserChats(currentUser.uid);
                     
@@ -56,14 +60,14 @@ const ChatPage: React.FC = () => {
 					setChats(userChats);
 				} catch (error) {
 					console.error('Error loading chats:', error);
-					setError('Failed to load chats. Please try again later.');
+					setChatListError('Failed to load chats. Please try again later.');
 				} finally {
 					setIsLoading(false);
 				}
 			};
 			loadChats();
 		}
-	}, [currentUser]);
+	}, [currentUser, dispatch]);
 
      // Check for navigation state (from sidebar click)
     useEffect(() => {
@@ -143,7 +147,7 @@ const ChatPage: React.FC = () => {
 		if (!selectedChat) return;
 
 		setMessages([]); // Clear messages when switching chats
-		setError(null);
+		setSendError(null);
 
 		const unsubscribe = subscribeToMessages(
 			selectedChat.id,
@@ -160,9 +164,10 @@ const ChatPage: React.FC = () => {
 
 		try {
 			await sendMessage(selectedChat.id, currentUser.uid, text);
+            // Optimistic update if needed, but subscription handles it mostly.
 		} catch (error) {
 			console.error('Error sending message:', error);
-			setError('Failed to send message. Please try again.');
+			setSendError('Failed to send message. Please try again.');
 		}
 	};
 
@@ -170,7 +175,7 @@ const ChatPage: React.FC = () => {
 		if (!currentUser) return;
 
 		try {
-			setError(null);
+			setChatListError(null);
 			setIsLoading(true);
 			const chatId = await initializeChatCollection(
 				currentUser.uid,
@@ -185,7 +190,7 @@ const ChatPage: React.FC = () => {
 			setShowNewChatModal(false);
 		} catch (error) {
 			console.error('Error starting new chat:', error);
-			setError('Failed to start new chat. Please try again.');
+			setChatListError('Failed to start new chat. Please try again.');
 		} finally {
 			setIsLoading(false);
 		}
@@ -207,7 +212,7 @@ const ChatPage: React.FC = () => {
 
 	return (
 		<div
-			className={`flex h-[calc(100vh-64px)] ${
+			className={`flex h-[calc(100vh-4.5rem)] pt-[4.5rem] ${
 				isMobileView
 					? 'ml-0'
 					: mode === 'wide'
@@ -248,9 +253,9 @@ const ChatPage: React.FC = () => {
 						<div className='flex items-center justify-center p-4'>
 							<p className='text-gray-500'>Loading chats...</p>
 						</div>
-					) : error ? (
+					) : chatListError ? (
 						<div className='flex items-center justify-center p-4'>
-							<p className='text-red-500'>{error}</p>
+							<p className='text-red-500'>{chatListError}</p>
 						</div>
 					) : (
 						<ChatList
@@ -271,7 +276,7 @@ const ChatPage: React.FC = () => {
 						messages={messages}
 						currentUserId={currentUser?.uid}
 						onSendMessage={handleSendMessage}
-						error={error}
+						error={sendError}
 					/>
 				) : (
 					<div className='h-full flex items-center justify-center text-gray-500'>
@@ -303,7 +308,7 @@ const ChatPage: React.FC = () => {
 									className='w-full text-left p-3 hover:bg-gray-100 rounded-lg flex items-center space-x-3'
 								>
 									<img
-										src={getProfilePictureUrl(
+										src={getImmediateProfilePictureUrl(
 											user.photoURL,
 											user.displayName,
 										)}

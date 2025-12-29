@@ -5,6 +5,11 @@ import { RouterProvider } from 'react-router-dom';
 import './index.css';
 import { router } from './routes/index.tsx';
 import { store } from './store/store.ts';
+import './utils/seedProfile'; // Enable window.seedMyProfile()
+
+// Make store available globally for utilities
+// @ts-ignore
+window.__REDUX_STORE__ = store;
 
 createRoot(document.getElementById('root')!).render(
 	<StrictMode>

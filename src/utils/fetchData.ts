@@ -31,7 +31,7 @@ export const fetchStatistics = async (): Promise<Statistics> => {
             };
         }
     } catch (error) {
-        console.warn('Error fetching statistics from Firebase, falling back to mock data:', error);
+        console.log('Fetching from Firebase failed (likely rules not deployed), falling back to mock data.');
         return {
             total: 12,
             ongoing: 5,

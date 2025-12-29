@@ -1,18 +1,20 @@
 import { memo, useCallback, useEffect, useMemo, useState } from 'react';
+import DataSourceIndicator from '../../../../components/DataSourceIndicator';
 import { useAppSelector } from '../../../../hooks/hooks';
 import type { Project } from '../../../../types';
 import type {
-    DashboardData,
-    Email,
-    Message,
-    Statistics,
+	DashboardData,
+	Email,
+	Message,
+	Statistics,
 } from '../../../../types/dashboard';
 import {
-    fetchEmails,
-    fetchMessages,
-    fetchProjects,
-    fetchStatistics,
+	fetchEmails,
+	fetchMessages,
+	fetchProjects,
+	fetchStatistics,
 } from '../../../../utils/fetchData';
+import { resetDatabase, seedDatabase } from '../../../../utils/seeder';
 import CompleteProject from './components/completeProject';
 import DognutArea from './components/dognutArea';
 import EmailCategories from './components/emailCategories';
@@ -107,6 +109,17 @@ const initialDashboardData: DashboardData = {
 	},
 };
 
+const fullResetAndSeed = async () => {
+    const confirmed = window.confirm("This will delete ALL data and re-seed. Continue?");
+    if (!confirmed) return;
+
+    await resetDatabase();
+    await seedDatabase();
+    
+    alert('Database has been factory reset and seeded!');
+    window.location.reload();
+};
+
 const DashboardHome = () => {
 	const mode = useAppSelector((state) => state.sidebar.mode);
 	const isMobileView = useAppSelector((state) => state.sidebar.isMobileView);
@@ -175,6 +188,8 @@ const DashboardHome = () => {
 	if (isLoading) return <LoadingSpinner />;
 	if (error) return <ErrorDisplay message={error} />;
 
+
+
 	return (
 		<div className={containerClassName}>
 			<div className='md:pl-[1.875rem] md:pr-[1.875rem] pt-[1.875rem] flex  justify-center'>
@@ -182,7 +197,14 @@ const DashboardHome = () => {
 					<FirstColumn data={dashboardData} />
 					<SecondColumn data={dashboardData} />
 				</div>
+                <button 
+                    onClick={fullResetAndSeed} 
+                    className="mt-8 mb-4 px-4 py-2 bg-red-100 text-red-600 rounded-lg hover:bg-red-200 transition-colors mx-auto block text-sm font-medium"
+                >
+                    ⚠️ Factory Reset & Seed DB
+                </button>
 			</div>
+            <DataSourceIndicator source={error ? 'Mock' : 'Firebase'} />
 		</div>
 	);
 };

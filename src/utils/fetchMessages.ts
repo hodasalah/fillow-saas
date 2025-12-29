@@ -16,7 +16,7 @@ export const fetchMessages = async () => {
         });
         return messagesData;
     } catch (error) {
-        console.warn('Error fetching messages from Firebase, falling back to mock data:', error);
+        console.log('Fetching from Firebase failed (likely rules not deployed), falling back to mock data.');
         try {
             const res = await fetch('/datas/messages.json');
             const data = await res.json();

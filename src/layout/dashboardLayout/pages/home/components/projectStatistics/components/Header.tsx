@@ -1,5 +1,5 @@
 import DropdownDelEditBtn from '../../../../../../../components/dropdownDelEditBtn';
-import TabGroup from '../../../../../../../components/TabGroup';
+import TabGroup from '../../../../../../../components/tabGroup';
 import { TABS } from './constants';
 import { TimePeriod } from './types';
 

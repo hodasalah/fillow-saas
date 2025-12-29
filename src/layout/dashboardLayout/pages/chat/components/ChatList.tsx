@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useAppSelector } from '../../../../../hooks/hooks';
 import { Chat } from '../../../../../services/firebase/chats';
+import { seedUsers } from '../../../../../services/firebase/seedUsers';
 import { formatTimestamp } from '../../../../../utils/dateUtils';
 import {
-	getImageLoadErrorHandler,
-	getProfilePictureUrl,
+    getImageLoadErrorHandler,
+    getImmediateProfilePictureUrl,
 } from '../../../../../utils/profilePicture';
 
 interface ChatListProps {
@@ -21,6 +22,7 @@ const ChatList: React.FC<ChatListProps> = ({
 	currentUserId,
 }) => {
 	const users = useAppSelector((state) => state.users.users);
+    const [isSeeding, setIsSeeding] = useState(false);
 
 	const getOtherUserFromChat = (chat: Chat) => {
 		const otherUserId = chat.participants.find(
@@ -34,54 +36,87 @@ const ChatList: React.FC<ChatListProps> = ({
 		return otherUser?.name || 'Unknown User';
 	};
 
+    const handleAddFakeUsers = async () => {
+        if (confirm("Add 5 fake users to the database?")) {
+            setIsSeeding(true);
+            try {
+                await seedUsers(5);
+                alert("Users added! Refreshing page usually helps reveal them in 'New Chat' list.");
+                location.reload(); 
+            } catch (e) {
+                alert("Failed to add users.");
+                console.error(e);
+            } finally {
+                setIsSeeding(false);
+            }
+        }
+    };
+
 	return (
-		<div className='overflow-y-auto'>
+		<div className='overflow-y-auto flex flex-col h-full'>
 			{chats.map((chat) => {
 				const otherUser = getOtherUserFromChat(chat);
+				const isActive = selectedChat?.id === chat.id;
+				
 				return (
 					<div
 						key={chat.id}
-						className={`flex items-center p-4 cursor-pointer hover:bg-gray-50 ${
-							selectedChat?.id === chat.id ? 'bg-purple-50' : ''
+						className={`group relative flex items-center p-3 mx-2 mb-1 rounded-xl cursor-pointer transition-all duration-200 border-l-4 ${
+							isActive
+								? 'bg-gradient-to-r from-purple-100/60 to-transparent border-purple-500 shadow-sm translate-x-1'
+								: 'hover:bg-gray-50 border-transparent hover:border-gray-200'
 						}`}
 						onClick={() => onSelectChat(chat)}
 					>
 						<div className='relative'>
 							<img
-								src={getProfilePictureUrl(
+								src={getImmediateProfilePictureUrl(
 									otherUser?.profilePicture,
 									otherUser?.name || 'User',
-								)}
+								)} 
 								alt={getUserName(chat)}
-								className='w-12 h-12 rounded-full object-cover'
+								className={`w-12 h-12 rounded-full object-cover transition-transform duration-200 ${isActive ? 'ring-2 ring-purple-200 scale-105' : 'group-hover:scale-105'}`}
 								onError={getImageLoadErrorHandler(
 									otherUser?.name || 'User',
 								)}
 							/>
 							<span
-								className={`absolute bottom-0 right-0 w-3 h-3 ${
+								className={`absolute bottom-0 right-0 w-3.5 h-3.5 ${
 									otherUser?.status === 'online'
 										? 'bg-green-500'
-										: 'bg-gray-400'
+										: 'bg-gray-300'
 								} border-2 border-white rounded-full`}
 							></span>
 						</div>
-						<div className='ml-4 flex-1'>
-							<h3 className='text-sm font-semibold text-gray-900'>
-								{getUserName(chat)}
-							</h3>
-							<p className='text-sm text-gray-500 truncate'>
+						<div className='ml-4 flex-1 min-w-0'>
+							<div className="flex justify-between items-baseline">
+								<h3 className={`text-sm font-semibold truncate ${isActive ? 'text-purple-900' : 'text-gray-900'}`}>
+									{getUserName(chat)}
+								</h3>
+								{chat.lastMessage && (
+									<span className={`text-[10px] ml-2 ${isActive ? 'text-purple-500' : 'text-gray-400'}`}>
+										{formatTimestamp(chat.lastMessage.createdAt)}
+									</span>
+								)}
+							</div>
+							<p className={`text-xs truncate mt-0.5 ${isActive ? 'text-purple-600 font-medium' : 'text-gray-500 group-hover:text-gray-600'}`}>
+								{chat.lastMessage?.senderId === currentUserId && 'You: '}
 								{chat.lastMessage?.text || 'No messages yet'}
 							</p>
 						</div>
-						{chat.lastMessage && (
-							<div className='text-xs text-gray-400'>
-								{formatTimestamp(chat.lastMessage.createdAt)}
-							</div>
-						)}
 					</div>
 				);
 			})}
+            
+            <div className="p-4 mt-auto border-t border-gray-100">
+                <button 
+                    onClick={handleAddFakeUsers}
+                    disabled={isSeeding}
+                    className="w-full py-2 px-4 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded-lg text-sm transition-colors flex items-center justify-center gap-2"
+                >
+                    {isSeeding ? 'Adding...' : '➕ Add Fake Users'}
+                </button>
+            </div>
 		</div>
 	);
 };

@@ -1,11 +1,13 @@
 import React from 'react';
 import { useAppSelector } from '../../../../hooks/hooks';
 import AboutMeCard from './AboutMeCard';
+import AchievementsCard from './AchievementsCard';
 import ActivitiesCard from './ActivitiesCard';
 import FeaturedPostCard from './FeaturedPostCard';
 import FeaturedStories from './FeaturedStories';
 import ProfileCard from './ProfileCard';
 import ProjectsGallery from './ProjectsGallery';
+import SkillsCard from './SkillsCard';
 import TeamCard from './TeamCard';
 
 const Profile: React.FC = () => {
@@ -64,6 +66,8 @@ const Profile: React.FC = () => {
                     <div className='hidden lg:block space-y-6'>
                         <ProfileCard />
                         <AboutMeCard />
+                        <SkillsCard />
+                        <AchievementsCard />
                     </div>
 
                     {/* Mobile/Tablet Layout */}
@@ -79,7 +83,13 @@ const Profile: React.FC = () => {
                             <AboutMeCard />
                         </div>
 
-                        {/* Third Row - Team & Featured Post */}
+                        {/* Third Row - Skills & Achievements */}
+                        <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
+                            <SkillsCard />
+                            <AchievementsCard />
+                        </div>
+
+                        {/* Fourth Row - Team & Featured Post */}
                         <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
                             <TeamCard />
                             <FeaturedPostCard />

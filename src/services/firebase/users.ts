@@ -1,15 +1,15 @@
 import { User } from 'firebase/auth';
 import {
-	collection,
-	doc,
-	getDoc,
-	getDocs,
-	onSnapshot,
-	query,
-	serverTimestamp,
-	setDoc,
-	updateDoc,
-	where,
+    collection,
+    doc,
+    getDoc,
+    getDocs,
+    onSnapshot,
+    query,
+    serverTimestamp,
+    setDoc,
+    updateDoc,
+    where,
 } from 'firebase/firestore';
 import { db } from '../../firebase';
 
@@ -21,6 +21,7 @@ export interface UserData {
 	status: 'online' | 'offline';
 	lastSeen: Date | null;
 	createdAt: Date;
+    isMock?: boolean;
 }
 
 export const createUserDocument = async (user: User) => {
@@ -38,6 +39,7 @@ export const createUserDocument = async (user: User) => {
 			status: 'online',
 			lastSeen: null,
 			createdAt: new Date(),
+            isMock: false,
 		};
 
 		try {

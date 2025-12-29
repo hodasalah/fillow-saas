@@ -4,16 +4,7 @@ import ProgressBar from '../../../../../../components/progressBar';
 import { Project } from '../../../../../../types';
 import ProjectTag from './ProjectTag';
 
-const dropdownMenuLinks = [
-	{
-		name: 'Delete',
-		id: 'delete',
-	},
-	{
-		name: 'Edit',
-		id: 'edit',
-	},
-];
+
 
 interface ProjectItemProps {
 	project: Project;
@@ -32,8 +23,8 @@ const ProjectItem: FC<ProjectItemProps> = memo(({ project }) => {
 			<div className='flex items-center justify-between mb-2'>
 				<div className='flex items-center'>
 					<img
-						src={project.client.image || '/assets/fallback.png'}
-						alt={project.client.name}
+						src={project.client?.image || '/assets/fallback.png'}
+						alt={project.client?.name || 'Client'}
 						className='w-10 h-10 rounded-full object-cover'
 					/>
 					<div className='ml-3'>
@@ -62,9 +53,9 @@ const ProjectItem: FC<ProjectItemProps> = memo(({ project }) => {
 			<div className='mt-2'>
 				<ProgressBar progress={progress} />
 			</div>
-			{project.tags.length > 0 ? (
+			{project.tags?.length > 0 ? (
 				<div className='my-4'>
-					{project.tags.map((tag) => (
+					{project.tags?.map((tag) => (
 						<ProjectTag
 							tag={tag}
 							key={tag.name}

@@ -13,7 +13,6 @@ export * from './carousel';
 export * from './chart';
 export * from './dropdownDelEditBtn';
 export * from './hamburger';
-export * from './layouts';
 export * from './logo';
 export * from './profileDropdown';
 export * from './svgs';

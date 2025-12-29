@@ -4,7 +4,7 @@ import { Timestamp } from 'firebase/firestore';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { PrimaryBtn } from '../../../../components/buttons';
 import Card from '../../../../components/card';
-import TabGroup from '../../../../components/TabGroup';
+import TabGroup from '../../../../components/tabGroup';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
 import { setLoading } from '../../../../store/slices/loadingSlice';
 import { Project } from '../../../../types';

@@ -1,10 +1,17 @@
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../firebase';
 import { Project } from '../types';
 
-export const fetchProjects = async () => {
+export const fetchProjects = async (userId?: string) => {
 	try {
-        const querySnapshot = await getDocs(collection(db, 'projects'));
+        let q;
+        if (userId) {
+            q = query(collection(db, 'projects'), where('ownerId', '==', userId));
+        } else {
+            q = collection(db, 'projects');
+        }
+
+        const querySnapshot = await getDocs(q);
         const projectsData: Project[] = querySnapshot.docs.map((doc) => {
             const data = doc.data();
             const toDate = (val: any) => (val?.toDate ? val.toDate() : new Date(val));

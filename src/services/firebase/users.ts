@@ -80,6 +80,16 @@ export const getUserData = async (userId: string): Promise<UserData | null> => {
 	}
 };
 
+export const updateUserData = async (userId: string, data: Partial<UserData>): Promise<void> => {
+	try {
+        const userRef = doc(db, 'users', userId);
+		await setDoc(userRef, data, { merge: true });
+	} catch (error) {
+		console.error('Error updating user data:', error);
+		throw error;
+	}
+};
+
 export const subscribeToUserStatus = (
 	uid: string,
 	callback: (status: 'online' | 'offline') => void,

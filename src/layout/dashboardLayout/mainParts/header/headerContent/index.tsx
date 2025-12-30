@@ -134,7 +134,7 @@ const HeaderContent = ({ setShowSlider }: HeaderContentProps) => {
 								</li>
 							);
 						})}
-						<li className='h-full flex items-center w-[3.5rem]'>
+						<li className='h-full flex items-center'>
 							<ProfileDropdown />
 						</li>
 					</ul>

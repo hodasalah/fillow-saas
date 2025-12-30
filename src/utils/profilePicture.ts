@@ -101,7 +101,7 @@ export const getImmediateProfilePictureUrl = (
 	displayName?: string,
 ): string => {
 	const cacheKey = photoURL || displayName || 'anonymous';
-	return avatarCache.get(cacheKey) || generateAvatarUrl(displayName);
+	return avatarCache.get(cacheKey) || photoURL || generateAvatarUrl(displayName);
 };
 
 /**

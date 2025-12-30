@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { PrimaryBtn } from '../../../../../../components/buttons';
 import { useAppDispatch } from '../../../../../../hooks/hooks';
 import { setLoading } from '../../../../../../store/slices/loadingSlice';
@@ -35,15 +35,8 @@ const Messages = ({ messages: initialMessages }: MessagesProps) => {
 		}
 	};
 
-	useEffect(() => {
-		const fetchData = async () => {
-			dispatch(setLoading(true));
-			const messagesData = await fetchMessages();
-			setMessages(messagesData);
-			dispatch(setLoading(false));
-		};
-		fetchData();
-	}, [dispatch]);
+	// useEffect removed to prevent infinite re-mount loop with PrivateRoute
+	// Data is already passed in via props from DashboardHome
 
 	return (
 		<div className='w-full shadow-custom-shadow mb-10'>

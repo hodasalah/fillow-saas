@@ -6,17 +6,8 @@ import PrivateRoute from '../components/privateRoute';
 import { Profile, Projects } from '../layout/dashboardLayout/pages';
 import HomeRedirect from '../layout/publicLayout/HomeRedirect';
 
-// Lazy load components
-const DashboardLayout = lazy(() =>
-	import('../layout/dashboardLayout').then((module) => ({
-		default: module.DashboardLayout,
-	})),
-);
-const DashboardHome = lazy(() =>
-	import('../layout/dashboardLayout/pages/home').then((module) => ({
-		default: module.default,
-	})),
-);
+import { DashboardLayout } from '../layout/dashboardLayout';
+import DashboardHome from '../layout/dashboardLayout/pages/home';
 const ChatPage = lazy(() => import('../layout/dashboardLayout/pages/chat'));
 const Login = lazy(() => import('../layout/publicLayout/AuthPages/Login'));
 const SignUp = lazy(() => import('../layout/publicLayout/AuthPages/SignUp'));
@@ -43,19 +34,11 @@ export const router = createBrowserRouter([
 				children: [
 					{
 						path: '',
-						element: (
-							<Suspense fallback={<LoadingSpinner />}>
-								<DashboardLayout />
-							</Suspense>
-						),
+						element: <DashboardLayout />,
 						children: [
 							{
 								index: true,
-								element: (
-									<Suspense fallback={<LoadingSpinner />}>
-										<DashboardHome />
-									</Suspense>
-								),
+								element: <DashboardHome />,
 							},
 							{
 								path: 'chat',

@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useAppSelector } from '../../../../../hooks/hooks';
 import { Chat } from '../../../../../services/firebase/chats';
-import { seedUsers } from '../../../../../services/firebase/seedUsers';
 import { formatTimestamp } from '../../../../../utils/dateUtils';
 import {
     getImageLoadErrorHandler,
@@ -22,7 +21,6 @@ const ChatList: React.FC<ChatListProps> = ({
 	currentUserId,
 }) => {
 	const users = useAppSelector((state) => state.users.users);
-    const [isSeeding, setIsSeeding] = useState(false);
 
 	const getOtherUserFromChat = (chat: Chat) => {
 		const otherUserId = chat.participants.find(
@@ -36,21 +34,6 @@ const ChatList: React.FC<ChatListProps> = ({
 		return otherUser?.name || 'Unknown User';
 	};
 
-    const handleAddFakeUsers = async () => {
-        if (confirm("Add 5 fake users to the database?")) {
-            setIsSeeding(true);
-            try {
-                await seedUsers(5);
-                alert("Users added! Refreshing page usually helps reveal them in 'New Chat' list.");
-                location.reload(); 
-            } catch (e) {
-                alert("Failed to add users.");
-                console.error(e);
-            } finally {
-                setIsSeeding(false);
-            }
-        }
-    };
 
 	return (
 		<div className='overflow-y-auto flex flex-col h-full'>
@@ -108,15 +91,6 @@ const ChatList: React.FC<ChatListProps> = ({
 				);
 			})}
             
-            <div className="p-4 mt-auto border-t border-gray-100">
-                <button 
-                    onClick={handleAddFakeUsers}
-                    disabled={isSeeding}
-                    className="w-full py-2 px-4 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded-lg text-sm transition-colors flex items-center justify-center gap-2"
-                >
-                    {isSeeding ? 'Adding...' : '➕ Add Fake Users'}
-                </button>
-            </div>
 		</div>
 	);
 };

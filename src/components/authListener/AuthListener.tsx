@@ -4,7 +4,6 @@ import { auth } from '../../firebase';
 import { useAppDispatch } from '../../hooks/hooks';
 import { setUser } from '../../store/slices/authSlice';
 import { setLoading } from '../../store/slices/loadingSlice';
-import { fetchUsers } from '../../utils/fetchUsers';
 
 interface AuthListenerProps {
 	children: React.ReactNode;
@@ -14,7 +13,7 @@ const AuthListener = ({ children }: AuthListenerProps) => {
 	const dispatch = useAppDispatch();
 
 	useEffect(() => {
-		dispatch(setLoading(true));
+		// Initial loading is set to true in slice
         
         if (!auth) {
             console.error("AuthListener: Firebase auth object is missing!");
@@ -28,21 +27,14 @@ const AuthListener = ({ children }: AuthListenerProps) => {
 					setUser({
 						uid: user.uid,
 						email: user.email,
-						displayName: user.displayName,
-						photoURL: user.photoURL,
+						name: user.displayName || 'User',
+						profilePicture: user.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.displayName || 'User')}&background=886cc0&color=fff`,
 					}),
 				);
-                dispatch(fetchUsers());
+                // fetchUsers called by individual pages that need it
 			} else {
 				dispatch(setUser(null));
-                // Allow explicit logout if needed, but for now we auto-signin for DB access if not logged in
-                // Trying to sign in anonymously
-                try {
-                    const { signInAnonymously } = await import('firebase/auth');
-                    await signInAnonymously(auth);
-                } catch (error) {
-                    console.error("Anonymous auth failed", error);
-                }
+                // Removed anonymous login to ensure users stay logged out
 			}
 			dispatch(setLoading(false));
 		});

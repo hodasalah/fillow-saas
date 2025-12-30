@@ -1,20 +1,15 @@
 import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import DataSourceIndicator from '../../../../components/DataSourceIndicator';
 import { useAppSelector } from '../../../../hooks/hooks';
-import type { Project } from '../../../../types';
 import type {
-	DashboardData,
-	Email,
-	Message,
-	Statistics,
+    DashboardData
 } from '../../../../types/dashboard';
 import {
-	fetchEmails,
-	fetchMessages,
-	fetchProjects,
-	fetchStatistics,
+    fetchEmails,
+    fetchMessages,
+    fetchProjects,
+    fetchStatistics,
 } from '../../../../utils/fetchData';
-import { resetDatabase, seedDatabase } from '../../../../utils/seeder';
 import CompleteProject from './components/completeProject';
 import DognutArea from './components/dognutArea';
 import EmailCategories from './components/emailCategories';
@@ -25,30 +20,6 @@ import ProjectStatistics from './components/projectStatistics';
 import RecentEmails from './components/recentEmails';
 import TotalClients from './components/totalClientsComponents';
 
-// Component interfaces
-interface ProjectStatisticsProps {
-	statistics: Statistics;
-}
-
-interface CompleteProjectProps {
-	projects: Project[];
-}
-
-interface RecentEmailsProps {
-	emails: Email[];
-}
-
-interface EmailCategoriesProps {
-	emails: Email[];
-}
-
-interface ImportantProjectsProps {
-	projects: Project[];
-}
-
-interface MessagesProps {
-	messages: Message[];
-}
 
 // Memoized loading component
 const LoadingSpinner = memo(() => (
@@ -109,16 +80,6 @@ const initialDashboardData: DashboardData = {
 	},
 };
 
-const fullResetAndSeed = async () => {
-    const confirmed = window.confirm("This will delete ALL data and re-seed. Continue?");
-    if (!confirmed) return;
-
-    await resetDatabase();
-    await seedDatabase();
-    
-    alert('Database has been factory reset and seeded!');
-    window.location.reload();
-};
 
 const DashboardHome = () => {
 	const mode = useAppSelector((state) => state.sidebar.mode);
@@ -162,15 +123,6 @@ const DashboardHome = () => {
 		loadDashboardData();
 	}, [loadDashboardData]);
 
-	// Make seeder available globally
-	useEffect(() => {
-		// @ts-ignore
-		import('../../../../utils/seeder').then(({ seedDatabase }) => {
-			// @ts-ignore
-			window.seed = seedDatabase;
-			console.log('✅ Seeder ready! Run window.seed() in console to populate Firebase');
-		});
-	}, []);
 
 	const containerClassName = useMemo(
 		() =>
@@ -197,12 +149,6 @@ const DashboardHome = () => {
 					<FirstColumn data={dashboardData} />
 					<SecondColumn data={dashboardData} />
 				</div>
-                <button 
-                    onClick={fullResetAndSeed} 
-                    className="mt-8 mb-4 px-4 py-2 bg-red-100 text-red-600 rounded-lg hover:bg-red-200 transition-colors mx-auto block text-sm font-medium"
-                >
-                    ⚠️ Factory Reset & Seed DB
-                </button>
 			</div>
             <DataSourceIndicator source={error ? 'Mock' : 'Firebase'} />
 		</div>

@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { useAppSelector } from '../../../../hooks/hooks';
-import { getOrCreateProfile, UserProfile } from '../../../../services/firebase/profile';
-import { getImageLoadErrorHandler, getImmediateProfilePictureUrl } from '../../../../utils/profilePicture';
+import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
+import { getOrCreateProfile, updateUserProfile, UserProfile } from '../../../../services/firebase/profile';
+import { uploadProfilePicture } from '../../../../services/firebase/storage';
+import { updateUserData } from '../../../../services/firebase/users';
+import { setUser } from '../../../../store/slices/authSlice';
+import { getImmediateProfilePictureUrl } from '../../../../utils/profilePicture';
 
 const ProfileCard: React.FC = () => {
 	const currentUser = useAppSelector((state) => state.auth.currentUser);
 	const [profile, setProfile] = useState<UserProfile | null>(null);
 	const [loading, setLoading] = useState(true);
+    const [uploading, setUploading] = useState(false);
+    const fileInputRef = React.useRef<HTMLInputElement>(null);
+    const dispatch = useAppDispatch();
 
 	useEffect(() => {
 		const loadProfile = async () => {
@@ -33,6 +39,45 @@ const ProfileCard: React.FC = () => {
 		loadProfile();
 	}, [currentUser]);
 
+    const handleImageClick = () => {
+        fileInputRef.current?.click();
+    };
+
+    const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file || !currentUser) return;
+
+        try {
+            setUploading(true);
+            // 1. Upload to Firebase Storage
+            const downloadURL = await uploadProfilePicture(currentUser.uid, file);
+
+            // 2. Update Firestore Collections
+            await Promise.all([
+                updateUserProfile(currentUser.uid, { photoURL: downloadURL }),
+                updateUserData(currentUser.uid, { photoURL: downloadURL })
+            ]);
+
+            // 3. Update Redux Auth State (so header updates too)
+            dispatch(setUser({
+                ...currentUser,
+                profilePicture: downloadURL
+            }));
+
+            // 4. Update Local State
+            if (profile) {
+                setProfile({ ...profile, photoURL: downloadURL });
+            }
+            
+            console.log('✅ Profile picture updated successfully:', downloadURL);
+        } catch (error) {
+            console.error('Error updating profile picture:', error);
+            alert('Failed to upload image. Please check your Firebase Storage rules.');
+        } finally {
+            setUploading(false);
+        }
+    };
+
 	if (loading) {
 		return (
 			<div className='bg-white dark:bg-[var(--card)] rounded-xl shadow-lg p-6 text-center animate-pulse'>
@@ -50,13 +95,32 @@ const ProfileCard: React.FC = () => {
 	return (
 		<div className='bg-white dark:bg-[var(--card)] rounded-xl shadow-lg p-6 text-center transition-colors duration-300'>
 			{/* Profile Picture */}
-			<div className='mb-4'>
+			<div className='mb-4 relative inline-block group cursor-pointer' onClick={handleImageClick}>
 				<img
-					src={getImmediateProfilePictureUrl(profile.photoURL, profile.displayName)}
+					src={currentUser?.profilePicture || getImmediateProfilePictureUrl(profile.photoURL, profile.displayName)}
 					alt={profile.displayName}
-					className='w-24 h-24 rounded-full border-4 border-white dark:border-[var(--border)] shadow-lg mx-auto object-cover'
-					onError={getImageLoadErrorHandler(profile.displayName)}
+					className={`w-24 h-24 rounded-full border-4 border-white dark:border-[var(--border)] shadow-lg mx-auto object-cover transition-opacity ${uploading ? 'opacity-50' : ''}`}
+					onError={(e) => {
+						(e.target as HTMLImageElement).src = `https://ui-avatars.com/api/?name=${encodeURIComponent(profile.displayName)}&background=886cc0&color=fff&size=200`;
+					}}
 				/>
+                {uploading ? (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="w-8 h-8 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
+                    </div>
+                ) : (
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/30 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
+                         <span className="text-xs font-semibold">Change</span>
+                    </div>
+                )}
+				<div className="absolute bottom-1 right-1 w-5 h-5 bg-green-500 border-2 border-white dark:border-[var(--card)] rounded-full" title="Online"></div>
+                <input 
+                    type="file" 
+                    ref={fileInputRef} 
+                    className="hidden" 
+                    accept="image/*"
+                    onChange={handleFileChange}
+                />
 			</div>
 
 			{/* Name and Title */}

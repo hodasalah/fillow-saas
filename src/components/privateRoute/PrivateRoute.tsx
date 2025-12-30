@@ -4,7 +4,7 @@ import { useAppSelector } from '../../hooks/hooks';
 // Create a memoized selector
 const PrivateRoute = () => {
 	const currentUser = useAppSelector((state) => state.auth.currentUser);
-	const isLoading = useAppSelector((state) => state.auth.isLoading);
+	const isLoading = useAppSelector((state) => state.loading.isLoading);
 	if (isLoading) {
 		return (
 			<div className='flex items-center justify-center min-h-screen'>

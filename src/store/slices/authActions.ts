@@ -1,16 +1,18 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import {
-	createUserWithEmailAndPassword,
-	GoogleAuthProvider,
-	signInWithEmailAndPassword,
-	signInWithPopup,
-	UserCredential,
+    createUserWithEmailAndPassword,
+    GoogleAuthProvider,
+    signInWithEmailAndPassword,
+    signInWithPopup,
+    UserCredential,
 } from 'firebase/auth';
 import { doc, getDoc, serverTimestamp, setDoc } from 'firebase/firestore';
 import { auth, db } from '../../firebase';
 import { User } from '../../types';
 
 // Helper function to create or update user in Firestore
+import { getOrCreateProfile } from '../../services/firebase/profile';
+
 const createUserInFirestore = async (
 	user: any,
 	name?: string,
@@ -77,7 +79,22 @@ export const loginWithGoogle = createAsyncThunk<
 			provider,
 		);
 		const user = userCredential.user;
-		return await createUserInFirestore(user);
+		const firestoreUser = await createUserInFirestore(user);
+		
+		// Ensure profile exists and is seeded if necessary
+		try {
+			await getOrCreateProfile(
+				user.uid,
+				user.displayName || 'User',
+				user.email || '',
+				user.photoURL || undefined
+			);
+		} catch (error) {
+			console.error('Error ensuring profile exists:', error);
+			// Continue anyway, as we have the basic user
+		}
+
+		return firestoreUser;
 	} catch (error) {
 		return rejectWithValue((error as Error).message);
 	}
@@ -95,8 +112,23 @@ export const createUser = createAsyncThunk<
 			await createUserWithEmailAndPassword(auth, email, password);
 		const user = userCredential.user;
 		// Update the user's display name
-		await user.updateProfile({ displayName: name });
-		return await createUserInFirestore(user, name);
+		await updateProfile(user, { displayName: name });
+		const firestoreUser = await createUserInFirestore(user, name);
+
+		// Ensure profile exists and is seeded if necessary
+		try {
+			await getOrCreateProfile(
+				user.uid,
+				name,
+				email,
+				undefined
+			);
+		} catch (error) {
+			console.error('Error ensuring profile exists:', error);
+			// Continue anyway
+		}
+
+		return firestoreUser;
 	} catch (error) {
 		return rejectWithValue((error as Error).message);
 	}
@@ -107,7 +139,7 @@ export const loginUser = createAsyncThunk<
 	User,
 	{ email: string; password: string },
 	{ rejectValue: string }
->('auth/loginUser', async (payload, { rejectValue }) => {
+>('auth/loginUser', async (payload, { rejectWithValue }) => {
 	try {
 		const { email, password } = payload;
 		const userCredential: UserCredential = await signInWithEmailAndPassword(
@@ -118,7 +150,21 @@ export const loginUser = createAsyncThunk<
 		const user = userCredential.user;
 		const userDoc = await getDoc(doc(db, 'users', user.uid));
 		if (userDoc.exists()) {
-			return await createUserInFirestore(user);
+			const firestoreUser = await createUserInFirestore(user);
+			
+			// Ensure profile exists (in case it was deleted or user is older)
+			try {
+				await getOrCreateProfile(
+					user.uid,
+					user.displayName || 'User',
+					user.email || '',
+					user.photoURL || undefined
+				);
+			} catch (error) {
+				console.error('Error ensuring profile exists:', error);
+			}
+
+			return firestoreUser;
 		} else {
 			throw new Error('This email is not registered. Please sign up.');
 		}
@@ -132,7 +178,7 @@ export const logoutUser = createAsyncThunk<
 	boolean,
 	void,
 	{ rejectValue: string }
->('auth/logoutUser', async (_, { rejectValue }) => {
+>('auth/logoutUser', async (_, { rejectWithValue }) => {
 	try {
 		await auth.signOut();
 		return true;

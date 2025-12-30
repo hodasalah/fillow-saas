@@ -7,7 +7,6 @@ import {
     getChat,
     getUserChats,
     initializeChatCollection,
-    seedDefaultChats,
     sendMessage,
     subscribeToMessages
 } from '../../../../services/firebase/chats';
@@ -46,16 +45,6 @@ const ChatPage: React.FC = () => {
 				try {
 					let userChats = await getUserChats(currentUser.uid);
                     
-                    // Auto-Seed chats in Firebase if none exist (so the list isn't empty for new users)
-                    if (userChats.length === 0) {
-                        try {
-                            await seedDefaultChats(currentUser.uid);
-                            // Re-fetch after seeding
-                            userChats = await getUserChats(currentUser.uid);
-                        } catch (seedErr) {
-                            console.warn("Seeding failed, proceeding with empty list:", seedErr);
-                        }
-                    }
 
 					setChats(userChats);
 				} catch (error) {
@@ -198,8 +187,8 @@ const ChatPage: React.FC = () => {
 
 	const filteredChats = chats.filter((chat) =>
 		chat.lastMessage?.text
-			.toLowerCase()
-			.includes(searchQuery.toLowerCase()),
+			?.toLowerCase()
+			?.includes(searchQuery.toLowerCase()),
 	);
 
 	if (!currentUser) {

@@ -5,8 +5,8 @@ import { getUserData } from '../../../../../services/firebase/users';
 import { formatMessageTime } from '../../../../../utils/dateUtils';
 
 import {
-	getImageLoadErrorHandler,
-	getImmediateProfilePictureUrl,
+    getImageLoadErrorHandler,
+    getImmediateProfilePictureUrl,
 } from '../../../../../utils/profilePicture';
 
 interface ChatWindowProps {
@@ -136,8 +136,10 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
 // ... (inside component)
 	const [fetchedOtherUser, setFetchedOtherUser] = useState<any | null>(null);
 	const users = useAppSelector((state) => state.users.users);
+    const authUser = useAppSelector((state) => state.auth.currentUser);
 
 	const getUser = (userId: string) => {
+        if (authUser && authUser.uid === userId) return authUser;
 		const reduxUser = users.find((user) => user.uid === userId);
         if (reduxUser) return reduxUser;
         // If not in Redux, check if it's the fetched other user
@@ -158,7 +160,8 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
                     // Normalize UserData (displayName) to User (name) shape expected by component
                     setFetchedOtherUser({
                         ...data,
-                        name: data.displayName
+                        name: data.displayName || 'User',
+                        profilePicture: data.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(data.displayName || 'User')}&background=886cc0&color=fff`,
                     });
                 }
             });

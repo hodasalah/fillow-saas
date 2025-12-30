@@ -1,12 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { User as FirebaseUser } from 'firebase/auth';
-import {
-	createUser,
-	loginUser,
-	loginWithGoogle,
-	logoutUser,
-} from './authActions';
 import { User } from '../../types';
+import {
+    createUser,
+    loginUser,
+    loginWithGoogle,
+    logoutUser,
+} from './authActions';
 
 interface AuthState {
 	currentUser: User | null;
@@ -25,7 +24,10 @@ const authSlice = createSlice({
 	initialState,
 	reducers: {
 		setUser: (state, action) => {
-			state.currentUser = action.payload;
+            // Only update if data changed to prevent re-render loops
+            if (JSON.stringify(state.currentUser) !== JSON.stringify(action.payload)) {
+			    state.currentUser = action.payload;
+            }
 		},
 		authError: (state, action: PayloadAction<string>) => {
 			state.error = action.payload;

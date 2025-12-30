@@ -13,18 +13,22 @@ import TeamCard from './TeamCard';
 const Profile: React.FC = () => {
     const mode = useAppSelector((state) => state.sidebar.mode);
     const isMobileView = useAppSelector((state) => state.sidebar.isMobileView);
+    const currentUser = useAppSelector((state) => state.auth.currentUser); // Get current user
     const [stories, setStories] = React.useState<any[]>([]);
     const [projects, setProjects] = React.useState<any[]>([]);
 
     React.useEffect(() => {
         const loadData = async () => {
+             if (!currentUser?.uid) return; // Don't fetch if no user
+
              const { fetchStories } = await import('../../../../utils/fetchStories');
              const { fetchProjects } = await import('../../../../utils/fetchProjects');
              
-             const storiesData = await fetchStories();
+             // Pass userId to fetch functions
+             const storiesData = await fetchStories(currentUser.uid);
              setStories(storiesData);
 
-             const projectsData = await fetchProjects();
+             const projectsData = await fetchProjects(currentUser.uid);
              // Map dashboard projects to profile gallery format
              const galleryProjects = projectsData.map((p: any) => ({
                  id: p.id,
@@ -34,7 +38,7 @@ const Profile: React.FC = () => {
              setProjects(galleryProjects);
         };
         loadData();
-    }, []);
+    }, [currentUser?.uid]); // Add dependency
 
     return (
         <div

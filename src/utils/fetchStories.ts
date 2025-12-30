@@ -1,4 +1,4 @@
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, getDocs, query, where } from 'firebase/firestore'; // Added query, where
 import { db } from '../firebase';
 
 export interface Story {
@@ -8,9 +8,16 @@ export interface Story {
     authorName?: string;
 }
 
-export const fetchStories = async (): Promise<Story[]> => {
+export const fetchStories = async (userId?: string): Promise<Story[]> => { // Added userId optional param
     try {
-        const querySnapshot = await getDocs(collection(db, 'stories'));
+        let q;
+        if (userId) {
+            q = query(collection(db, 'stories'), where('userId', '==', userId));
+        } else {
+            q = collection(db, 'stories');
+        }
+        
+        const querySnapshot = await getDocs(q);
         const stories = querySnapshot.docs.map(doc => {
             const data = doc.data();
             return {

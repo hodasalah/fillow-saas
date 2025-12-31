@@ -23,3 +23,6 @@ dist-ssr
 *.sln
 *.sw?
 saas-front
+tsc_errors_2.txt
+tsc_errors.txt
+tsc_errors.log

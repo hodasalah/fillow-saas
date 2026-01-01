@@ -12,7 +12,7 @@ const SidebarFooter = () => {
 				 my-4 px-[1rem] text-[#9fa4a6] `}
 		>
 			<p className='leading-[1.8]'>
-				Fillow Saas Admin © 2025 All Rights Reserved
+				Dashora Saas Admin © 2025 All Rights Reserved
 			</p>
 			<p className='text-[.75rem] leading-6'>
 				Made with <FontAwesomeIcon icon={faHeart} /> by HodaSalah

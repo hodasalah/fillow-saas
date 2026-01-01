@@ -43,10 +43,10 @@ function Home() {
 								<img
 									src='https://flowbite.com/docs/images/logo.svg'
 									className='h-8 w-8 mr-2'
-									alt='Flowbite Logo'
+									alt='Dashora Logo'
 								/>
 								<span className='text-2xl font-bold text-indigo-600'>
-									Fillow
+									Dashora
 								</span>
 							</div>
 						</div>

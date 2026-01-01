@@ -5,8 +5,8 @@ import Radial from '../../../../../../components/chart/Radial';
 const DognutArea = () => {
 	const slides = [
 		{
-			title: 'Fillow Company Profile Website Project',
-			text: 'Fillow is a company profile website project that I have created using HTML, CSS, and JavaScript. This project is a simple company profile website that contains a home page, about page, services page, and contact page.',
+			title: 'Dashora Company Profile Website Project',
+			text: 'Dashora is a company profile website project that I have created using HTML, CSS, and JavaScript. This project is a simple company profile website that contains a home page, about page, services page, and contact page.',
 		},
 		{
 			title: 'Welcome to Hoda Salah new project',

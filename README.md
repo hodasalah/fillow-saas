@@ -1,4 +1,4 @@
-# Fillow SaaS Admin Dashboard
+# Dashora SaaS Admin Dashboard
 
 A modern, feature-rich admin dashboard built with React, TypeScript, and Firebase. This application provides a comprehensive suite of tools for managing users, communications, and analytics.
 
@@ -66,7 +66,7 @@ A modern, feature-rich admin dashboard built with React, TypeScript, and Firebas
 
 ```bash
 git clone [repository-url]
-cd fillow-saas
+cd dashora-saas
 ```
 
 2. Install dependencies:

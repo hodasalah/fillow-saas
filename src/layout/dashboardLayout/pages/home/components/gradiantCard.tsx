@@ -7,7 +7,7 @@ const GradiantCard = () => {
 						Manage your project in one touch
 					</h1>
 					<span className='text-[1rem] text-white font-normal sm:my-[1.875rem] mt-[5px] mb-[1.875rem] mx-0 block relative'>
-						Let Fillow manage your project automatically with our
+						Let Dashora manage your project automatically with our
 						best AI systems{' '}
 					</span>
 					<button

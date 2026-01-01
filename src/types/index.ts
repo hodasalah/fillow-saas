@@ -35,13 +35,15 @@ export interface Project {
 	client: {
 		name: string;
 		image: string;
+		id: string;
 	};
 	personInCharge: {
 		name: string;
 		image: string;
+		id: string;
 	};
 	startDate: Date;
-	endDate: Date;
+	endDate?: Date | null;
 	deadline: Date;
 	tags: { name: string; color: string; background: string }[];
 }

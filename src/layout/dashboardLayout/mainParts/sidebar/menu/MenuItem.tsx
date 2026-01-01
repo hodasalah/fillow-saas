@@ -32,7 +32,11 @@ const MenuItem: React.FC<MenuItemProps> = ({
 				<FontAwesomeIcon icon={item.icon as IconProp} />
 				<span className=''>{item.name}</span>
 			</a>
-			<ul className='metismenu relative flex flex-col transition-all duration-300 ease-in-out py-2 px-0'>
+			<ul
+				className={`metismenu relative flex-col transition-all duration-300 ease-in-out py-2 px-0 ${
+					item.id === activeItem ? 'mm-show flex' : 'mm-collapse hidden'
+				}`}
+			>
 				{item.hasSubMenu &&
 					item.submenu &&
 					item.submenu.map((submenuItem, index) => {

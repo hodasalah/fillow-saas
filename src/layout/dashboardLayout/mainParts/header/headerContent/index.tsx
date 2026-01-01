@@ -77,11 +77,13 @@ const HeaderContent = ({ setShowSlider }: HeaderContentProps) => {
 			} pl-1 pr-1 sm:px-[1.875rem] h-full`}
 		>
 			<nav className='flex sm:justify-between justify-end items-center w-full'>
-				<div className='font-bold text-[1.25rem] text-[--text-dark] hidden sm:block'>
-					{(location.pathname.split('/').at(-1) ?? '')
-						.charAt(0)
-						.toUpperCase() +
-						(location.pathname.split('/').at(-1) ?? '').slice(1)}
+				<div className='font-bold text-[1.25rem] text-[--text-dark] block'>
+					{(() => {
+                        const segments = location.pathname.split('/').filter(Boolean);
+                        const lastSegment = segments[segments.length - 1];
+                        if (!lastSegment || lastSegment === 'dashboard') return 'Dashboard';
+                        return lastSegment.charAt(0).toUpperCase() + lastSegment.slice(1);
+                    })()}
 				</div>
 				<div className='nav-links flex items-center px-2 sm:px-5'>
 					<ul className='header-right w-full flex md:items-center justify-end'>

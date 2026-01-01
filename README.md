@@ -169,4 +169,4 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 Hoda Salah - hodasalah35@gmail.com
 
-Project Link: [https://github.com/hodasalah/](https://github.com/hodasalah/)
+Project Link: [https://github.com/hodasalah/dashora-saas](https://github.com/hodasalah/dashora-saas)

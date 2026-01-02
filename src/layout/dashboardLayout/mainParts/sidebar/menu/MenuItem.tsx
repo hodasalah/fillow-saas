@@ -26,15 +26,20 @@ const MenuItem: React.FC<MenuItemProps> = ({
 		<li
 			className='menuItem'
 			ref={ref}
-			onClick={() => setActiveItem && setActiveItem(item.id)}
+			onClick={() =>
+				setActiveItem &&
+				setActiveItem(item.id === activeItem ? '' : item.id)
+			}
 		>
 			<a className={`has-arrow`}>
 				<FontAwesomeIcon icon={item.icon as IconProp} />
 				<span className=''>{item.name}</span>
 			</a>
 			<ul
-				className={`metismenu relative flex-col transition-all duration-300 ease-in-out py-2 px-0 ${
-					item.id === activeItem ? 'mm-show flex' : 'mm-collapse hidden'
+				className={`metismenu relative flex flex-col transition-all duration-300 ease-in-out px-0 overflow-hidden ${
+					item.id === activeItem
+						? 'max-h-[500px] opacity-100 py-2'
+						: 'max-h-0 opacity-0 py-0'
 				}`}
 			>
 				{item.hasSubMenu &&

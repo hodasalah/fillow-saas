@@ -21,6 +21,9 @@ export interface UserData {
 	status: 'online' | 'offline';
 	lastSeen: Date | null;
 	createdAt: Date;
+    bio?: string;
+    title?: string;
+    phone?: string;
     isMock?: boolean;
 }
 

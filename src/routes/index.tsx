@@ -3,7 +3,7 @@ import { createBrowserRouter } from 'react-router-dom';
 import App from '../App';
 import { NotFound } from '../components/errorPages';
 import PrivateRoute from '../components/privateRoute';
-import { Profile, Projects } from '../layout/dashboardLayout/pages';
+import { EditProfile, Profile, Projects } from '../layout/dashboardLayout/pages';
 import HomeRedirect from '../layout/publicLayout/HomeRedirect';
 
 import { DashboardLayout } from '../layout/dashboardLayout';
@@ -61,6 +61,14 @@ export const router = createBrowserRouter([
 								element: (
 									<Suspense fallback={<LoadingSpinner />}>
 										<Profile />
+									</Suspense>
+								),
+							},
+							{
+								path: 'edit-profile',
+								element: (
+									<Suspense fallback={<LoadingSpinner />}>
+										<EditProfile />
 									</Suspense>
 								),
 							},

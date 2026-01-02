@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
 import {
-	closeMobile,
-	setMobileView,
-	setMode,
+    closeMobile,
+    setMobileView,
+    setMode,
 } from '../../../../store/slices/sidebarSlice';
 import MenuList from './menu';
 import SidebarFooter from './SidebarFooter';
@@ -45,7 +45,7 @@ const Sidebar = () => {
 	}, []);
 	return (
 		<aside
-			className={`fixed top-[--dz-header-height] h-[calc(100vh-4.5rem)] z-[1] bg-sidebar-bg border-r-[1px] border-[--border] transition-all duration-300 shadow-[0rem_0.9375rem_1.875rem_0rem_rgba(0,0,0,0.1)]
+			className={`fixed top-[--dz-header-height] h-[calc(100vh-4.5rem)] z-[50] bg-sidebar-bg border-r-[1px] border-[--border] transition-all duration-300 shadow-[0rem_0.9375rem_1.875rem_0rem_rgba(0,0,0,0.1)]
         ${
 			isMobileView
 				? isMobileOpen

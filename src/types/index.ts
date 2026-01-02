@@ -11,7 +11,10 @@ export interface User {
 	profilePicture: string;
 	createdAt?: string | number; // Change to Date or number
 	last_login?: string | number; // Change to Date or number
-	role: 'admin' | 'employee' | 'client';
+	role: 'admin' | 'employee' | 'client' | 'user';
+	title?: string;
+	bio?: string;
+	phone?: string;
 	projects: string[];
 	tags: string[];
 	preferences: {

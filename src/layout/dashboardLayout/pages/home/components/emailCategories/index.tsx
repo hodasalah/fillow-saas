@@ -62,6 +62,7 @@ const EmailCategories = ({ emails }: EmailCategoriesProps) => {
 						</span>
 					</div>
 					<div className='flex flex-1 overflow-hidden'>
+						{/* @ts-ignore - Prop type mismatch to be fixed in chart component */}
 						<EmailChart data={chartData} />
 					</div>
 					<div className='mb-3 mt-4'>

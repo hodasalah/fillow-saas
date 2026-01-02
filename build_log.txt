@@ -1,0 +1,59 @@
+
+> dashora-saas@0.0.0 npx
+> tsc -b
+
+src/components/chart/Barchart.tsx(171,5): error TS2353: Object literal may only specify known properties, and 'endingShape' does not exist in type '{ horizontal?: boolean | undefined; columnWidth?: string | number | undefined; barHeight?: string | number | undefined; distributed?: boolean | undefined; borderRadius?: number | undefined; ... 10 more ...; dataLabels?: { ...; } | undefined; }'.
+src/components/chart/StackedBarChart.tsx(125,5): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: Props): ReactApexChart', gave the following error.
+    Type '{ series: { name: string; data: number[]; }[]; chart: { type: string; height: number; width: number; stacked: boolean; toolbar: { show: boolean; }; }; responsive: ({ breakpoint: number; options: { chart: { width: number; height: string; }; legend: { ...; }; }; } | { ...; })[]; ... 8 more ...; fill: { ...; }; }' is not assignable to type 'ApexOptions'.
+      The types of 'chart.type' are incompatible between these types.
+        Type 'string' is not assignable to type '"donut" | "line" | "pie" | "radar" | "area" | "bar" | "radialBar" | "scatter" | "bubble" | "heatmap" | "candlestick" | "boxPlot" | "polarArea" | "rangeBar" | "rangeArea" | "treemap" | undefined'.
+  Overload 2 of 2, '(props: Props, context: any): ReactApexChart', gave the following error.
+    Type '{ series: { name: string; data: number[]; }[]; chart: { type: string; height: number; width: number; stacked: boolean; toolbar: { show: boolean; }; }; responsive: ({ breakpoint: number; options: { chart: { width: number; height: string; }; legend: { ...; }; }; } | { ...; })[]; ... 8 more ...; fill: { ...; }; }' is not assignable to type 'ApexOptions'.
+      The types of 'chart.type' are incompatible between these types.
+        Type 'string' is not assignable to type '"donut" | "line" | "pie" | "radar" | "area" | "bar" | "radialBar" | "scatter" | "bubble" | "heatmap" | "candlestick" | "boxPlot" | "polarArea" | "rangeBar" | "rangeArea" | "treemap" | undefined'.
+src/components/counter/counter.tsx(2,48): error TS2307: Cannot find module '../hooks/hooks' or its corresponding type declarations.
+src/components/counter/counter.tsx(7,8): error TS2307: Cannot find module '../store/slices/counterSlice' or its corresponding type declarations.
+src/components/counter/counter.tsx(8,32): error TS2307: Cannot find module '../store/store' or its corresponding type declarations.
+src/components/counter/index.ts(2,10): error TS2305: Module '"./counter"' has no exported member 'default'.
+src/components/hamburger/hamburgerBtn.test.tsx(4,10): error TS2614: Module '"../../store/slices/sidebarSlice"' has no exported member 'setToggleActiveSidebar'. Did you mean to use 'import setToggleActiveSidebar from "../../store/slices/sidebarSlice"' instead?
+src/components/hamburger/hamburgerBtn.test.tsx(24,19): error TS2322: Type '{ OnBtnClick: Mock<any, any, any>; }' is not assignable to type 'IntrinsicAttributes & { onHandleClick: () => void; }'.
+  Property 'OnBtnClick' does not exist on type 'IntrinsicAttributes & { onHandleClick: () => void; }'.
+src/components/hamburger/hamburgerBtn.test.tsx(33,19): error TS2322: Type '{ OnBtnClick: Mock<any, any, any>; }' is not assignable to type 'IntrinsicAttributes & { onHandleClick: () => void; }'.
+  Property 'OnBtnClick' does not exist on type 'IntrinsicAttributes & { onHandleClick: () => void; }'.
+src/components/hamburger/hamburgerBtn.test.tsx(48,19): error TS2322: Type '{ OnBtnClick: Mock<any, any, any>; }' is not assignable to type 'IntrinsicAttributes & { onHandleClick: () => void; }'.
+  Property 'OnBtnClick' does not exist on type 'IntrinsicAttributes & { onHandleClick: () => void; }'.
+src/components/progressBar/ProgressBar.tsx(20,5): error TS2322: Type '{ children: Element; role: "progressbar"; "aria-valuenow": number; "aria-valuemin": string; "aria-valuemax": number; className: string; style: { width: string; }; onMouseOver: () => void; onMouseLeave: () => void; }' is not assignable to type 'DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>'.
+  Type '{ children: Element; role: "progressbar"; "aria-valuenow": number; "aria-valuemin": string; "aria-valuemax": number; className: string; style: { width: string; }; onMouseOver: () => void; onMouseLeave: () => void; }' is not assignable to type 'HTMLAttributes<HTMLDivElement>'.
+    Types of property '"aria-valuemin"' are incompatible.
+      Type 'string' is not assignable to type 'number'.
+src/components/svgs/rectDots/PurpleRectDot.tsx(1,1): error TS6133: 'React' is declared but its value is never read.
+src/hooks/useDarkMode.tsx(32,18): error TS7006: Parameter 'prev' implicitly has an 'any' type.
+src/hooks/useMessagesData.ts(2,29): error TS2307: Cannot find module '@/utils/dataFetcher' or its corresponding type declarations.
+src/hooks/useMessagesData.ts(37,5): error TS7006: Parameter 'data' implicitly has an 'any' type.
+src/hooks/useProjectsData.ts(2,29): error TS2307: Cannot find module '@/utils/dataFetcher' or its corresponding type declarations.
+src/hooks/useProjectsData.ts(37,5): error TS7006: Parameter 'data' implicitly has an 'any' type.
+src/layout/dashboardLayout/index.tsx(15,8): error TS6133: 'mode' is declared but its value is never read.
+src/layout/dashboardLayout/index.tsx(16,8): error TS6133: 'isMobileView' is declared but its value is never read.
+src/layout/dashboardLayout/mainParts/chatbox/chatboxContent/tabPanelComponents/AlertsTabPanel.tsx(45,11): error TS6133: 'handleManualSeed' is declared but its value is never read.
+src/layout/dashboardLayout/mainParts/header/headerContent/Timeline.tsx(17,10): error TS2353: Object literal may only specify known properties, and ''--after-color'' does not exist in type 'Properties<string | number, string & {}>'.
+src/layout/dashboardLayout/mainParts/header/headerContent/Timeline.tsx(26,10): error TS2353: Object literal may only specify known properties, and ''--after-color'' does not exist in type 'Properties<string | number, string & {}>'.
+src/layout/dashboardLayout/pages/home/components/emailCategories/index.tsx(65,19): error TS2322: Type '{ data: { labels: string[]; datasets: { data: number[]; backgroundColor: string[]; }[]; }; }' is not assignable to type 'IntrinsicAttributes'.
+  Property 'data' does not exist on type 'IntrinsicAttributes'.
+src/layout/dashboardLayout/pages/home/components/ImportantProjects/ProjectTag.tsx(2,10): error TS2614: Module '"."' has no exported member 'Tag'. Did you mean to use 'import Tag from "."' instead?
+src/layout/dashboardLayout/pages/home/components/messages/MessageItem.tsx(2,10): error TS2614: Module '"."' has no exported member 'Message'. Did you mean to use 'import Message from "."' instead?
+src/layout/dashboardLayout/pages/home/components/projectStatistics/components/Header.tsx(29,5): error TS2322: Type '(tab: TimePeriod) => void' is not assignable to type '(tab: string) => void'.
+  Types of parameters 'tab' and 'tab' are incompatible.
+    Type 'string' is not assignable to type 'TimePeriod'.
+src/layout/dashboardLayout/pages/home/components/projectStatistics/components/StatisticsOverview.tsx(3,27): error TS1261: Already included file name 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/layout/dashboardLayout/pages/home/components/projectStatistics/components/statisticsItem.tsx' differs from file name 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/layout/dashboardLayout/pages/home/components/projectStatistics/components/StatisticsItem.tsx' only in casing.
+  The file is in the program because:
+    Imported via './statisticsItem' from file 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/src/layout/dashboardLayout/pages/home/components/projectStatistics/components/StatisticsOverview.tsx'
+    Matched by include pattern 'src' in 'C:/Users/hodas/OneDrive/Desktop/تعلم البرمجة من جديد/new/tsconfig.app.json'
+src/layout/dashboardLayout/pages/home/components/projectStatistics/index.tsx(17,28): error TS6133: 'statistics' is declared but its value is never read.
+src/layout/dashboardLayout/pages/home/components/recentEmails/EmailItem.tsx(8,10): error TS2614: Module '"./index"' has no exported member 'Email'. Did you mean to use 'import Email from "./index"' instead?
+src/layout/dashboardLayout/pages/home/components/recentEmails/EmailItem.tsx(54,38): error TS7006: Parameter 'file' implicitly has an 'any' type.
+src/layout/dashboardLayout/pages/home/components/recentEmails/EmailItem.tsx(54,44): error TS7006: Parameter 'index' implicitly has an 'any' type.
+src/layout/dashboardLayout/pages/home/components/recentEmails/EmailItem.tsx(78,26): error TS7006: Parameter 'file' implicitly has an 'any' type.
+src/layout/dashboardLayout/pages/home/components/recentEmails/EmailItem.tsx(78,32): error TS7006: Parameter 'index' implicitly has an 'any' type.
+src/store/slices/authActions.ts(115,9): error TS2304: Cannot find name 'updateProfile'.
+src/store/slices/loadingSlice.ts(15,28): error TS2339: Property 'setAuthLoading' does not exist on type 'CaseReducerActions<{ setLoading: (state: WritableDraft<{ isLoading: boolean; }>, action: { payload: any; type: string; }) => void; }, "loading">'.

@@ -168,7 +168,6 @@ const Barchart = ({ showOngoing, showUnfinished ,data}: { showOngoing: boolean, 
 			bar: {
 				horizontal: false,
 				columnWidth: '55%',
-				endingShape: 'rounded',
 			},
 		},
 		dataLabels: {

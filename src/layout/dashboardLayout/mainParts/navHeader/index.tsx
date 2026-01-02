@@ -27,7 +27,7 @@ const NavHeader = () => {
 		>
 			<div className='brand-logo'>
 				<MiniLogo />
-				{mode === 'wide'&& !isMobileView && (
+				{mode === 'wide' && !isMobileView && (
 					<div className='hidden lg:block brand-title'>
 						<Logo />
 					</div>

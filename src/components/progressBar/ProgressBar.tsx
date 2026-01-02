@@ -20,7 +20,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ progress }) => {
 			<div
 				role='progressbar'
 				aria-valuenow={(progress * 100) / TOTAL_PROGRESS}
-				aria-valuemin='0'
+				aria-valuemin={0}
 				aria-valuemax={TOTAL_PROGRESS}
 				className={PROGRESS_BAR_STYLES.progress}
 				style={{ width: `${(progress * 100) / TOTAL_PROGRESS}%` }}

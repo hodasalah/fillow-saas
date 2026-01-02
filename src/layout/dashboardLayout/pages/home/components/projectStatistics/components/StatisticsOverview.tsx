@@ -1,7 +1,7 @@
 import RedCircle from '../../../../../../../components/svgs/RedCircle';
 import YellowCircle from '../../../../../../../components/svgs/YellowCircle';
-import StatisticItem from './statisticsItem';
 import TotalProjects from './TotalProjects';
+import StatisticsItem from './StatisticsItem';
 
 interface StatisticsOverviewProps {
 	total: number;
@@ -23,12 +23,12 @@ export const StatisticsOverview = ({
 				percentage={completionPercentage}
 			/>
 			<div className='flex gap-8 flex-wrap'>
-				<StatisticItem
+				<StatisticsItem
 					value={ongoing}
 					label='On Going'
 					icon={<YellowCircle />}
 				/>
-				<StatisticItem
+				<StatisticsItem
 					value={unfinished}
 					label='Unfinished'
 					icon={<RedCircle />}

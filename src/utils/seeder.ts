@@ -1,5 +1,5 @@
 import { signInAnonymously } from 'firebase/auth';
-import { collection, doc, serverTimestamp, writeBatch } from 'firebase/firestore';
+import { collection, doc, getDocs, serverTimestamp, writeBatch } from 'firebase/firestore';
 import { auth, db } from '../firebase';
 
 export const seedDatabase = async () => {
@@ -179,8 +179,7 @@ export const seedDatabase = async () => {
 		alert('Error seeding database. Check console.');
 	}
 };
-import { collection, getDocs, writeBatch, query, limit } from 'firebase/firestore';
-import { db } from '../firebase';
+
 
 export const clearCollection = async (collectionPath: string) => {
     const colRef = collection(db, collectionPath);

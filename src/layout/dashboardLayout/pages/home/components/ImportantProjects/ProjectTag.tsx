@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Tag } from '.';
+import { Tag } from '../../../../../../types';
 
 const ProjectTag: FC<{ tag: Tag }> = ({ tag }) => (
 	<span

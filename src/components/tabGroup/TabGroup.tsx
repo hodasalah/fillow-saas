@@ -1,21 +1,21 @@
 import { TabConfig } from '../../types';
 
-interface TabGroupProps {
+interface TabGroupProps<T extends string = string> {
 	tabs: TabConfig[];
-	activeTab: string;
-	onTabChange: (tab: string) => void;
+	activeTab: T;
+	onTabChange: (tab: T) => void;
 }
 
-export const TabGroup: React.FC<TabGroupProps> = ({
+export const TabGroup = <T extends string = string>({
 	tabs,
 	activeTab,
 	onTabChange,
-}) => (
+}: TabGroupProps<T>) => (
 	<div className='bg-white p-1 rounded-lg flex gap-1'>
 		{tabs.map((tab) => (
 			<button
 				key={tab.id}
-				onClick={() => onTabChange(tab.id)}
+				onClick={() => onTabChange(tab.id as T)}
 				className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors
           ${
 				tab.id === activeTab

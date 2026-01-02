@@ -1,7 +1,7 @@
-import { Project } from '@/types';
-import { dataFetcher } from '@/utils/dataFetcher';
-import { fetchProjects } from '@/utils/fetchData';
 import { useEffect, useState } from 'react';
+import { Project } from '../types';
+import { dataFetcher } from '../utils/dataFetcher';
+import { fetchProjects } from '../utils/fetchData';
 
 const PROJECTS_KEY = 'projects';
 
@@ -34,7 +34,7 @@ export const useProjectsData = () => {
 		// Subscribe to updates
 		const unsubscribe = dataFetcher.subscribe<Project[]>(
 			PROJECTS_KEY,
-			(data) => {
+			(data: Project[]) => {
 				setProjects(data);
 				setIsLoading(false);
 			},

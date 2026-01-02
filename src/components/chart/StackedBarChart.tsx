@@ -16,7 +16,7 @@ const options = {
 		},
 	],
 	chart: {
-		type: 'bar',
+		type: 'bar' as const,
 		height: 120,
 		width: 150,
 		stacked: true,

@@ -9,6 +9,9 @@ const loadingSlice = createSlice({
 		setLoading: (state, action) => {
 			state.isLoading = action.payload;
 		},
+		setAuthLoading: (state, action) => {
+			state.isLoading = action.payload;
+		},
 	},
 });
 

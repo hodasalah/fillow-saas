@@ -17,14 +17,14 @@ const Timeline = () => {
 									'--after-color': line.color, // Pass dynamic values
 									'--after-box-shadow': line.boxShadow,
 									'--after-border-color': line.borderColor,
-								}}
+								} as React.CSSProperties}
 							></div>
 
 							<div
 								className={`relative block ml-[2.5rem] border-l-[0.3125rem] py-[0.3125rem] pr-[0.625rem] pl-[0.9375rem] border-[var(--after-color)] after:content-[''] after:block after:absolute after:w-[0.4375rem] after:h-[0.4375rem] after:top-[0.9375rem] after:left-[-0.5625rem] after:border-0 after:rotate-[45deg] after:bg-[var(--after-color)]`}
 								style={{
 									'--after-color': line.color, // Pass dynamic values
-								}}
+								} as React.CSSProperties}
 							>
 								<span className='text-[#9da1a5bf] text-[12.25px] mb-[0.3125rem] opacity-80 tracking-wide'>
 									{line.time}

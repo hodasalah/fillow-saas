@@ -1,6 +1,6 @@
 export * from './buttons';
 export * from './card';
-export * from './counter';
+
 export * from './loading';
 export * from './modal';
 export * from './privateRoute';

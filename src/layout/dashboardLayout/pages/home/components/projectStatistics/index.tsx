@@ -1,7 +1,6 @@
 import { useMemo, useState } from 'react';
 import Card from '../../../../../../components/card';
 import Modal from '../../../../../../components/modal';
-import { Statistics } from '../../../../../../types/dashboard';
 import { generateChartData } from '../../../../../../utils/helpers/generateChartData';
 import ChartSection from './components/ChartSection';
 import { DEFAULT_DATA, links } from './components/constants';
@@ -10,11 +9,9 @@ import { Header } from './components/Header';
 import { StatisticsOverview } from './components/StatisticsOverview';
 import { StatisticsData, TimePeriod } from './components/types';
 
-interface ProjectStatisticsProps {
-	statistics: Statistics;
-}
 
-const ProjectStatistics = ({ statistics }: ProjectStatisticsProps) => {
+
+const ProjectStatistics = () => {
 	const [data, setData] = useState(DEFAULT_DATA);
 	const [activeTab, setActiveTab] = useState<TimePeriod>('monthly');
 	const [showEditModal, setShowEditModal] = useState(false);
@@ -104,7 +101,7 @@ const ProjectStatistics = ({ statistics }: ProjectStatisticsProps) => {
 				<div className='w-full p-[1.875rem] space-y-8'>
 					<Header
 						activeTab={activeTab}
-						onTabChange={setActiveTab}
+						onTabChange={(tab) => setActiveTab(tab as TimePeriod)}
 						onEdit={handleEdit}
 						onDelete={(id: string) => {
 							const dellTab = links.find(

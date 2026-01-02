@@ -47,7 +47,7 @@ interface ColumnProps {
 const FirstColumn = memo(({ data }: ColumnProps) => (
 	<div className='flex flex-col xl:gap-8 gap-4 max-w-[600px] w-full'>
 		<GradiantCard />
-		<ProjectStatistics statistics={data.statistics} />
+		<ProjectStatistics />
 		<CompleteProject projects={data.projects} />
 		<RecentEmails emails={data.emails} />
 	</div>

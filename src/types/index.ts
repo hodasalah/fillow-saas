@@ -26,6 +26,12 @@ export interface User {
 	status: string;
 	lastSeen?: string | number; // Change to Date or number
 }
+export interface Tag {
+	name: string;
+	color: string;
+	background: string;
+}
+
 // Project
 export interface Project {
 	id: string;
@@ -48,7 +54,7 @@ export interface Project {
 	startDate: Date;
 	endDate?: Date | null;
 	deadline: Date;
-	tags: { name: string; color: string; background: string }[];
+	tags: Tag[];
 }
 
 // Team

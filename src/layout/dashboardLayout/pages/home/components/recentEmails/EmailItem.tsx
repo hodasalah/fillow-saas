@@ -5,7 +5,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { memo } from 'react';
-import { Email } from './index';
+import { Email } from '../../../../../../types/dashboard';
 
 interface EmailItemProps {
 	email: Email;

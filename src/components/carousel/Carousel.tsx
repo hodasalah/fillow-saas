@@ -58,7 +58,7 @@ const Carousel = ({
 			</div>
 			<div className='absolute bottom-4 right-0 left-0'>
 				<div className='flex items-center justify-center gap-2'>
-					{slides.map((s, i: number) => (
+					{slides.map((_, i: number) => (
 						<div
 							key={i}
 							className={`transition-all w-1.5 h-1.5 bg-white rounded-full  ${

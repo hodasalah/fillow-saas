@@ -1,6 +1,6 @@
 import { formatDistanceToNow } from 'date-fns';
-import { Message } from '.';
 import DropdownDelEditBtn from '../../../../../../components/dropdownDelEditBtn';
+import { Message } from '../../../../../../types/dashboard';
 
 const MessageItem = ({ message }: { message: Message }) => {
 	const getProfileImageClasses = (isActive: boolean) => {
@@ -12,11 +12,11 @@ const MessageItem = ({ message }: { message: Message }) => {
 	return (
 		<div className='relative flex justify-between items-center [&:not(:last-child)]:border-b-[0.0625rem] [&:not(:last-child)]:border-[var(--border)] px-[1.85rem] py-[0.950rem]'>
 			<div className='flex items-center w-full'>
-				<div className={getProfileImageClasses(message.active)}>
+				<div className={getProfileImageClasses(false)}>
 					<img
 						className='h-full w-full rounded-[50%] object-cover'
-						src={message.profileImage || '/assets/fallback.png'}
-						alt={`${message.name}'s profile`}
+						src={message.sender.avatar || '/assets/fallback.png'}
+						alt={`${message.sender.name}'s profile`}
 						onError={(e) => {
 							e.currentTarget.src = '/assets/fallback.png';
 						}}
@@ -26,16 +26,16 @@ const MessageItem = ({ message }: { message: Message }) => {
 					{/* will replace it with react-router-dom Link component */}
 					<a href='#'>
 						<h5 className='mb-1 leading-6 text-[var(--text-dark)] font-semibold'>
-							{message.name}
+							{message.sender.name}
 						</h5>
 					</a>
 					<div className='flex justify-between'>
 						<p className='mr-auto mb-0 leading-[1.8] text-[var(--text-dark)]'>
-							{message.lastMessage}
+							{message.content}
 						</p>
 						<small className='mr-6'>
 							{formatDistanceToNow(
-								new Date(message.lastMessageTime),
+								new Date(message.timestamp),
 								{ addSuffix: true },
 							)}
 						</small>

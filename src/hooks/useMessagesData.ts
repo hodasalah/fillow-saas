@@ -1,7 +1,7 @@
-import { Message } from '@/types/dashboard';
-import { dataFetcher } from '@/utils/dataFetcher';
-import { fetchMessages } from '@/utils/fetchData';
 import { useEffect, useState } from 'react';
+import { Message } from '../types/dashboard';
+import { dataFetcher } from '../utils/dataFetcher';
+import { fetchMessages } from '../utils/fetchData';
 
 const MESSAGES_KEY = 'messages';
 
@@ -34,7 +34,7 @@ export const useMessagesData = () => {
 		// Subscribe to updates
 		const unsubscribe = dataFetcher.subscribe<Message[]>(
 			MESSAGES_KEY,
-			(data) => {
+			(data: Message[]) => {
 				setMessages(data);
 				setIsLoading(false);
 			},

@@ -11,9 +11,7 @@ export const DashboardLayout = () => {
     // Theme
 	const isDarkMode = useAppSelector((state) => state.theme.isDarkMode);
     
-    // Sidebar / Layout Mode
-	const mode = useAppSelector((state) => state.sidebar.mode);
-	const isMobileView = useAppSelector((state) => state.sidebar.isMobileView);
+
     
 	const [showSlider, setShowSlider] = useState(false);
 

@@ -5,7 +5,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useState } from 'react';
 import { useAppSelector } from '../../../../../../hooks/hooks'; // Assuming hooks location
-import { Alert, seedDefaultAlerts, subscribeToAlerts } from '../../../../../../services/firebase/alerts';
+import { Alert, subscribeToAlerts } from '../../../../../../services/firebase/alerts';
 
 const AlertsTabPanel = () => {
     const { currentUser } = useAppSelector((state) => state.auth);
@@ -42,7 +42,7 @@ const AlertsTabPanel = () => {
         return `${diffDays} days ago`;
     }
 
-    const handleManualSeed = async () => {
+    /*const handleManualSeed = async () => {
         console.log("Manual seed clicked. CurrentUser:", currentUser?.uid);
         if (currentUser) {
             try {
@@ -57,7 +57,7 @@ const AlertsTabPanel = () => {
             console.warn("No current user found when trying to seed.");
             alert("No user found. Please wait for login or reload.");
         }
-    };
+    };*/
 
 	return (
 		<div className='w-full h-full overflow-y-auto custom-scrollbar'>
@@ -88,18 +88,6 @@ const AlertsTabPanel = () => {
 			</div>
             
 			<ul>
-                {/* 
-                   We could group by category if desired, but flat list ordered by time 
-                   is standard for notification centers. The original mock used categories headers,
-                   so let's keep that structure if possible or simplify.
-                   
-                   Original mock structure:
-                   { Notifications.map(...) <Fragment> <li CategoryHeader> <li Item> </Fragment> }
-                   This implies the array was pre-sorted/grouped or manually arranged.
-                   Let's stick to a simple list for dynamic data for now, 
-                   or group by category dynamically. 
-                   Let's grouping by Category for UI consistency.
-                */}
 				{['Social', 'System', 'Server Status'].map((category) => {
                     const categoryAlerts = groupedAlerts.filter(a => a.category === category);
                     if (categoryAlerts.length === 0) return null;

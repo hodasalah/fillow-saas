@@ -1,9 +1,9 @@
 import {
-    faCamera,
-    faEnvelope,
-    faFloppyDisk,
-    faPhone,
-    faUser,
+	faCamera,
+	faEnvelope,
+	faFloppyDisk,
+	faPhone,
+	faUser,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { motion } from 'framer-motion';
@@ -20,6 +20,8 @@ const EditProfile = () => {
 	const dispatch = useAppDispatch();
 	// Get user from Firebase auth state
 	const currentUser = useAppSelector((state) => state.auth.currentUser);
+	const mode = useAppSelector((state) => state.sidebar.mode);
+	const isMobileView = useAppSelector((state) => state.sidebar.isMobileView);
 
 	const [formData, setFormData] = useState({
 		firstName: '',
@@ -145,8 +147,15 @@ const EditProfile = () => {
 	};
 
 	return (
-		<div className='w-full px-4 py-6 md:px-6 md:py-8'>
-			<div className='max-w-7xl mx-auto'>
+		<div  className={`
+        ${
+            isMobileView
+                ? 'px-3'
+                : mode === 'wide'
+                ? 'pl-[var(--dz-sidebar-width)]'
+                : 'pl-[var(--dz-sidebar-width-mobile)]'
+        } w-full bg-body-bg text-[0.875rem] min-h-[calc(100vh-5.3rem)]  pt-[--dz-header-height]`}>
+			<div className='container mx-auto w-full p-6'>
 				{/* Header Banner */}
 				<div className='relative mb-24 md:mb-20'>
 					<div className='h-48 md:h-56 rounded-2xl bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] overflow-hidden shadow-lg'>
@@ -185,10 +194,10 @@ const EditProfile = () => {
 							/>
 						</div>
 						<div className='mb-4 text-[var(--title)] hidden sm:block'>
-							<h1 className='text-2xl md:text-3xl font-bold drop-shadow-md text-white'>
+							<h1 className='text-2xl md:text-3xl font-bold drop-shadow-md dark:text-white text-[var(--text-dark)]'>
 								{formData.firstName} {formData.lastName}
 							</h1>
-							<p className='text-white/90 font-medium text-sm md:text-base'>
+							<p className='dark:text-white/90 font-medium text-sm md:text-base text-[var(--text-dark)]/90'>
 								{formData.role}
 							</p>
 						</div>

@@ -11,7 +11,13 @@ export const fetchMessages = async () => {
             return {
                 id: doc.id,
                 ...data,
-                timestamp: toDate(data.timestamp),
+                sender: data.sender || {
+                    name: data.name || 'Unknown',
+                    avatar: data.profileImage || '/assets/fallback.png'
+                },
+                content: data.content || data.lastMessage || '',
+                timestamp: toDate(data.timestamp || data.lastMessageTime),
+                isRead: !!data.isRead
             } as Message;
         });
         return messagesData;
@@ -24,8 +30,11 @@ export const fetchMessages = async () => {
              // Inspecting messages.json earlier: it has "lastMessage" which maps to "content" in my types
              // I need to map it here
             return (data.messages || []).map((m: any) => ({
-                ...m,
                 id: 'mock_' + Math.random().toString(36).substr(2, 9),
+                sender: {
+                    name: m.name,
+                    avatar: m.profileImage || '/assets/fallback.png'
+                },
                 content: m.lastMessage,
                 timestamp: new Date(m.lastMessageTime || Date.now()),
                 isRead: false

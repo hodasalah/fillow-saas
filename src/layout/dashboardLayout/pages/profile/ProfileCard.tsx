@@ -5,6 +5,7 @@ import { uploadProfilePicture } from '../../../../services/firebase/storage';
 import { updateUserData } from '../../../../services/firebase/users';
 import { setUser } from '../../../../store/slices/authSlice';
 import { getImmediateProfilePictureUrl } from '../../../../utils/profilePicture';
+import { Link } from 'react-router';
 
 const ProfileCard: React.FC = () => {
 	const currentUser = useAppSelector((state) => state.auth.currentUser);
@@ -204,7 +205,7 @@ const ProfileCard: React.FC = () => {
 			<button
 				className='w-full py-3 rounded-lg font-semibold bg-[var(--primary)] text-white hover:bg-[var(--primary-hover)] transition-colors duration-200'
 			>
-				Edit Profile
+				<Link to="/dashboard/edit-profile">Edit Profile</Link>
 			</button>
 		</div>
 	);

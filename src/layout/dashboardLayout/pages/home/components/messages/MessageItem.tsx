@@ -15,8 +15,8 @@ const MessageItem = ({ message }: { message: Message }) => {
 				<div className={getProfileImageClasses(false)}>
 					<img
 						className='h-full w-full rounded-[50%] object-cover'
-						src={message.sender.avatar || '/assets/fallback.png'}
-						alt={`${message.sender.name}'s profile`}
+						src={message.sender?.avatar || '/assets/fallback.png'}
+						alt={`${message.sender?.name || 'User'}'s profile`}
 						onError={(e) => {
 							e.currentTarget.src = '/assets/fallback.png';
 						}}
@@ -26,7 +26,7 @@ const MessageItem = ({ message }: { message: Message }) => {
 					{/* will replace it with react-router-dom Link component */}
 					<a href='#'>
 						<h5 className='mb-1 leading-6 text-[var(--text-dark)] font-semibold'>
-							{message.sender.name}
+							{message.sender?.name || 'Unknown'}
 						</h5>
 					</a>
 					<div className='flex justify-between'>

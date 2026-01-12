@@ -15,6 +15,15 @@ export default defineConfig({
 			output: {
 				manualChunks(id) {
 					if (id.includes('node_modules')) {
+						if (
+							id.includes('react') ||
+							id.includes('redux') ||
+							id.includes('scheduler') ||
+							id.includes('prop-types') ||
+							id.includes('react-router')
+						) {
+							return 'vendor-react-core';
+						}
 						if (id.includes('firebase')) {
 							return 'vendor-firebase';
 						}
@@ -29,14 +38,6 @@ export default defineConfig({
 						}
 						if (id.includes('@fortawesome') || id.includes('metismenu')) {
 							return 'vendor-ui';
-						}
-						if (
-							id.includes('react') ||
-							id.includes('redux') ||
-							id.includes('scheduler') ||
-							id.includes('prop-types')
-						) {
-							return 'vendor-react-core';
 						}
 						return 'vendor'; // all other node_modules
 					}

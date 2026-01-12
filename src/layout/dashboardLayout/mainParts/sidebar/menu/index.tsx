@@ -1,23 +1,23 @@
 import { faBootstrap } from '@fortawesome/free-brands-svg-icons';
 import {
-	faChartLine,
-	faCircleInfo,
-	faFileLines,
-	faHeart,
-	faHouse,
-	faTable,
-	faUser,
-	IconDefinition,
+    faChartLine,
+    faCircleInfo,
+    faFileLines,
+    faHeart,
+    faHouse,
+    faTable,
+    faUser,
+    IconDefinition,
 } from '@fortawesome/free-solid-svg-icons';
 import MetisMenu from '@metismenu/react';
 import { useEffect, useRef, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import '../../../../../../node_modules/metismenujs/dist/metismenujs.css';
 import { useAppSelector } from '../../../../../hooks/hooks';
 import { DASHBOARD_ROUTES } from '../../../constants';
 import MenuItem from './MenuItem';
 import './MenuItem.css';
 import MiniMenuItem from './MiniMenuItem';
-import '/node_modules/metismenujs/dist/metismenujs.css';
 
 export interface MenuItemProps {
 	item: {

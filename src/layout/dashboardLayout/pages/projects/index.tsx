@@ -1,4 +1,4 @@
-import { faBolt, faCheck, faDatabase, faEllipsisVertical, faTrash, faUserGroup } from '@fortawesome/free-solid-svg-icons';
+import { faBolt, faCheck, faEllipsisVertical, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { deleteDoc, doc, Timestamp } from 'firebase/firestore';
 import { useEffect, useMemo, useState } from 'react';
@@ -9,8 +9,6 @@ import { db } from '../../../../firebase';
 import { useAppSelector } from '../../../../hooks/hooks';
 import { Project } from '../../../../types';
 import { fetchProjects } from '../../../../utils/fetchProjects';
-import { seedClients } from '../../../../utils/seedClients';
-import { seedProjects } from '../../../../utils/seedProjects';
 import NewProject from './NewProject';
 
 const Projects = () => {
@@ -178,20 +176,7 @@ const Projects = () => {
         setOpenDropdownId(null);
     };
 
-    const handleSeedData = async () => {
-        setIsLoading(true);
-        await seedProjects(5);
-        await loadProjects();
-        setIsLoading(false);
-    };
-
-    const handleSeedClients = async () => {
-        setIsLoading(true);
-        await seedClients(5);
-        setIsLoading(false);
-        // Simple alert for now, could be improved with toast
-        window.alert('Seeded 5 fake clients successfully!');
-    };
+// removed seed handlers
 
     const handleDeleteProject = async (projectId: string) => {
         if (window.confirm('Are you sure you want to delete this project?')) {
@@ -284,20 +269,6 @@ const Projects = () => {
                             </button>
                         )}
 
-                        <button 
-                            onClick={handleSeedData}
-                            className="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded inline-flex items-center gap-2 transition-colors"
-                        >
-                            <FontAwesomeIcon icon={faDatabase} />
-                            <span>Seed Data</span>
-                        </button>
-                        <button 
-                            onClick={handleSeedClients}
-                            className="bg-indigo-100 hover:bg-indigo-200 text-indigo-700 font-bold py-2 px-4 rounded inline-flex items-center gap-2 transition-colors"
-                        >
-                            <FontAwesomeIcon icon={faUserGroup} />
-                            <span>Seed Clients</span>
-                        </button>
                         <div className='w-[150px]'>
                             <PrimaryBtn onBtnClick={handleNewProjectClick}>
                                 + New Project

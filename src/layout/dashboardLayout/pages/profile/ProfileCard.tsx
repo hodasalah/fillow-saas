@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
 import { getOrCreateProfile, updateUserProfile, UserProfile } from '../../../../services/firebase/profile';
 import { uploadProfilePicture } from '../../../../services/firebase/storage';
 import { updateUserData } from '../../../../services/firebase/users';
 import { setUser } from '../../../../store/slices/authSlice';
 import { getImmediateProfilePictureUrl } from '../../../../utils/profilePicture';
-import { Link } from 'react-router';
 
 const ProfileCard: React.FC = () => {
 	const currentUser = useAppSelector((state) => state.auth.currentUser);

@@ -6,8 +6,10 @@ import {
 	faUser,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { updateProfile } from 'firebase/auth';
 import { motion } from 'framer-motion';
 import { ChangeEvent, useEffect, useState } from 'react';
+import { auth } from '../../../../firebase';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
 import { updateUserProfile } from '../../../../services/firebase/profile';
 import { uploadProfilePicture } from '../../../../services/firebase/storage';
@@ -103,15 +105,22 @@ const EditProfile = () => {
 			// Combine first and last name
 			const fullName = `${formData.firstName} ${formData.lastName}`.trim();
 
-			// Update user profile in userProfiles collection
-			await updateUserProfile(currentUser.uid, {
-				displayName: fullName,
-				email: formData.email,
-				photoURL: photoURL,
-				phone: formData.phone,
-				bio: formData.bio,
-				title: formData.role,
-			});
+			// Update user profile in userProfiles collection and Firebase Auth
+			await Promise.all([
+				updateUserProfile(currentUser.uid, {
+					displayName: fullName,
+					email: formData.email,
+					photoURL: photoURL,
+					phone: formData.phone,
+					bio: formData.bio,
+					title: formData.role,
+				}),
+				// Also update the Firebase Auth profile for global sync
+				updateProfile(auth.currentUser!, {
+					displayName: fullName,
+					photoURL: photoURL,
+				})
+			]);
 
 			// Also update the users collection for consistency, including ALL fields
 			await updateUserData(currentUser.uid, {

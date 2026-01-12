@@ -10,9 +10,10 @@ import {
     IconDefinition,
 } from '@fortawesome/free-solid-svg-icons';
 import MetisMenu from '@metismenu/react';
+// @ts-ignore
+import 'metismenujs/style';
 import { useEffect, useRef, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import '../../../../../../node_modules/metismenujs/dist/metismenujs.css';
 import { useAppSelector } from '../../../../../hooks/hooks';
 import { DASHBOARD_ROUTES } from '../../../constants';
 import MenuItem from './MenuItem';

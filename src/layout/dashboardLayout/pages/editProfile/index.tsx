@@ -1,9 +1,9 @@
 import {
-	faCamera,
-	faEnvelope,
-	faFloppyDisk,
-	faPhone,
-	faUser,
+    faCamera,
+    faEnvelope,
+    faFloppyDisk,
+    faPhone,
+    faUser,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { updateProfile } from 'firebase/auth';
@@ -15,6 +15,8 @@ import { updateUserProfile } from '../../../../services/firebase/profile';
 import { uploadProfilePicture } from '../../../../services/firebase/storage';
 import { updateUserData } from '../../../../services/firebase/users';
 import { setUser } from '../../../../store/slices/authSlice';
+import { migrateFromFillow } from '../../../../utils/migration';
+import { seedDatabase } from '../../../../utils/seeder';
 
 import { getImmediateProfilePictureUrl } from '../../../../utils/profilePicture';
 
@@ -118,7 +120,6 @@ const EditProfile = () => {
 				// Also update the Firebase Auth profile for global sync
 				updateProfile(auth.currentUser!, {
 					displayName: fullName,
-					photoURL: photoURL,
 				})
 			]);
 
@@ -324,7 +325,19 @@ const EditProfile = () => {
 							</div>
 						</div>
 
-						<div className='mt-8 flex justify-end'>
+						<div className='mt-8 flex justify-end gap-3'>
+                            <button
+                                onClick={() => seedDatabase()}
+                                className='bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg transition-all duration-300 transform hover:-translate-y-1'
+                            >
+                                Seed Default Data
+                            </button>
+                            <button
+                                onClick={() => migrateFromFillow()}
+                                className='bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg transition-all duration-300 transform hover:-translate-y-1'
+                            >
+                                Copy from Fillow
+                            </button>
 							<button 
 								onClick={handleSaveChanges}
 								disabled={isSaving}

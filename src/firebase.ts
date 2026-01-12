@@ -11,13 +11,12 @@ import { getStorage } from 'firebase/storage';
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-	apiKey: 'AIzaSyBqb7qzprO3JoeFmaZpBy_CmRfXv_4Df5A',
-	authDomain: 'fillow-73cc0.firebaseapp.com',
-	projectId: 'fillow-73cc0',
-	storageBucket: 'fillow-73cc0.firebasestorage.app',
-	messagingSenderId: '863043103885',
-	appId: '1:863043103885:web:af46408e94b858a81186c4',
-	measurementId: 'G-XW7DW6JG41',
+  apiKey: "AIzaSyCxrbMJA2_N4uG64KZ2C39Iu68vm2Huc7M",
+  authDomain: "dashora-free.firebaseapp.com",
+  projectId: "dashora-free",
+  storageBucket: "dashora-free.firebasestorage.app",
+  messagingSenderId: "509710943641",
+  appId: "1:509710943641:web:b4fc26969823b0f24bff08"
 };
 
 // Initialize Firebase only if it hasn't been initialized already

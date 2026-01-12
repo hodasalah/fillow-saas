@@ -4,9 +4,18 @@ import { auth, db } from '../firebase';
 
 export const seedDatabase = async () => {
 	try {
-        console.log('Authenticating for seed...');
-        await signInAnonymously(auth);
-		console.log('Starting seeding...');
+        console.log('Starting seeding...');
+        const currentUser = auth.currentUser;
+        
+        // If not logged in, try to sign in (though user should be logged in from Edit Profile)
+        if (!currentUser) {
+             console.log('Authenticating for seed...');
+             await signInAnonymously(auth);
+        }
+        
+        const userId = auth.currentUser?.uid || 'local';
+        console.log(`Seeding for user: ${userId}`);
+
 		const batch = writeBatch(db);
 
 		// 1. Seed Projects
@@ -171,6 +180,44 @@ export const seedDatabase = async () => {
         });
 
 
+
+        // 8. Seed Alerts
+        const alertsCol = collection(db, 'alerts');
+        const alertsData = [
+            { category: 'System', code: 'SYS', message: 'Welcome to your new dashboard!', read: true, createdAt: serverTimestamp(), userId: userId },
+            { category: 'Security', code: 'SEC', message: 'Password updated successfully.', read: false, createdAt: serverTimestamp(), userId: userId },
+            { category: 'Updates', code: 'UPD', message: 'New features available in version 2.0.', read: false, createdAt: serverTimestamp(), userId: userId }
+        ];
+        alertsData.forEach(a => {
+            const ref = doc(alertsCol);
+            batch.set(ref, a);
+        });
+
+        // 9. Seed Teams
+        const teamsCol = collection(db, 'teams');
+        const teamsData = [
+            { name: 'Frontend Team', members: ['local', 'user_1'], projectCount: 5 },
+            { name: 'Marketing', members: ['user_2'], projectCount: 2 }
+        ];
+        teamsData.forEach(t => {
+            const ref = doc(teamsCol);
+            batch.set(ref, t);
+        });
+
+        // 10. Seed UserProfiles (Mock for others)
+         const profilesCol = collection(db, 'userProfiles');
+         usersData.forEach(u => {
+             const ref = doc(profilesCol, u.uid);
+             batch.set(ref, {
+                 displayName: u.name,
+                 email: u.email,
+                 photoURL: u.profilePicture,
+                 role: 'Member',
+                 bio: 'Team member',
+                 phone: '123-456-7890'
+             });
+         });
+
 		await batch.commit();
 		console.log('Seeding complete!');
 		alert('Database seeded successfully! Please refresh the page.');
@@ -214,7 +261,13 @@ export const resetDatabase = async () => {
             'users', 
             'stories', 
             'notifications', 
-            'conversations'
+            'conversations',
+            'alerts',
+            'teams',
+            'userProfiles',
+            'alerts',
+            'teams',
+            'userProfiles'
         ];
 
         for (const path of collectionsToClear) {

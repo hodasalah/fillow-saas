@@ -24,16 +24,34 @@ export const uploadFile = async (file: File, path: string): Promise<string> => {
 };
 
 /**
- * Upload a profile picture for a specific user
- * @param userId The UID of the user
- * @param file The image file to upload
- * @returns The download URL
+ * Compress and convert image to Base64 (bypassing Storage)
+ * @param file The image file
+ * @returns Base64 string
  */
 export const uploadProfilePicture = async (userId: string, file: File): Promise<string> => {
-    // Standardize path: avatars/{userId}/{filename}
-    // We can also just use 'avatars/{userId}' if we want to overwrite
-    const extension = file.name.split('.').pop();
-    const fileName = `avatar.${extension}`;
-    const path = `avatars/${userId}/${fileName}`;
-    return uploadFile(file, path);
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = (event) => {
+            const img = new Image();
+            img.src = event.target?.result as string;
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                // Resize if too large to save space in Firestore (max 1MB doc size)
+                const MAX_WIDTH = 500;
+                const scale = MAX_WIDTH / img.width;
+                canvas.width = MAX_WIDTH;
+                canvas.height = img.height * scale;
+
+                const ctx = canvas.getContext('2d');
+                ctx?.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+                // Compress to JPEG 0.7 quality
+                const dataUrl = canvas.toDataURL('image/jpeg', 0.7);
+                resolve(dataUrl);
+            };
+            img.onerror = (err) => reject(err);
+        };
+        reader.onerror = (err) => reject(err);
+    });
 };

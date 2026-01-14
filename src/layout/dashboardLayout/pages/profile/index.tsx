@@ -54,20 +54,20 @@ const Profile: React.FC = () => {
             <div className='container mx-auto w-full p-6'>
                 <div className='w-full grid grid-cols-1 lg:grid-cols-[1fr_2fr_1fr] gap-6'>
                     {/* Left Column - Desktop */}
-                    <div className='hidden lg:block space-y-6'>
+                    <div className='hidden lg:block space-y-6 min-w-0'>
                         <ActivitiesCard />
                         <TeamCard />
                         <FeaturedPostCard />
                     </div>
 
                     {/* Middle Column - Desktop */}
-                    <div className='hidden lg:block space-y-6'>
+                    <div className='hidden lg:block space-y-6 min-w-0'>
                         <FeaturedStories stories={stories} />
                         <ProjectsGallery projects={projects} />
                     </div>
 
                     {/* Right Column - Desktop */}
-                    <div className='hidden lg:block space-y-6'>
+                    <div className='hidden lg:block space-y-6 min-w-0'>
                         <ProfileCard />
                         <AboutMeCard />
                         <SkillsCard />

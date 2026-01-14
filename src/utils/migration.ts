@@ -81,12 +81,15 @@ export const migrateFromFillow = async () => {
                              data.participants = [];
                         }
                         
-                        // If it has participants, replace the "other" one with me, or just add me
-                        // Ideally we want [me, other]
-                        // If the array has 'local' or 'user_X', replace them?
-                        // Let's just blindly add currentUserId if not present
+                        // AGGRESSIVE FIX: Ensure current user is in the list
+                        // If the list is empty or doesn't have me, add me.
                         if (!data.participants.includes(currentUserId)) {
                              data.participants.push(currentUserId);
+                        }
+                        
+                        // Also make sure there's at least one other person (mock if needed)
+                        if (data.participants.length < 2) {
+                            data.participants.push('mock_user_id');
                         }
                     }
 

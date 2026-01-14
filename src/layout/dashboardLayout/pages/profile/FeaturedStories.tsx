@@ -1,6 +1,6 @@
 import {
-    faChevronLeft,
-    faChevronRight,
+	faChevronLeft,
+	faChevronRight,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState } from 'react';
@@ -30,7 +30,7 @@ const FeaturedStories: React.FC<FeaturedStoriesProps> = ({ stories }) => {
 	};
 
 	return (
-		<div className='relative px-8 py-6 bg-white rounded-xl shadow-lg'>
+		<div className='relative px-6 py-6 bg-white rounded-xl shadow-lg'>
 			<div className='flex items-center justify-between mb-4'>
 				<h2 className='text-2xl font-bold text-gray-800'>
 					Featured Stories
@@ -80,12 +80,12 @@ const FeaturedStories: React.FC<FeaturedStoriesProps> = ({ stories }) => {
 												alt={story.title || `Story ${slideIndex * 4 + index + 1}`}
 												className='w-full h-full object-cover transform group-hover:scale-105 transition-all duration-300'
 											/>
-											<div className='absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent' />
-											<div className='absolute bottom-0 left-0 p-4 text-white'>
-												<h3 className='font-semibold text-lg'>
+											<div className='absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent'/>
+											<div className='absolute bottom-0 left-0 p-3 text-white'>
+												<h3 className='font-semibold text-sm line-clamp-1'>
 													{story.title || 'Story Title'}
 												</h3>
-												<p className='text-sm'>
+												<p className='text-xs opacity-90 line-clamp-1'>
 													{story.authorName || 'Author Name'}
 												</p>
 											</div>

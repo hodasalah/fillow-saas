@@ -16,7 +16,6 @@ const MenuItem: React.FC<MenuItemProps> = ({
 	return (
 		<li 
             className={`menuItem ${isActiveParent ? 'mm-active' : ''}`}
-            data-active={isActiveParent}
         >
 			<a
 				className="has-arrow select-none"
@@ -28,12 +27,6 @@ const MenuItem: React.FC<MenuItemProps> = ({
 						setActiveItem(isActiveParent ? '' : item.id);
 					}
 				}}
-				style={{ 
-                    display: 'flex', 
-                    alignItems: 'center', 
-                    width: '100%',
-                    backgroundColor: isActiveParent ? 'var(--rgba-primary-1)' : 'transparent'
-                }}
 			>
 				<FontAwesomeIcon icon={item.icon as IconProp} />
 				<span className="ml-3">{item.name}</span>
@@ -41,19 +34,12 @@ const MenuItem: React.FC<MenuItemProps> = ({
 			
 			{item.hasSubMenu && item.submenu && (
 				<ul 
-					className={`flex-col list-none m-0 p-0 w-full transition-all duration-300 ${isActiveParent ? 'flex' : 'hidden'}`}
-					style={{ 
-						backgroundColor: '#333', // Dark background for debugging
-						padding: '8px 0',
-                        borderLeft: '4px solid var(--primary)',
-                        minHeight: isActiveParent ? '20px' : '0'
-					}}
+					className={`submenu-list ${isActiveParent ? 'mm-show' : ''}`}
 				>
 					{item.submenu.map((submenuItem, index) => {
 						const subLink = submenuItem.link === '' ? '' : submenuItem.link;
 						const fullPath = subLink ? `/dashboard/${subLink}` : '/dashboard';
 						
-						// Exact matching for better accuracy
 						const currentPath = location.pathname.replace(/\/+$/, '') || '/dashboard';
 						const normalizedFullPath = fullPath.replace(/\/+$/, '') || '/dashboard';
 						const isSubActive = currentPath === normalizedFullPath;
@@ -61,7 +47,7 @@ const MenuItem: React.FC<MenuItemProps> = ({
 						return (
 							<li
 								key={`${item.id}-submenu-${index}`}
-								className={`${isSubActive ? 'mm-active' : ''} w-full`}
+								className={isSubActive ? 'mm-active' : ''}
 								onClick={(e) => e.stopPropagation()}
 							>
 								<NavLink
@@ -69,14 +55,6 @@ const MenuItem: React.FC<MenuItemProps> = ({
 									className={({ isActive }) =>
 										`nav-link ${isActive || isSubActive ? 'active' : ''}`
 									}
-									style={{ 
-                                        display: 'block', 
-                                        width: '100%',
-                                        padding: '10px 20px 10px 60px',
-                                        color: isSubActive ? 'var(--primary)' : '#fff', // White text on dark bg
-                                        textDecoration: 'none',
-                                        fontSize: '0.875rem'
-                                    }}
 									end={submenuItem.link === ''}
 								>
 									{submenuItem.title}

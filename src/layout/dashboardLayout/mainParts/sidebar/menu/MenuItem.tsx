@@ -15,10 +15,10 @@ const MenuItem: React.FC<MenuItemProps> = ({
 
 	return (
 		<li 
-            className={`menuItem ${isActiveParent ? 'mm-active' : ''}`}
+            className={`menuItem ${isActiveParent ? 'ds-active-parent' : ''}`}
         >
 			<a
-				className="has-arrow select-none"
+				className="ds-dropdown-toggle select-none"
 				href="#"
 				onClick={(e) => {
 					e.preventDefault();
@@ -36,7 +36,7 @@ const MenuItem: React.FC<MenuItemProps> = ({
 			
 			{isActiveParent && item.hasSubMenu && item.submenu && (
 				<ul 
-					className="submenu-list mm-show"
+					className="ds-submenu-list ds-expanded"
 					style={{ 
 						display: 'flex', 
                         flexDirection: 'column',

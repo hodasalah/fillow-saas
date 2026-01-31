@@ -143,14 +143,15 @@ const MenuList = () => {
 				const subLink = sub.link === '' ? '' : sub.link;
 				const fullPath = `/dashboard/${subLink}`.replace(/\/+$/, '') || '/dashboard';
 				const normalizedFull = fullPath.replace(/\/+$/, '') || '/dashboard';
-				return normalizedCurrent === normalizedFull;
+				// Robust check: if current path ends with or exactly matches the normalized path
+				return normalizedCurrent === normalizedFull || normalizedCurrent.endsWith(normalizedFull);
 			})
 		);
 
 		if (activeParent) {
 			setActiveItem(activeParent.id);
-		} else if (normalizedCurrent === '/dashboard' || normalizedCurrent === '/dashboard/') {
-            // Specifically force dashboard-item for the root dashboard path
+		} else if (normalizedCurrent.includes('/dashboard')) {
+            // Fallback: if we are anywhere in /dashboard and no specific sub-item matched, default to dashboard-item
             setActiveItem('dashboard-item');
         }
 	}, [location.pathname]);
@@ -211,6 +212,11 @@ const MenuList = () => {
 					))}
 				</ul>
 			)}
+            
+            {/* DIAGNOSTIC INFO - FOR HOSTED ENV DEBUGGING */}
+            <div style={{ fontSize: '8px', color: '#ccc', padding: '10px', marginTop: 'auto' }}>
+                Path: {location.pathname} | Active: {activeItem}
+            </div>
 		</div>
 	);
 };

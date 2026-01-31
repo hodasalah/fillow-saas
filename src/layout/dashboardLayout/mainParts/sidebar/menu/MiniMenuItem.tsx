@@ -33,7 +33,7 @@ const MiniMenuItem: React.FC<MenuItemProps> = ({
 	return (
 		<li
 			className={`menuItemMobile  ${
-				activeItem === item.id ? 'mm-active' : ''
+				activeItem === item.id ? 'ds-active-parent' : ''
 			}`}
 			onClick={() => {
 				onItemClick?.(item.id);
@@ -58,7 +58,7 @@ const MiniMenuItem: React.FC<MenuItemProps> = ({
 								<li
 									key={`${item.id}-submenu-${index}`}
 									className={`flex flex-col my-[5px] mx-0 pr-[5px] transition-all duration-300 ease-in-out ${
-										isActive ? 'mm-active' : ''
+										isActive ? 'ds-active-parent' : ''
 									}`}
 								>
 									<NavLink

@@ -62,14 +62,13 @@
   transition: all 0.3s ease;
 }
 
-/* POINTING DOWN WHEN ACTIVE (TRIANGLE RE-STYLE) */
+/* POINTING DOWN WHEN ACTIVE */
 .menuItem.mm-active>a:after {
   border-left: 4px solid transparent;
   border-right: 4px solid transparent;
   border-top: 5px solid var(--primary);
   border-bottom: 0;
   transform: translateY(-50%);
-  /* Center vertically without rotation */
 }
 
 .menuItem>a>svg {
@@ -85,21 +84,12 @@
 /* Submenu Styling */
 .submenu-list {
   display: none;
+  /* Controlled by React inline style */
   flex-direction: column;
   list-style: none;
   padding: 5px 0;
   margin: 0;
   width: 100%;
-  overflow: visible !important;
-}
-
-/* Force visibility and height when parent is active */
-.menuItem.mm-active .submenu-list {
-  display: flex !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-  height: auto !important;
-  max-height: none !important;
 }
 
 .nav-link {

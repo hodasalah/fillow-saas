@@ -1,13 +1,13 @@
 import { faBootstrap } from '@fortawesome/free-brands-svg-icons';
 import {
-    faChartLine,
-    faCircleInfo,
-    faFileLines,
-    faHeart,
-    faHouse,
-    faTable,
-    faUser,
-    IconDefinition,
+	faChartLine,
+	faCircleInfo,
+	faFileLines,
+	faHeart,
+	faHouse,
+	faTable,
+	faUser,
+	IconDefinition,
 } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';

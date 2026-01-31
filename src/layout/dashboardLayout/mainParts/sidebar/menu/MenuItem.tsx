@@ -29,12 +29,24 @@ const MenuItem: React.FC<MenuItemProps> = ({
 				}}
 			>
 				<FontAwesomeIcon icon={item.icon as IconProp} />
-				<span className="ml-3">{item.name}</span>
+				<span className="ml-3">
+                    {item.name}
+                </span>
 			</a>
 			
-			{item.hasSubMenu && item.submenu && (
+			{isActiveParent && item.hasSubMenu && item.submenu && (
 				<ul 
-					className={`submenu-list ${isActiveParent ? 'mm-show' : ''}`}
+					className="submenu-list mm-show"
+					style={{ 
+						display: 'flex', 
+                        flexDirection: 'column',
+                        listStyle: 'none',
+                        padding: '5px 0',
+                        margin: 0,
+                        width: '100%',
+                        visibility: 'visible',
+                        opacity: 1
+					}}
 				>
 					{item.submenu.map((submenuItem, index) => {
 						const subLink = submenuItem.link === '' ? '' : submenuItem.link;
@@ -47,7 +59,7 @@ const MenuItem: React.FC<MenuItemProps> = ({
 						return (
 							<li
 								key={`${item.id}-submenu-${index}`}
-								className={isSubActive ? 'mm-active' : ''}
+								style={{ width: '100%' }}
 								onClick={(e) => e.stopPropagation()}
 							>
 								<NavLink

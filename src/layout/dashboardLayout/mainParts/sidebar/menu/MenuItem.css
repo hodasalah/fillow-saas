@@ -43,35 +43,39 @@
   border-bottom-right-radius: 3.653rem;
   background-color: var(--primary);
   display: inline-block;
-  transition: all 0.5s;
 }
 
-/* Dropdown Arrow Indicator */
+/* Dropdown Triangle Indicator */
+/* POINTING RIGHT WHEN CLOSED */
 .menuItem>a:after {
   content: "";
   display: inline-block;
-  width: 0.4rem;
-  height: 0.4rem;
-  border-width: 1.5px 1.5px 0 0;
-  border-style: solid;
-  border-color: #c8c8c8;
+  width: 0;
+  height: 0;
+  border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+  border-left: 5px solid #c8c8c8;
   position: absolute;
   right: 1.5rem;
   top: 50%;
-  transform: translateY(-50%) rotate(45deg);
-  transition: all 0.3s;
+  transform: translateY(-50%);
+  transition: all 0.3s ease;
 }
 
+/* POINTING DOWN WHEN ACTIVE (TRIANGLE RE-STYLE) */
 .menuItem.mm-active>a:after {
-  transform: translateY(-70%) rotate(135deg);
-  border-color: var(--primary);
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 5px solid var(--primary);
+  border-bottom: 0;
+  transform: translateY(-50%);
+  /* Center vertically without rotation */
 }
 
 .menuItem>a>svg {
   color: #96a0af;
   font-size: 1.2rem;
   margin-right: 1.25rem;
-  transition: all 0.3s;
 }
 
 .menuItem.mm-active>a>svg {
@@ -86,10 +90,16 @@
   padding: 5px 0;
   margin: 0;
   width: 100%;
+  overflow: visible !important;
 }
 
-.submenu-list.mm-show {
-  display: flex;
+/* Force visibility and height when parent is active */
+.menuItem.mm-active .submenu-list {
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  height: auto !important;
+  max-height: none !important;
 }
 
 .nav-link {

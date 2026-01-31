@@ -129,7 +129,7 @@ const MenuList = () => {
 	const isMobileOpen = useAppSelector((state) => state.sidebar.isMobileOpen);
 	const location = useLocation();
 
-	const [activeItem, setActiveItem] = useState<string | null>(null);
+	const [activeItem, setActiveItem] = useState<string | null>('dashboard-item');
 	const [openDropdown, setOpenDropdown] = useState<string | null>(null);
 	const dropdownlistRef = useRef<HTMLDivElement>(null);
 
@@ -142,13 +142,17 @@ const MenuList = () => {
 			item.submenu?.some((sub) => {
 				const subLink = sub.link === '' ? '' : sub.link;
 				const fullPath = `/dashboard/${subLink}`.replace(/\/+$/, '') || '/dashboard';
-				return normalizedCurrent === fullPath;
+				const normalizedFull = fullPath.replace(/\/+$/, '') || '/dashboard';
+				return normalizedCurrent === normalizedFull;
 			})
 		);
 
 		if (activeParent) {
 			setActiveItem(activeParent.id);
-		}
+		} else if (normalizedCurrent === '/dashboard' || normalizedCurrent === '/dashboard/') {
+            // Specifically force dashboard-item for the root dashboard path
+            setActiveItem('dashboard-item');
+        }
 	}, [location.pathname]);
 
 	const handleClick = (id: string) => {

@@ -9,12 +9,8 @@ import {
     faUser,
     IconDefinition,
 } from '@fortawesome/free-solid-svg-icons';
-import MetisMenu from '@metismenu/react';
-// @ts-ignore
-import 'metismenujs/style';
 import { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { v4 as uuidv4 } from 'uuid';
 import { useAppSelector } from '../../../../../hooks/hooks';
 import { DASHBOARD_ROUTES } from '../../../constants';
 import MenuItem from './MenuItem';
@@ -27,7 +23,7 @@ export interface MenuItemProps {
 		icon: IconDefinition;
 		name: string;
 		hasSubMenu: boolean;
-		submenu?: { title: string; link: string }[];
+		submenu?: { id: string; title: string; link: string }[];
 	};
 	index?: number;
 	activeItem: string;
@@ -35,123 +31,95 @@ export interface MenuItemProps {
 	onItemClick?: (id: string) => void;
 	toggleDropdown?: (id: string) => void;
 	openDropdown?: string | null;
-	setOpenDropdown: (id: string) => void;
+	setOpenDropdown: (id: string | null) => void;
 }
 
 const list = [
 	{
-		id: uuidv4(),
+		id: 'dashboard-item',
 		icon: faHouse,
 		name: 'Dashboard',
 		hasSubMenu: true,
 		submenu: [
-			{ id: uuidv4(), title: 'Dashboard', link: DASHBOARD_ROUTES.HOME },
-			{ id: uuidv4(), title: 'Chat', link: DASHBOARD_ROUTES.CHAT },
-			{ id: uuidv4(), title: 'Profile', link: DASHBOARD_ROUTES.PROFILE },
-			{
-				id: uuidv4(),
-				title: 'Projects',
-				link: DASHBOARD_ROUTES.PROJECTS,
-			},
+			{ id: 'sub-dash', title: 'Dashboard', link: DASHBOARD_ROUTES.HOME },
+			{ id: 'sub-chat', title: 'Chat', link: DASHBOARD_ROUTES.CHAT },
+			{ id: 'sub-profile', title: 'Profile', link: DASHBOARD_ROUTES.PROFILE },
+			{ id: 'sub-projects', title: 'Projects', link: DASHBOARD_ROUTES.PROJECTS },
 		],
 	},
 	{
-		id: uuidv4(),
+		id: 'cms-item',
 		icon: faChartLine,
 		name: 'CMS',
 		hasSubMenu: true,
 		submenu: [
-			{ id: uuidv4(), title: 'Content', link: 'content' },
-			{ id: uuidv4(), title: 'Add Content', link: 'add-content' },
-			{ id: uuidv4(), title: 'Menus', link: 'menus' },
-			{ id: uuidv4(), title: 'Email Template', link: 'email-template' },
-			{ id: uuidv4(), title: 'Add Email', link: 'add-email' },
-			{ id: uuidv4(), title: 'Blog', link: 'blog' },
-			{ id: uuidv4(), title: 'Add Blog', link: 'add-blog' },
-			{ id: uuidv4(), title: 'Blog Category', link: 'blog-category' },
+			{ id: 'sub-content', title: 'Content', link: 'content' },
+			{ id: 'sub-add-content', title: 'Add Content', link: 'add-content' },
 		],
 	},
 	{
-		id: uuidv4(),
+		id: 'apps-item',
 		icon: faCircleInfo,
 		name: 'Apps',
 		hasSubMenu: true,
 		submenu: [
-			{ id: uuidv4(), title: 'Profile', link: 'profile' },
-			{ id: uuidv4(), title: 'Edit Profile', link: 'edit-profile' },
-			{ id: uuidv4(), title: 'Post Details', link: 'post-details' },
-			{ id: uuidv4(), title: 'Email', link: 'email' },
-			{ id: uuidv4(), title: 'Calendar', link: 'calendar' },
-			{ id: uuidv4(), title: 'Shop', link: 'shop' },
+			{ id: 'sub-app-profile', title: 'Profile', link: 'profile' },
+			{ id: 'sub-app-edit', title: 'Edit Profile', link: 'edit-profile' },
 		],
 	},
 	{
-		id: uuidv4(),
+		id: 'charts-item',
 		icon: faChartLine,
 		name: 'Charts',
 		hasSubMenu: true,
 		submenu: [
-			{ id: uuidv4(), title: 'Chart', link: 'chart' },
-			{ id: uuidv4(), title: 'Chart 2', link: 'chart2' },
-			{ id: uuidv4(), title: 'Chart 3', link: 'chart3' },
+			{ id: 'sub-chart-1', title: 'Chart', link: 'chart' },
 		],
 	},
 	{
-		id: uuidv4(),
+		id: 'bootstrap-item',
 		icon: faBootstrap,
 		name: 'Bootstrap',
 		hasSubMenu: true,
 		submenu: [
-			{ id: uuidv4(), title: 'Bootstrap', link: 'bootstrap' },
-			{ id: uuidv4(), title: 'Bootstrap 2', link: 'bootstrap2' },
-			{ id: uuidv4(), title: 'Bootstrap 3', link: 'bootstrap3' },
+			{ id: 'sub-boot-1', title: 'Bootstrap', link: 'bootstrap' },
 		],
 	},
 	{
-		id: uuidv4(),
+		id: 'plugins-item',
 		icon: faHeart,
 		name: 'Plugins',
 		hasSubMenu: true,
 		submenu: [
-			{ id: uuidv4(), title: 'plugin-1', link: 'plugin-1' },
-			{ id: uuidv4(), title: 'plugin-2', link: 'plugin-2' },
-			{ id: uuidv4(), title: 'plugin-3', link: 'plugin-3' },
+			{ id: 'sub-plugin-1', title: 'plugin-1', link: 'plugin-1' },
 		],
 	},
 	{
-		id: uuidv4(),
+		id: 'widget-item',
 		icon: faUser,
 		name: 'Widget',
 		hasSubMenu: true,
 		submenu: [
-			{ id: uuidv4(), title: 'Edit Profile', link: 'edit-profile' },
-			{ id: uuidv4(), title: 'signOut', link: 'signout' },
+			{ id: 'sub-widget-edit', title: 'edit-profile-widget', link: 'edit-profile' },
+			{ id: 'sub-widget-signout', title: 'signOut', link: 'signout' },
 		],
 	},
 	{
-		id: uuidv4(),
+		id: 'forms-item',
 		icon: faFileLines,
 		name: 'Forms',
 		hasSubMenu: true,
 		submenu: [
-			{ id: uuidv4(), title: 'Form Elements', link: 'form-elements' },
-			{ id: uuidv4(), title: 'Form Layouts', link: 'form-layouts' },
-			{
-				id: uuidv4(),
-				title: 'Form Validation',
-				link: '/form-validation',
-			},
-			{ id: uuidv4(), title: 'Form Advanced', link: 'form-advanced' },
+			{ id: 'sub-form-elements', title: 'Form Elements', link: 'form-elements' },
 		],
 	},
 	{
-		id: uuidv4(),
+		id: 'table-item',
 		icon: faTable,
 		name: 'Table',
 		hasSubMenu: true,
 		submenu: [
-			{ id: uuidv4(), title: 'Table Elements', link: 'table-elements' },
-			{ id: uuidv4(), title: 'Table Data', link: 'table-data' },
+			{ id: 'sub-table-elements', title: 'Table Elements', link: 'table-elements' },
 		],
 	},
 ];
@@ -159,8 +127,8 @@ const list = [
 const MenuList = () => {
 	const mode = useAppSelector((state) => state.sidebar.mode);
 	const isMobileOpen = useAppSelector((state) => state.sidebar.isMobileOpen);
-
 	const location = useLocation();
+
 	const [activeItem, setActiveItem] = useState<string | null>(null);
 	const [openDropdown, setOpenDropdown] = useState<string | null>(null);
 	const dropdownlistRef = useRef<HTMLDivElement>(null);
@@ -168,18 +136,14 @@ const MenuList = () => {
 	// Sync active menu with current URL
 	useEffect(() => {
 		const currentPath = location.pathname;
-		// Find the parent item that contains the current path link
+		const normalizedCurrent = currentPath.replace(/\/+$/, '') || '/dashboard';
+		
 		const activeParent = list.find((item) =>
 			item.submenu?.some((sub) => {
-				const fullPath = `/dashboard/${sub.link}`;
-				// Check for exact match or potential sub-routes if needed
-				// For now, strict match or trailing slash handling
-				return (
-					currentPath === fullPath ||
-					currentPath === fullPath + '/' ||
-					(sub.link === '' && currentPath === '/dashboard') // Handle root dashboard case
-				);
-			}),
+				const subLink = sub.link === '' ? '' : sub.link;
+				const fullPath = `/dashboard/${subLink}`.replace(/\/+$/, '') || '/dashboard';
+				return normalizedCurrent === fullPath;
+			})
 		);
 
 		if (activeParent) {
@@ -187,40 +151,35 @@ const MenuList = () => {
 		}
 	}, [location.pathname]);
 
-	// set active link in mini sidebar
 	const handleClick = (id: string) => {
 		setActiveItem(id);
 	};
-	// click dropdown when be outside of mini sidebar
+
 	useEffect(() => {
 		const closeMenu = (e: MouseEvent) => {
 			if (
 				openDropdown !== null &&
 				dropdownlistRef?.current &&
-				!(dropdownlistRef.current as HTMLElement).contains(
-					e.target as Node,
-				)
+				!dropdownlistRef.current.contains(e.target as Node)
 			) {
 				setOpenDropdown(null);
 			}
 		};
 		document.addEventListener('mousedown', closeMenu);
-		return () => {
-			document.removeEventListener('mousedown', closeMenu);
-		};
+		return () => document.removeEventListener('mousedown', closeMenu);
 	}, [openDropdown]);
-	// Toggle a specific dropdown by id
 
 	const toggleDropdown = (id: string) => {
 		setOpenDropdown((prev) => (prev === id ? null : id));
 	};
+
 	const showFullMenu = mode === 'wide' || isMobileOpen;
 
 	return (
-		<div>
+		<div className="sidebar-menu-wrapper" style={{ height: 'calc(100vh - 120px)', overflowY: 'auto' }}>
 			{showFullMenu ? (
-				<div className={`overflow-hidden`}>
-					<MetisMenu className='metismenu relative flex flex-col pt-[0.9375rem]'>
+				<div className="sidebar-scrollable">
+					<ul className="relative flex flex-col pt-4 list-none m-0 p-0">
 						{list.map((item) => (
 							<MenuItem
 								key={item.id}
@@ -231,10 +190,10 @@ const MenuList = () => {
 								setOpenDropdown={setOpenDropdown}
 							/>
 						))}
-					</MetisMenu>
+					</ul>
 				</div>
 			) : (
-				<ul className={`relative flex-col pt-[0.9375rem] `}>
+				<ul className="relative flex flex-col pt-4 list-none m-0 p-0">
 					{list.map((item) => (
 						<MiniMenuItem
 							key={item.id}

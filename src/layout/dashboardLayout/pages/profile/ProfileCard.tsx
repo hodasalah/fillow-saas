@@ -7,6 +7,9 @@ import { updateUserData } from '../../../../services/firebase/users';
 import { setUser } from '../../../../store/slices/authSlice';
 import { getImmediateProfilePictureUrl } from '../../../../utils/profilePicture';
 
+import { updateProfile } from 'firebase/auth';
+import { auth } from '../../../../firebase';
+
 const ProfileCard: React.FC = () => {
 	const currentUser = useAppSelector((state) => state.auth.currentUser);
 	const [profile, setProfile] = useState<UserProfile | null>(null);
@@ -62,8 +65,6 @@ const ProfileCard: React.FC = () => {
             console.log('✅ Image uploaded to Storage. URL:', downloadURL);
 
             // 2. Update Firestore Collections and Auth Profile
-            const { updateProfile } = await import('firebase/auth');
-            const { auth } = await import('../../../../firebase');
             
             if (!auth.currentUser) {
                 throw new Error('Firebase Auth user is missing despite being logged in.');

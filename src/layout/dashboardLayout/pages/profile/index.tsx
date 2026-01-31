@@ -10,6 +10,9 @@ import ProjectsGallery from './ProjectsGallery';
 import SkillsCard from './SkillsCard';
 import TeamCard from './TeamCard';
 
+import { fetchProjects } from '../../../../utils/fetchProjects';
+import { fetchStories } from '../../../../utils/fetchStories';
+
 const Profile: React.FC = () => {
     const mode = useAppSelector((state) => state.sidebar.mode);
     const isMobileView = useAppSelector((state) => state.sidebar.isMobileView);
@@ -21,8 +24,7 @@ const Profile: React.FC = () => {
         const loadData = async () => {
              if (!currentUser?.uid) return; // Don't fetch if no user
 
-             const { fetchStories } = await import('../../../../utils/fetchStories');
-             const { fetchProjects } = await import('../../../../utils/fetchProjects');
+             // Pass userId to fetch functions
              
              // Pass userId to fetch functions
              const storiesData = await fetchStories(currentUser.uid);

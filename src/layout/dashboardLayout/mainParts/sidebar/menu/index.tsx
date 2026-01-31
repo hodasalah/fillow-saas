@@ -13,6 +13,7 @@ import MetisMenu from '@metismenu/react';
 // @ts-ignore
 import 'metismenujs/style';
 import { useEffect, useRef, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import { useAppSelector } from '../../../../../hooks/hooks';
 import { DASHBOARD_ROUTES } from '../../../constants';
@@ -159,10 +160,32 @@ const MenuList = () => {
 	const mode = useAppSelector((state) => state.sidebar.mode);
 	const isMobileOpen = useAppSelector((state) => state.sidebar.isMobileOpen);
 
-	// active link in mini sidebar
-	const [activeItem, setActiveItem] = useState<string | null>(list[0].id);
+	const location = useLocation();
+	const [activeItem, setActiveItem] = useState<string | null>(null);
 	const [openDropdown, setOpenDropdown] = useState<string | null>(null);
 	const dropdownlistRef = useRef<HTMLDivElement>(null);
+
+	// Sync active menu with current URL
+	useEffect(() => {
+		const currentPath = location.pathname;
+		// Find the parent item that contains the current path link
+		const activeParent = list.find((item) =>
+			item.submenu?.some((sub) => {
+				const fullPath = `/dashboard/${sub.link}`;
+				// Check for exact match or potential sub-routes if needed
+				// For now, strict match or trailing slash handling
+				return (
+					currentPath === fullPath ||
+					currentPath === fullPath + '/' ||
+					(sub.link === '' && currentPath === '/dashboard') // Handle root dashboard case
+				);
+			}),
+		);
+
+		if (activeParent) {
+			setActiveItem(activeParent.id);
+		}
+	}, [location.pathname]);
 
 	// set active link in mini sidebar
 	const handleClick = (id: string) => {

@@ -3,7 +3,9 @@ import { createBrowserRouter } from 'react-router-dom';
 import App from '../App';
 import { NotFound } from '../components/errorPages';
 import PrivateRoute from '../components/privateRoute';
-import { EditProfile, Profile, Projects } from '../layout/dashboardLayout/pages';
+import EditProfile from '../layout/dashboardLayout/pages/editProfile';
+import Profile from '../layout/dashboardLayout/pages/profile';
+import Projects from '../layout/dashboardLayout/pages/projects';
 import HomeRedirect from '../layout/publicLayout/HomeRedirect';
 
 import { DashboardLayout } from '../layout/dashboardLayout';

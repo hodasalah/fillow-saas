@@ -2,6 +2,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { useEffect } from 'react';
 import { auth } from '../../firebase';
 import { useAppDispatch } from '../../hooks/hooks';
+import { createUserDocument, getUserData } from '../../services/firebase/users';
 import { setUser } from '../../store/slices/authSlice';
 import { setLoading } from '../../store/slices/loadingSlice';
 
@@ -24,7 +25,6 @@ const AuthListener = ({ children }: AuthListenerProps) => {
 		const unsubscribe = onAuthStateChanged(auth, async (user) => {
 			if (user) {
                 // Fetch full user data from Firestore to get bio, phone, etc.
-                const { getUserData, createUserDocument } = await import('../../services/firebase/users');
                 let userData = await getUserData(user.uid);
 
                 if (!userData) {

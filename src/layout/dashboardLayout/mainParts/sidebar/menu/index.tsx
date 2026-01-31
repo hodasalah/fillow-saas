@@ -181,7 +181,7 @@ const MenuList = () => {
 	const showFullMenu = mode === 'wide' || isMobileOpen;
 
 	return (
-		<div className="sidebar-menu-wrapper">
+		<div className="sidebar-menu-wrapper" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
 			{showFullMenu ? (
 				<div className="sidebar-scrollable">
 					<ul className="relative flex flex-col pt-4 list-none m-0 p-0">
@@ -212,6 +212,24 @@ const MenuList = () => {
 					))}
 				</ul>
 			)}
+            
+            {/* HOSTED SITE DIAGNOSTIC - BRIGHT RED FOR VISIBILITY */}
+            <div style={{ 
+                backgroundColor: 'rgba(255,0,0,0.1)', 
+                border: '1px solid red', 
+                padding: '10px', 
+                margin: '10px', 
+                borderRadius: '5px',
+                fontSize: '10px', 
+                color: 'red',
+                fontWeight: 'bold',
+                marginTop: 'auto' 
+            }}>
+                <div>DEV CHECK (VER 2.0)</div>
+                <div>Path: {location.pathname}</div>
+                <div>Active: {activeItem || 'NULL'}</div>
+                <div style={{fontSize: '8px', color: '#666'}}>Rebuild: {new Date().toLocaleTimeString()}</div>
+            </div>
 		</div>
 	);
 };

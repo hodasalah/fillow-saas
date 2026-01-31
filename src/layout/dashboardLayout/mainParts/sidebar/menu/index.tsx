@@ -181,7 +181,7 @@ const MenuList = () => {
 	const showFullMenu = mode === 'wide' || isMobileOpen;
 
 	return (
-		<div className="sidebar-menu-wrapper" style={{ height: 'calc(100vh - 120px)', overflowY: 'auto' }}>
+		<div className="sidebar-menu-wrapper">
 			{showFullMenu ? (
 				<div className="sidebar-scrollable">
 					<ul className="relative flex flex-col pt-4 list-none m-0 p-0">
@@ -212,11 +212,6 @@ const MenuList = () => {
 					))}
 				</ul>
 			)}
-            
-            {/* DIAGNOSTIC INFO - FOR HOSTED ENV DEBUGGING */}
-            <div style={{ fontSize: '8px', color: '#ccc', padding: '10px', marginTop: 'auto' }}>
-                Path: {location.pathname} | Active: {activeItem}
-            </div>
 		</div>
 	);
 };

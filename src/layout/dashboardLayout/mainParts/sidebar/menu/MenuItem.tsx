@@ -36,10 +36,10 @@ const MenuItem: React.FC<MenuItemProps> = ({
 				<span className=''>{item.name}</span>
 			</a>
 			<ul
-				className={`metismenu relative flex flex-col transition-all duration-300 ease-in-out px-0 overflow-hidden ${
+				className={`relative flex flex-col transition-all duration-300 ease-in-out px-0 overflow-hidden ${
 					item.id === activeItem
-						? 'max-h-[500px] opacity-100 py-2'
-						: 'max-h-0 opacity-0 py-0'
+						? 'max-h-[500px] opacity-100 py-2 mm-show'
+						: 'max-h-0 opacity-0 py-0 mm-collapse'
 				}`}
 			>
 				{item.hasSubMenu &&

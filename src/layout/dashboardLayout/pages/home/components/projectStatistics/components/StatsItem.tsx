@@ -1,4 +1,4 @@
-const StatisticItem = ({
+const StatsItem = ({
 	value,
 	label,
 	icon,
@@ -15,4 +15,4 @@ const StatisticItem = ({
 		</div>
 	</div>
 );
-export default StatisticItem;
+export default StatsItem;

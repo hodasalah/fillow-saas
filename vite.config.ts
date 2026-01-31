@@ -17,7 +17,15 @@ export default defineConfig({
 				entryFileNames: 'assets/[name].js',
 				chunkFileNames: 'assets/[name].js',
 				assetFileNames: 'assets/[name].[ext]',
+				manualChunks: {
+					vendor: ['react', 'react-dom', 'react-router-dom'],
+					firebase: ['firebase/app', 'firebase/auth', 'firebase/firestore', 'firebase/storage'],
+					charts: ['apexcharts', 'react-apexcharts'],
+					framer: ['framer-motion'],
+				},
 			},
 		},
+		chunkSizeWarningLimit: 1000,
+
 	},
 });

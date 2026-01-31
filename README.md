@@ -2,6 +2,24 @@
 
 A modern, feature-rich admin dashboard built with React, TypeScript, and Firebase. This application provides a comprehensive suite of tools for managing users, communications, and analytics.
 
+## Live Demo
+
+🚀 **Access the live application here:** [https://dashora-free.web.app](https://dashora-free.web.app)
+
+> **Important:** To access the dashboard, you must **Login with Google** or create an account. The dashboard is protected and requires authentication.
+
+### Available Routes
+
+**Public Pages:**
+- [`/login`](https://dashora-free.web.app/login) - User Login
+- [`/signup`](https://dashora-free.web.app/signup) - Create Account
+
+**Dashboard (Requires Login):**
+- [`/dashboard`](https://dashora-free.web.app/dashboard) - Main Overview
+- [`/dashboard/projects`](https://dashora-free.web.app/dashboard/projects) - Project Management
+- [`/dashboard/chat`](https://dashora-free.web.app/dashboard/chat) - Real-time Chat
+- [`/dashboard/profile`](https://dashora-free.web.app/dashboard/profile) - User Profile
+
 ## Features
 
 ### Authentication

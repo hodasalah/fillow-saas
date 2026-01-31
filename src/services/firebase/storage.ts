@@ -11,14 +11,23 @@ import { storage } from '../../firebase';
  * @param path The path in storage (e.g., 'profiles/userid/avatar.jpg')
  * @returns The download URL of the uploaded file
  */
-export const uploadFile = async (file: File, path: string): Promise<string> => {
+/**
+ * Upload a file to Firebase Storage
+ * @param data The file or blob to upload
+ * @param path The path in storage (e.g., 'profiles/userid/avatar.jpg')
+ * @returns The download URL of the uploaded file
+ */
+export const uploadFile = async (data: Blob | File, path: string): Promise<string> => {
 	try {
         const storageRef = ref(storage, path);
-        const snapshot = await uploadBytes(storageRef, file);
+        // Add explicit content type if it exists on the data
+        const metadata = (data as any).type ? { contentType: (data as any).type } : undefined;
+        
+        const snapshot = await uploadBytes(storageRef, data, metadata);
         const downloadURL = await getDownloadURL(snapshot.ref);
         return downloadURL;
 	} catch (error) {
-		console.error('Error uploading file:', error);
+		console.error('Error uploading file to Firebase Storage:', error);
 		throw error;
 	}
 };
@@ -35,9 +44,9 @@ export const uploadProfilePicture = async (userId: string, file: File): Promise<
         reader.onload = (event) => {
             const img = new Image();
             img.src = event.target?.result as string;
-            img.onload = () => {
+            img.onload = async () => {
                 const canvas = document.createElement('canvas');
-                // Resize if too large to save space in Firestore (max 1MB doc size)
+                // Resize if too large
                 const MAX_WIDTH = 500;
                 const scale = MAX_WIDTH / img.width;
                 canvas.width = MAX_WIDTH;
@@ -46,9 +55,20 @@ export const uploadProfilePicture = async (userId: string, file: File): Promise<
                 const ctx = canvas.getContext('2d');
                 ctx?.drawImage(img, 0, 0, canvas.width, canvas.height);
 
-                // Compress to JPEG 0.7 quality
-                const dataUrl = canvas.toDataURL('image/jpeg', 0.7);
-                resolve(dataUrl);
+                // Convert to Blob and upload to Storage
+                canvas.toBlob(async (blob) => {
+                    if (!blob) {
+                        reject(new Error('Failed to create blob from canvas'));
+                        return;
+                    }
+                    try {
+                        const path = `profiles/${userId}/avatar.jpg`;
+                        const downloadURL = await uploadFile(blob as File, path);
+                        resolve(downloadURL);
+                    } catch (error) {
+                        reject(error);
+                    }
+                }, 'image/jpeg', 0.8);
             };
             img.onerror = (err) => reject(err);
         };

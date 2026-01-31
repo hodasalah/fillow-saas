@@ -46,17 +46,34 @@ const ProfileCard: React.FC = () => {
 
     const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
-        if (!file || !currentUser) return;
+        if (!file) return;
+        if (!currentUser) {
+            console.error('❌ Cannot upload: No currentUser in Redux state');
+            alert('You must be logged in to update your profile picture.');
+            return;
+        }
 
         try {
             setUploading(true);
+            console.log('🚀 Starting profile picture upload to Firebase Storage...', file.name);
+            
             // 1. Upload to Firebase Storage
             const downloadURL = await uploadProfilePicture(currentUser.uid, file);
+            console.log('✅ Image uploaded to Storage. URL:', downloadURL);
 
-            // 2. Update Firestore Collections
+            // 2. Update Firestore Collections and Auth Profile
+            const { updateProfile } = await import('firebase/auth');
+            const { auth } = await import('../../../../firebase');
+            
+            if (!auth.currentUser) {
+                throw new Error('Firebase Auth user is missing despite being logged in.');
+            }
+
+            console.log('📝 Updating Firestore and Auth Profile...');
             await Promise.all([
                 updateUserProfile(currentUser.uid, { photoURL: downloadURL }),
-                updateUserData(currentUser.uid, { photoURL: downloadURL })
+                updateUserData(currentUser.uid, { photoURL: downloadURL }),
+                updateProfile(auth.currentUser, { photoURL: downloadURL })
             ]);
 
             // 3. Update Redux Auth State (so header updates too)
@@ -70,12 +87,22 @@ const ProfileCard: React.FC = () => {
                 setProfile({ ...profile, photoURL: downloadURL });
             }
             
-            console.log('✅ Profile picture updated successfully:', downloadURL);
-        } catch (error) {
-            console.error('Error updating profile picture:', error);
-            alert('Failed to upload image. Please check your Firebase Storage rules.');
+            console.log('✨ Profile picture sync complete!');
+        } catch (error: any) {
+            console.error('❌ Error updating profile picture:', error);
+            
+            let errorMessage = 'Failed to upload image.';
+            if (error.code === 'storage/unauthorized') {
+                errorMessage += ' Access denied. Please check your Firebase Storage security rules.';
+            } else if (error.message) {
+                errorMessage += ` ${error.message}`;
+            }
+            
+            alert(errorMessage);
         } finally {
             setUploading(false);
+            // Reset file input so same file can be selected again if needed
+            if (fileInputRef.current) fileInputRef.current.value = '';
         }
     };
 

@@ -1,6 +1,6 @@
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { MenuItemProps } from '.';
 import './MenuItem.css';
@@ -11,62 +11,81 @@ const MenuItem: React.FC<MenuItemProps> = ({
 	activeItem,
 }) => {
 	const location = useLocation();
-	const ref = useRef<HTMLLIElement>(null);
-
-	useEffect(() => {
-		if (item.id === activeItem) {
-			ref?.current?.classList?.add('mm-active');
-			setActiveItem?.(item.id);
-		} else {
-			ref.current?.classList.remove('mm-active');
-		}
-	}, [item.id, activeItem, setActiveItem]);
+	const isActiveParent = item.id === activeItem;
 
 	return (
-		<li
-			className='menuItem'
-			ref={ref}
-			onClick={() =>
-				setActiveItem &&
-				setActiveItem(item.id === activeItem ? '' : item.id)
-			}
-		>
-			<a className={`has-arrow`}>
-				<FontAwesomeIcon icon={item.icon as IconProp} />
-				<span className=''>{item.name}</span>
-			</a>
-			<ul
-				className={`relative flex flex-col transition-all duration-300 ease-in-out px-0 overflow-hidden ${
-					item.id === activeItem
-						? 'max-h-[500px] opacity-100 py-2 mm-show'
-						: 'max-h-0 opacity-0 py-0 mm-collapse'
-				}`}
+		<li 
+            className={`menuItem ${isActiveParent ? 'mm-active' : ''}`}
+            data-active={isActiveParent}
+        >
+			<a
+				className="has-arrow select-none"
+				href="#"
+				onClick={(e) => {
+					e.preventDefault();
+					e.stopPropagation();
+					if (setActiveItem) {
+						setActiveItem(isActiveParent ? '' : item.id);
+					}
+				}}
+				style={{ 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    width: '100%',
+                    backgroundColor: isActiveParent ? 'var(--rgba-primary-1)' : 'transparent'
+                }}
 			>
-				{item.hasSubMenu &&
-					item.submenu &&
-					item.submenu.map((submenuItem, index) => {
-						const fullPath = `/dashboard/${submenuItem.link}`;
-						const isActive = location.pathname === fullPath;
+				<FontAwesomeIcon icon={item.icon as IconProp} />
+				<span className="ml-3">{item.name}</span>
+			</a>
+			
+			{item.hasSubMenu && item.submenu && (
+				<ul 
+					className={`flex-col list-none m-0 p-0 w-full transition-all duration-300 ${isActiveParent ? 'flex' : 'hidden'}`}
+					style={{ 
+						backgroundColor: '#333', // Dark background for debugging
+						padding: '8px 0',
+                        borderLeft: '4px solid var(--primary)',
+                        minHeight: isActiveParent ? '20px' : '0'
+					}}
+				>
+					{item.submenu.map((submenuItem, index) => {
+						const subLink = submenuItem.link === '' ? '' : submenuItem.link;
+						const fullPath = subLink ? `/dashboard/${subLink}` : '/dashboard';
+						
+						// Exact matching for better accuracy
+						const currentPath = location.pathname.replace(/\/+$/, '') || '/dashboard';
+						const normalizedFullPath = fullPath.replace(/\/+$/, '') || '/dashboard';
+						const isSubActive = currentPath === normalizedFullPath;
+
 						return (
 							<li
 								key={`${item.id}-submenu-${index}`}
-								className={`flex flex-col my-[5px] mx-0 pr-[5px] transition-all duration-300 ease-in-out ${
-									isActive ? 'mm-active' : ''
-								}`}
+								className={`${isSubActive ? 'mm-active' : ''} w-full`}
+								onClick={(e) => e.stopPropagation()}
 							>
 								<NavLink
 									to={fullPath}
 									className={({ isActive }) =>
-										`nav-link ${isActive ? 'active' : ''}`
+										`nav-link ${isActive || isSubActive ? 'active' : ''}`
 									}
-									end={submenuItem.title === 'Dashboard'}
+									style={{ 
+                                        display: 'block', 
+                                        width: '100%',
+                                        padding: '10px 20px 10px 60px',
+                                        color: isSubActive ? 'var(--primary)' : '#fff', // White text on dark bg
+                                        textDecoration: 'none',
+                                        fontSize: '0.875rem'
+                                    }}
+									end={submenuItem.link === ''}
 								>
 									{submenuItem.title}
 								</NavLink>
 							</li>
 						);
 					})}
-			</ul>
+				</ul>
+			)}
 		</li>
 	);
 };

@@ -1,6 +1,7 @@
 import { lazy, Suspense } from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 import App from '../App';
+import ErrorPage from '../components/ErrorPage';
 import { NotFound } from '../components/errorPages';
 import PrivateRoute from '../components/privateRoute';
 import EditProfile from '../layout/dashboardLayout/pages/editProfile';

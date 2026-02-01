@@ -55,10 +55,11 @@ export const uploadProfilePicture = async (userId: string, file: File): Promise<
                 const ctx = canvas.getContext('2d');
                 ctx?.drawImage(img, 0, 0, canvas.width, canvas.height);
 
-                // Convert to Blob and upload to Storage
+                // Convert to Blob and try to upload to Storage
                 canvas.toBlob(async (blob) => {
                     if (!blob) {
-                        reject(new Error('Failed to create blob from canvas'));
+                        // Fallback to direct Base64 if blob creation fails
+                        resolve(canvas.toDataURL('image/jpeg', 0.8));
                         return;
                     }
                     try {
@@ -66,7 +67,9 @@ export const uploadProfilePicture = async (userId: string, file: File): Promise<
                         const downloadURL = await uploadFile(blob as File, path);
                         resolve(downloadURL);
                     } catch (error) {
-                        reject(error);
+                        console.warn('Storage upload failed, falling back to Base64 in Firestore:', error);
+                        // Store image directly as Base64 in Firestore profile
+                        resolve(canvas.toDataURL('image/jpeg', 0.8));
                     }
                 }, 'image/jpeg', 0.8);
             };

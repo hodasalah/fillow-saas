@@ -10,7 +10,7 @@ import HomeRedirect from '../layout/publicLayout/HomeRedirect';
 
 import { DashboardLayout } from '../layout/dashboardLayout';
 import DashboardHome from '../layout/dashboardLayout/pages/home';
-const ChatPage = lazy(() => import('../layout/dashboardLayout/pages/chat'));
+const ChatPage = lazy(() => import('../layout/dashboardLayout/pages/chat/index.tsx'));
 const Login = lazy(() => import('../layout/publicLayout/AuthPages/Login'));
 const SignUp = lazy(() => import('../layout/publicLayout/AuthPages/SignUp'));
 

@@ -97,11 +97,10 @@ const list = [
 	{
 		id: 'widget-item',
 		icon: faUser,
-		name: 'Widget',
+		name: 'Widgets',
 		hasSubMenu: true,
 		submenu: [
-			{ id: 'sub-widget-edit', title: 'edit-profile-widget', link: 'edit-profile' },
-			{ id: 'sub-widget-signout', title: 'signOut', link: 'signout' },
+			{ id: 'sub-widget-1', title: 'Widgets', link: 'widgets' },
 		],
 	},
 	{

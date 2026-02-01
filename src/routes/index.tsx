@@ -13,6 +13,7 @@ import { DashboardLayout } from '../layout/dashboardLayout';
 import DashboardHome from '../layout/dashboardLayout/pages/home';
 const ChatPage = lazy(() => import('../layout/dashboardLayout/pages/chat/index.tsx'));
 const ChartsPage = lazy(() => import('../layout/dashboardLayout/pages/charts/index.tsx'));
+const WidgetsPage = lazy(() => import('../layout/dashboardLayout/pages/widgets/index.tsx'));
 const Login = lazy(() => import('../layout/publicLayout/AuthPages/Login'));
 const SignUp = lazy(() => import('../layout/publicLayout/AuthPages/SignUp'));
 
@@ -82,6 +83,14 @@ export const router = createBrowserRouter([
                                 element: (
                                     <Suspense fallback={<LoadingSpinner />}>
                                         <ChartsPage />
+                                    </Suspense>
+                                ),
+                            },
+                             {
+                                path: 'widgets',
+                                element: (
+                                    <Suspense fallback={<LoadingSpinner />}>
+                                        <WidgetsPage />
                                     </Suspense>
                                 ),
                             },

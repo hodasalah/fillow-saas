@@ -141,3 +141,106 @@
 .nav-link:hover:before {
   background: var(--primary);
 }
+
+/* Mini Sidebar (Mobile/Tablet) Styles */
+.menuItemMobile {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 12px 0;
+  width: 100%;
+}
+
+.menuItemMobile>a {
+  width: 45px;
+  height: 45px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 12px;
+  color: #7e7e7e;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: transparent;
+  cursor: pointer;
+  position: relative;
+}
+
+.menuItemMobile>a:hover {
+  background: var(--rgba-primary-1);
+  color: var(--primary);
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 4px 12px var(--rgba-primary-1);
+}
+
+.menuItemMobile.ds-active-parent>a {
+  background: var(--primary);
+  color: #fff;
+  box-shadow: 0 4px 20px -5px var(--primary);
+}
+
+.menuItemMobile>a svg {
+  font-size: 1.1rem;
+  transition: transform 0.3s ease;
+}
+
+.menuItemMobile:hover>a svg {
+  transform: scale(1.1);
+}
+
+/* Mini Submenu Soft Appearance */
+.submenu-mobile {
+  position: absolute;
+  left: 100%;
+  margin-left: 12px;
+  top: 0;
+  background: var(--sidebar-bg);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+  min-width: 180px;
+  z-index: 1000 !important;
+  border: 1px solid var(--border);
+  padding: 8px 0 !important;
+  list-style: none !important;
+  margin: 0 !important;
+}
+
+.submenu-mobile li {
+  padding: 0 8px !important;
+  margin: 0 !important;
+}
+
+.submenu-mobile .nav-link {
+  padding: 8px 16px !important;
+  border-radius: 8px !important;
+  margin: 2px 0 !important;
+  color: var(--text-gray) !important;
+  font-size: 0.85rem !important;
+  text-decoration: none !important;
+  display: block !important;
+}
+
+.submenu-mobile .nav-link:before {
+  display: none !important;
+}
+
+.submenu-mobile .nav-link:hover,
+.submenu-mobile .nav-link.active {
+  background: var(--rgba-primary-1) !important;
+  color: var(--primary) !important;
+}
+
+/* Tooltip Arrow for Submenu */
+.submenu-mobile:after {
+  content: '';
+  position: absolute;
+  left: -6px;
+  top: 15px;
+  width: 12px;
+  height: 12px;
+  background: var(--sidebar-bg);
+  transform: rotate(45deg);
+  border-left: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  pointer-events: none;
+}

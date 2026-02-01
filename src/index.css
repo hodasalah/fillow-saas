@@ -377,3 +377,12 @@ h6 {
 		width: 15.625rem;
 	}
 }
+
+.custom-scroll::-webkit-scrollbar {
+	display: none;
+}
+
+.custom-scroll {
+	-ms-overflow-style: none;
+	scrollbar-width: none;
+}

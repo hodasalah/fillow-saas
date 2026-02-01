@@ -57,7 +57,7 @@ const Sidebar = () => {
 		}
       `}
 		>
-            <div className="flex-1 overflow-y-auto">
+            <div className={`flex-1 ${mode === 'wide' ? 'overflow-y-auto custom-scroll' : 'overflow-visible'}`}>
 			    <MenuList />
             </div>
 			<SidebarProfile />

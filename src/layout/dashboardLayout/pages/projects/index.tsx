@@ -59,11 +59,12 @@ const Projects = () => {
     };
 
     const activeData = useMemo(() => {
-        if (activeTab === 'All Status') return projects;
+        const safeProjects = projects || [];
+        if (activeTab === 'All Status') return safeProjects;
         if (activeTab === 'Overdue') {
-            return projects.filter(isProjectOverdue);
+            return safeProjects.filter(isProjectOverdue);
         }
-        return projects.filter((project) => {
+        return safeProjects.filter((project) => {
             const status = formatStatus(project.status);
             return status && status.toLowerCase() === activeTab.toLowerCase();
         });
@@ -203,7 +204,7 @@ const Projects = () => {
                 const deletePromises = selectedProjects.map((id) => deleteDoc(doc(db, 'projects', id)));
                 await Promise.all(deletePromises);
                 
-                setProjects((prevProjects) => prevProjects.filter((p) => !selectedProjects.includes(p.id)));
+                setProjects((prevProjects) => (prevProjects || []).filter((p) => !selectedProjects.includes(p.id)));
                 setSelectedProjects([]);
                 setOpenDropdownId(null);
             } catch (error) {
@@ -218,7 +219,7 @@ const Projects = () => {
     const toggleSelection = (projectId: string) => {
         setSelectedProjects((prev) => 
             prev.includes(projectId) 
-                ? prev.filter((id) => id !== projectId) 
+                ? (prev || []).filter((id) => id !== projectId) 
                 : [...prev, projectId]
         );
     };

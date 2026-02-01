@@ -89,7 +89,7 @@ const AlertsTabPanel = () => {
             
 			<ul>
 				{['Social', 'System', 'Server Status'].map((category) => {
-                    const categoryAlerts = groupedAlerts.filter(a => a.category === category);
+                    const categoryAlerts = (groupedAlerts || []).filter(a => a.category === category);
                     if (categoryAlerts.length === 0) return null;
                     
                     return (
@@ -119,7 +119,7 @@ const AlertsTabPanel = () => {
 				})}
                 {/* Handle Uncategorized */}
                 {(() => {
-                    const uncategorized = groupedAlerts.filter(a => !['Social', 'System', 'Server Status'].includes(a.category));
+                    const uncategorized = (groupedAlerts || []).filter(a => !['Social', 'System', 'Server Status'].includes(a.category));
                     if (uncategorized.length === 0) return null;
                     return (
                          <React.Fragment key="Other">

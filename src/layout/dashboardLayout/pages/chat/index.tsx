@@ -48,16 +48,19 @@ const ChatPage: React.FC = () => {
                 (userChats: Chat[]) => {
                     // Update chats but preserve any optimistic/temporary entries that aren't yet in DB
                     setChats(prev => {
-                        const safePrev = prev || [];
-                        const optimisticEntries = safePrev.filter(c => c.id.startsWith('temp_'));
+                        const safePrev = Array.isArray(prev) ? prev : [];
+                        const safeUserChats = Array.isArray(userChats) ? userChats : [];
+                        
+                        const optimisticEntries = safePrev.filter(c => c && c.id && c.id.startsWith('temp_'));
                         // Filter out optimistic entries that already exist in userChats (by participants)
                         const filteredOptimistic = optimisticEntries.filter(opt => 
-                             !userChats.some(real => 
+                             !safeUserChats.some(real => 
+                                 real && real.participants && opt.participants &&
                                  real.participants.every(p => opt.participants.includes(p)) &&
                                  real.participants.length === opt.participants.length
                              )
                         );
-                        return [...filteredOptimistic, ...userChats];
+                        return [...filteredOptimistic, ...safeUserChats];
                     });
                     setIsLoading(false);
                 }

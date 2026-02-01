@@ -276,8 +276,8 @@ export const getChatParticipants = async (
 	});
 
 	const participantsSnaps = await Promise.all(participantsPromises);
-	return participantsSnaps
-		.filter((snap) => snap.exists())
+	return (Array.isArray(participantsSnaps) ? participantsSnaps : [])
+		.filter((snap) => snap && snap.exists())
 		.map((snap) => snap.data() as UserData);
 };
 

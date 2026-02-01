@@ -122,15 +122,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
 	const messagesEndRef = useRef<HTMLDivElement>(null);
 
     // Debugging alignment issue
-    useEffect(() => {
-        if (messages.length > 0) {
-            console.log('ChatWindow Debug:', {
-                currentUserId,
-                sampleMessageSender: messages[messages.length - 1].senderId,
-                match: messages[messages.length - 1].senderId === currentUserId
-            });
-        }
-    }, [messages, currentUserId]);
+
 
 
 // ... (inside component)

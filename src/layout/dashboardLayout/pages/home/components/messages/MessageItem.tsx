@@ -1,8 +1,36 @@
 import { formatDistanceToNow } from 'date-fns';
+import { useNavigate } from 'react-router-dom';
 import DropdownDelEditBtn from '../../../../../../components/dropdownDelEditBtn';
+import { useAppSelector } from '../../../../../../hooks/hooks';
+import { initializeChatCollection } from '../../../../../../services/firebase/chats';
 import { Message } from '../../../../../../types/dashboard';
 
 const MessageItem = ({ message }: { message: Message }) => {
+    const navigate = useNavigate();
+    const { currentUser } = useAppSelector((state) => state.auth);
+
+    const handleChatClick = async (e: React.MouseEvent) => {
+        e.preventDefault();
+        if (!currentUser || !message.senderId) {
+             console.warn("Cannot open chat: missing user or senderId", { currentUser, senderId: message.senderId });
+             return;
+        }
+
+        try {
+            const chatId = await initializeChatCollection(currentUser.uid, message.senderId);
+            navigate('/dashboard/chat', { 
+                state: { 
+                    chatId,
+                    recruitUser: { otherUserId: message.senderId }
+                } 
+            });
+        } catch (error) {
+            console.error("Failed to open chat from message item:", error);
+            // Fallback for mock/legacy messages
+            navigate('/dashboard/chat');
+        }
+    };
+
 	const getProfileImageClasses = (isActive: boolean) => {
 		const baseClasses = 'h-12 w-[3.2rem] relative inline-block';
 		const activeClasses =
@@ -23,12 +51,15 @@ const MessageItem = ({ message }: { message: Message }) => {
 					/>
 				</div>
 				<div className='ml-4 w-full'>
-					{/* will replace it with react-router-dom Link component */}
-					<a href='#'>
-						<h5 className='mb-1 leading-6 text-[var(--text-dark)] font-semibold'>
+					{/* Click to open chat */}
+					<div 
+						className='cursor-pointer'
+						onClick={handleChatClick}
+					>
+						<h5 className='mb-1 leading-6 text-[var(--text-dark)] font-semibold hover:text-purple-600 transition-colors'>
 							{message.sender?.name || 'Unknown'}
 						</h5>
-					</a>
+					</div>
 					<div className='flex justify-between'>
 						<p className='mr-auto mb-0 leading-[1.8] text-[var(--text-dark)]'>
 							{message.content}

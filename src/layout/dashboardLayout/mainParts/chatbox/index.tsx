@@ -4,7 +4,7 @@ import ChatboxContent from './chatboxContent';
 
 interface ChatboxProps {
 	showSlider: boolean;
-	setShowSlider: React.Dispatch<React.SetStateAction<boolean>>;
+	setShowSlider: (val: boolean) => void;
 }
 
 const Chatbox: React.FC<ChatboxProps> = ({ showSlider, setShowSlider }) => {

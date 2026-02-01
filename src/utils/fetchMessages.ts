@@ -7,20 +7,25 @@ export const fetchMessages = async () => {
         const querySnapshot = await getDocs(collection(db, 'messages'));
         const messagesData: Message[] = querySnapshot.docs.map((doc) => {
             const data = doc.data();
-            const toDate = (val: any) => (val?.toDate ? val.toDate() : new Date(val));
+            const toDate = (val: any) => {
+                if (!val) return new Date();
+                if (val.toDate && typeof val.toDate === 'function') return val.toDate();
+                return new Date(val);
+            };
+            
             return {
                 id: doc.id,
                 ...data,
-                sender: data.sender || {
-                    name: data.name || 'Unknown',
-                    avatar: data.profileImage || '/assets/fallback.png'
+                sender: {
+                    name: data.sender?.name || data.name || data.displayName || 'Unknown User',
+                    avatar: data.sender?.avatar || data.profileImage || data.photoURL || '/assets/fallback.png'
                 },
-                content: data.content || data.lastMessage || '',
-                timestamp: toDate(data.timestamp || data.lastMessageTime),
-                isRead: !!data.isRead
+                content: data.content || data.lastMessage || data.text || '',
+                timestamp: toDate(data.timestamp || data.createdAt || data.lastMessageTime),
+                isRead: !!(data.isRead || data.read)
             } as Message;
         });
-        return messagesData;
+        return messagesData.sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime());
     } catch (error) {
         console.log('Fetching from Firebase failed (likely rules not deployed), falling back to mock data.');
         try {

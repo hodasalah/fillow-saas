@@ -66,7 +66,7 @@ export const seedDatabase = async () => {
 				{ name: 'In Progress', value: 5 },
 				{ name: 'Not Started', value: 3 },
 			],
-			userId: 'local',
+			userId: userId,
 		});
 
         // 4.5 Seed Users (for Chat)
@@ -140,7 +140,7 @@ export const seedDatabase = async () => {
         // Chat 1
         const chat1Ref = doc(conversationsCol, 'chat_1');
         batch.set(chat1Ref, {
-            participants: ['local', 'user_1'],
+            participants: [userId, 'user_1'],
             createdAt: serverTimestamp(),
             updatedAt: serverTimestamp(),
             lastMessage: {
@@ -161,12 +161,12 @@ export const seedDatabase = async () => {
         // Chat 2
         const chat2Ref = doc(conversationsCol, 'chat_2');
         batch.set(chat2Ref, {
-            participants: ['local', 'user_2'],
+            participants: [userId, 'user_2'],
             createdAt: serverTimestamp(),
             updatedAt: serverTimestamp(),
             lastMessage: {
                 text: 'Can we meet tomorrow?',
-                senderId: 'local',
+                senderId: userId,
                 createdAt: new Date(),
                 read: true,
             }
@@ -174,7 +174,7 @@ export const seedDatabase = async () => {
         const msg2Ref = doc(collection(db, 'conversations', 'chat_2', 'messages'));
         batch.set(msg2Ref, {
              text: 'Can we meet tomorrow?',
-             senderId: 'local',
+             senderId: userId,
              createdAt: serverTimestamp(),
              read: true
         });
@@ -196,7 +196,7 @@ export const seedDatabase = async () => {
         // 9. Seed Teams
         const teamsCol = collection(db, 'teams');
         const teamsData = [
-            { name: 'Frontend Team', members: ['local', 'user_1'], projectCount: 5 },
+            { name: 'Frontend Team', members: [userId, 'user_1'], projectCount: 5 },
             { name: 'Marketing', members: ['user_2'], projectCount: 2 }
         ];
         teamsData.forEach(t => {

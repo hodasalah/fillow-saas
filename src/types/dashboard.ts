@@ -2,6 +2,7 @@ import { Project } from '../types';
 
 export interface Message {
 	id: string;
+	senderId?: string; // Correct link to user
 	sender: {
 		name: string;
 		avatar: string;

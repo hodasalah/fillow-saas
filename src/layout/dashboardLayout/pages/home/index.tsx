@@ -76,7 +76,7 @@ const initialDashboardData: DashboardData = {
 		ongoing: 0,
 		unfinished: 0,
 		chartData: [],
-		userId: 'local',
+		userId: '',
 	},
 };
 

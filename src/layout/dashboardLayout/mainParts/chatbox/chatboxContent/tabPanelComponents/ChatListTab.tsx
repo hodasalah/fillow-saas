@@ -1,15 +1,17 @@
 import {
-	faEllipsis,
-	faMagnifyingGlass,
+    faEllipsis,
+    faMagnifyingGlass,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 
 import { useNavigate } from 'react-router-dom';
-import { useAppSelector } from '../../../../../../hooks/hooks';
+import { useAppDispatch, useAppSelector } from '../../../../../../hooks/hooks';
 import { initializeChatCollection } from '../../../../../../services/firebase/chats';
+import { setChatboxOpen } from '../../../../../../store/slices/sidebarSlice';
 
 const ChatListTab = () => {
+    const dispatch = useAppDispatch();
     const { users } = useAppSelector((state) => state.users);
     const { currentUser } = useAppSelector((state) => state.auth);
     const navigate = useNavigate();
@@ -22,6 +24,10 @@ const ChatListTab = () => {
                 currentUser.uid,
                 otherUserId
             );
+            
+            // Close the chatbox slider
+            dispatch(setChatboxOpen(false));
+
             navigate('/dashboard/chat', { 
                 state: { 
                     chatId,

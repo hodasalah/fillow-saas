@@ -26,12 +26,14 @@ interface SidebarState {
 	mode: 'wide' | 'mini';
 	isMobileOpen: boolean;
 	isMobileView: boolean;
+    isChatboxOpen: boolean;
 }
 
 const initialState: SidebarState = {
 	mode: 'wide',
 	isMobileOpen: false,
 	isMobileView: false,
+    isChatboxOpen: false,
 };
 
 const sidebarSlice = createSlice({
@@ -53,9 +55,12 @@ const sidebarSlice = createSlice({
 		setMobileView: (state, action: PayloadAction<boolean>) => {
 			state.isMobileView = action.payload;
 		},
+        setChatboxOpen: (state, action: PayloadAction<boolean>) => {
+            state.isChatboxOpen = action.payload;
+        }
 	},
 });
 
-export const { toggleMode, toggleMobile, closeMobile, setMode, setMobileView } =
+export const { toggleMode, toggleMobile, closeMobile, setMode, setMobileView, setChatboxOpen } =
 	sidebarSlice.actions;
 export default sidebarSlice.reducer;

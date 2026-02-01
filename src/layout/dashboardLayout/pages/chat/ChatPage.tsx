@@ -8,7 +8,8 @@ import {
     getUserChats,
     initializeChatCollection,
     sendMessage,
-    subscribeToMessages
+    subscribeToMessages,
+    subscribeToUserChats
 } from '../../../../services/firebase/chats';
 import { UserData, getAllUsers } from '../../../../services/firebase/users';
 import { fetchUsers } from '../../../../utils/fetchUsers';
@@ -35,82 +36,83 @@ const ChatPage: React.FC = () => {
 	const [showNewChatModal, setShowNewChatModal] = useState(false);
 	const [availableUsers, setAvailableUsers] = useState<UserData[]>([]);
 
-	// Fetch user's chats
+	// Subscribe to user's chats
 	useEffect(() => {
 		if (currentUser) {
-            dispatch(fetchUsers()); // Ensure we have the user directory loaded
-			const loadChats = async () => {
-				setIsLoading(true);
-				setChatListError(null);
-				try {
-					let userChats = await getUserChats(currentUser.uid);
-                    
+            dispatch(fetchUsers());
+            setIsLoading(true);
+            setChatListError(null);
 
-					setChats(userChats);
-				} catch (error) {
-					console.error('Error loading chats:', error);
-					setChatListError('Failed to load chats. Please try again later.');
-				} finally {
-					setIsLoading(false);
-				}
-			};
-			loadChats();
+            const unsubscribe = subscribeToUserChats(
+                currentUser.uid,
+                (userChats: Chat[]) => {
+                    // Update chats but preserve any optimistic/temporary entries that aren't yet in DB
+                    setChats(prev => {
+                        const optimisticEntries = prev.filter(c => c.id.startsWith('temp_'));
+                        // Filter out optimistic entries that already exist in userChats (by participants)
+                        const filteredOptimistic = optimisticEntries.filter(opt => 
+                             !userChats.some(real => 
+                                 real.participants.every(p => opt.participants.includes(p)) &&
+                                 real.participants.length === opt.participants.length
+                             )
+                        );
+                        return [...filteredOptimistic, ...userChats];
+                    });
+                    setIsLoading(false);
+                }
+            );
+
+            return () => unsubscribe();
 		}
 	}, [currentUser, dispatch]);
 
-     // Check for navigation state (from sidebar click)
+     // Check for navigation state (from sidebar or chatbox click)
     useEffect(() => {
         const state = location.state as { chatId?: string; recruitUser?: { otherUserId: string } };
-        if (state?.chatId) {
-            const existingChat = chats.find(c => c.id === state.chatId);
-            if (existingChat) {
-                setSelectedChat(existingChat);
-                window.history.replaceState({}, document.title);
-            } else {
-                // Chat not in current list (maybe new, or list is fallback). 
-                // Try to resolve it.
-                const resolveChat = async () => {
-                     let newChat: Chat | null = null;
-                     
-                     // 1. Try fetching from DB
-                     try {
-                         newChat = await getChat(state.chatId!);
-                     } catch (e) {
-                         console.warn("Could not fetch individual chat:", e);
-                     }
+        if (!state?.chatId || !chats.length) return;
 
-                     // 2. If not found, try optimistic construction if we have user details
-                     if (!newChat && state.recruitUser && state.recruitUser.otherUserId && currentUser) {
-                         console.log("Constructing optimistic chat for", state.recruitUser.otherUserId);
-                         const recruitId = state.recruitUser.otherUserId;
-                         newChat = {
-                             id: state.chatId!,
-                             participants: [currentUser.uid, recruitId],
+        const existingChat = chats.find(c => c.id === state.chatId);
+        if (existingChat) {
+            setSelectedChat(existingChat);
+            window.history.replaceState({}, document.title);
+        } else if (currentUser) {
+            // Handle temp or new chats more explicitly by checking DB
+            console.log("Resolving chat for:", state.chatId);
+            const resolveChat = async () => {
+                 let chatModel = await getChat(state.chatId!);
+                 
+                 // Fallback: Construct optimistic chat if we have user details
+                 if (!chatModel && state.recruitUser?.otherUserId) {
+                     console.log("Constructing optimistic chat for", state.recruitUser.otherUserId);
+                     chatModel = {
+                         id: state.chatId!,
+                         participants: [currentUser.uid, state.recruitUser.otherUserId],
+                         createdAt: new Date(),
+                         updatedAt: new Date(),
+                         lastMessage: {
+                             id: 'optimistic_init',
+                             text: 'Start of conversation',
+                             senderId: currentUser.uid,
                              createdAt: new Date(),
-                             updatedAt: new Date(),
-                             lastMessage: {
-                                 id: 'optimistic_init',
-                                 text: 'Start of conversation',
-                                 senderId: currentUser.uid,
-                                 createdAt: new Date(),
-                                 read: true
-                             }
-                         };
-                     }
+                             read: true
+                         }
+                     };
+                     
+                     // Add to local list so sidebar reflects it, but deduplicate
+                     setChats(prev => {
+                         if (prev.find(c => c.id === chatModel!.id)) return prev;
+                         return [chatModel!, ...prev];
+                     });
+                 }
 
-                     if (newChat) {
-                         setChats(prev => {
-                             // dedupe just in case
-                             if (prev.find(c => c.id === newChat!.id)) return prev;
-                             return [newChat!, ...prev];
-                         });
-                         setSelectedChat(newChat);
-                     }
-                };
-                resolveChat();
-            }
+                 if (chatModel) {
+                     setSelectedChat(chatModel);
+                     window.history.replaceState({}, document.title);
+                 }
+            };
+            resolveChat();
         }
-    }, [location.state, chats]);
+    }, [location.state, chats, currentUser]);
 
 	// Load available users for new chat
 	useEffect(() => {
@@ -152,8 +154,24 @@ const ChatPage: React.FC = () => {
 		if (!selectedChat || !currentUser) return;
 
 		try {
-			await sendMessage(selectedChat.id, currentUser.uid, text);
-            // Optimistic update if needed, but subscription handles it mostly.
+            let chatId = selectedChat.id;
+            
+            // If it's a temporary chat, we MUST initialize the real collection first
+            if (chatId.startsWith('temp_')) {
+                const otherUserId = selectedChat.participants.find(p => p !== currentUser.uid);
+                if (!otherUserId) throw new Error("Could not find other user ID in temporary chat");
+                
+                console.log("Auto-initializing chat from temp ID for", otherUserId);
+                chatId = await initializeChatCollection(currentUser.uid, otherUserId);
+                
+                // Update selected chat to real ID so subsequent messages work correctly
+                setSelectedChat(prev => prev ? { ...prev, id: chatId } : null);
+                
+                // Clean up the temp entry from the chat list
+                setChats(prev => prev.filter(c => c.id !== selectedChat.id));
+            }
+
+			await sendMessage(chatId, currentUser.uid, text);
 		} catch (error) {
 			console.error('Error sending message:', error);
 			setSendError('Failed to send message. Please try again.');

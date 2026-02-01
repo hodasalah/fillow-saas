@@ -156,6 +156,10 @@ export const subscribeToMessages = (
 	chatId: string,
 	callback: (messages: Message[]) => void,
 ) => {
+    if (chatId.startsWith('temp_')) {
+        callback([]);
+        return () => {};
+    }
 	const messagesRef = collection(db, 'conversations', chatId, 'messages');
 	const q = query(messagesRef, orderBy('createdAt', 'asc'));
 
@@ -177,15 +181,20 @@ export const getUserChats = async (userId: string) => {
         const conversationsRef = collection(db, 'conversations');
         const q = query(
             conversationsRef,
-            where('participants', 'array-contains', userId),
-            orderBy('updatedAt', 'desc'),
+            where('participants', 'array-contains', userId)
         );
 
         const snapshot = await getDocs(q);
-        return snapshot.docs.map((doc) => ({
+        const chats = snapshot.docs.map((doc) => ({
             id: doc.id,
             ...doc.data(),
         })) as Chat[];
+
+        return chats.sort((a, b) => {
+            const dateA = a.updatedAt ? (a.updatedAt as any).toDate?.() || new Date(a.updatedAt) : new Date(0);
+            const dateB = b.updatedAt ? (b.updatedAt as any).toDate?.() || new Date(b.updatedAt) : new Date(0);
+            return dateB.getTime() - dateA.getTime();
+        });
 	} catch (error) {
 		console.error('Error fetching chats:', error);
 		return [];
@@ -201,8 +210,7 @@ export const subscribeToUserChats = (
         const conversationsRef = collection(db, 'conversations');
         const q = query(
             conversationsRef,
-            where('participants', 'array-contains', userId),
-            orderBy('updatedAt', 'desc'),
+            where('participants', 'array-contains', userId)
         );
 
         return onSnapshot(q, (snapshot) => {
@@ -210,7 +218,15 @@ export const subscribeToUserChats = (
                 id: doc.id,
                 ...doc.data(),
             })) as Chat[];
-            callback(chats);
+            
+            // Sort client-side to avoid needing a composite index
+            const sortedChats = chats.sort((a, b) => {
+                const dateA = a.updatedAt ? (a.updatedAt as any).toDate?.() || new Date(a.updatedAt) : new Date(0);
+                const dateB = b.updatedAt ? (b.updatedAt as any).toDate?.() || new Date(b.updatedAt) : new Date(0);
+                return dateB.getTime() - dateA.getTime();
+            });
+            
+            callback(sortedChats);
         }, (error) => {
              console.error("Error subscribing to chats:", error);
              callback([]);

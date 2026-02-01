@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Outlet } from 'react-router';
-import { useAppSelector } from '../../hooks/hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
+import { setChatboxOpen } from '../../store/slices/sidebarSlice';
 import Chatbox from './mainParts/chatbox';
 import Footer from './mainParts/footer';
 import Header from './mainParts/header';
@@ -10,10 +11,8 @@ import Sidebar from './mainParts/sidebar';
 export const DashboardLayout = () => {
     // Theme
 	const isDarkMode = useAppSelector((state) => state.theme.isDarkMode);
-    
-
-    
-	const [showSlider, setShowSlider] = useState(false);
+    const isChatboxOpen = useAppSelector((state) => state.sidebar.isChatboxOpen);
+    const dispatch = useAppDispatch();
 
 	useEffect(() => {
 		if (isDarkMode) {
@@ -39,7 +38,7 @@ export const DashboardLayout = () => {
 					className="flex flex-col flex-1"
 				>
 					{/* Header - fixed positioned */}
-					<Header setShowSlider={setShowSlider} />
+					<Header setShowSlider={(val: boolean) => dispatch(setChatboxOpen(val))} />
 
 					{/* Scrollable content area - ONLY this scrolls */}
 					<div className="flex-1 overflow-y-auto">
@@ -55,8 +54,8 @@ export const DashboardLayout = () => {
 
 			{/* Chat Box */}
 			<Chatbox
-				setShowSlider={setShowSlider}
-				showSlider={showSlider}
+				setShowSlider={(val: boolean) => dispatch(setChatboxOpen(val))}
+				showSlider={isChatboxOpen}
 			/>
 		</div>
 	);

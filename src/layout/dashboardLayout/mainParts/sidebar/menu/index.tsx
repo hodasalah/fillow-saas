@@ -73,7 +73,7 @@ const list = [
 		name: 'Charts',
 		hasSubMenu: true,
 		submenu: [
-			{ id: 'sub-chart-1', title: 'Chart', link: 'chart' },
+			{ id: 'sub-chart-1', title: 'Analytics', link: 'charts' },
 		],
 	},
 	{

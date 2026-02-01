@@ -5,10 +5,18 @@ import { useAppSelector } from '../../../../hooks/hooks';
 const SidebarFooter = () => {
 	const mode = useAppSelector((state) => state.sidebar.mode);
 	const isMobileOpen = useAppSelector((state) => state.sidebar.isMobileOpen);
+	if (mode === 'mini' && !isMobileOpen) {
+        return (
+            <div className="py-4 flex justify-center text-[#9fa4a6]">
+                 <span className="text-xl">©</span>
+            </div>
+        );
+    }
+
 	return (
 		<div
 			className={`
-				${isMobileOpen ? 'block' : mode === 'mini' ? 'hidden' : 'block'}
+				${isMobileOpen ? 'block' : 'block'}
 				 my-4 px-[1rem] text-[#9fa4a6] `}
 		>
 			<p className='leading-[1.8]'>

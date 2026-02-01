@@ -55,8 +55,8 @@ const ChatPage: React.FC = () => {
                         // Filter out optimistic entries that already exist in userChats (by participants)
                         const filteredOptimistic = optimisticEntries.filter(opt => 
                              !safeUserChats.some(real => 
-                                 real && real.participants && opt.participants &&
-                                 real.participants.every(p => opt.participants.includes(p)) &&
+                                 real && Array.isArray(real.participants) && Array.isArray(opt.participants) &&
+                                 real.participants.every((p: string) => opt.participants.includes(p)) &&
                                  real.participants.length === opt.participants.length
                              )
                         );

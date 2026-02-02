@@ -5,8 +5,7 @@ import { getUserData } from '../../../../../services/firebase/users';
 import { formatMessageTime } from '../../../../../utils/dateUtils';
 
 import {
-    getImageLoadErrorHandler,
-    getImmediateProfilePictureUrl,
+    getProfilePictureUrl,
 } from '../../../../../utils/profilePicture';
 
 interface ChatWindowProps {
@@ -49,15 +48,9 @@ const MessageItem = memo(
                 <div className={`w-8 h-8 flex-shrink-0 ${isCurrentUser ? 'ml-2' : 'mr-2'}`}>
                     {isLastInGroup && (
                         <img
-                            src={getImmediateProfilePictureUrl(
-                                messageUser?.profilePicture,
-                                messageUser?.name || 'User',
-                            )}
+                            src={getProfilePictureUrl(messageUser)}
                             alt={messageUser?.name || 'Unknown User'}
                             className='w-8 h-8 rounded-full object-cover shadow-sm'
-                            onError={getImageLoadErrorHandler(
-                                messageUser?.name || 'User',
-                            )}
                         />
                     )}
                 </div>
@@ -177,15 +170,9 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
 			<div className='p-4 border-b border-gray-200 bg-white rounded-tr-xl'>
 				<div className='flex items-center'>
 					<img
-						src={getImmediateProfilePictureUrl(
-							otherUser?.profilePicture,
-							otherUser?.name || 'User',
-						)}
+						src={getProfilePictureUrl(otherUser)}
 						alt={otherUser?.name || 'Unknown User'}
 						className='w-10 h-10 rounded-full object-cover'
-						onError={getImageLoadErrorHandler(
-							otherUser?.name || 'User',
-						)}
 					/>
 					<div className='ml-3'>
 						<h2 className='text-lg font-semibold text-gray-900'>

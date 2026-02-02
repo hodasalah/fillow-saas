@@ -2,6 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
 import { User } from '../types';
+import { makeSerializable } from './dateUtils';
 import { convertTimestamp } from './helpers/convertTimeStamp';
 
 // Async Thunk to Fetch Users from Firestore (for Redux)
@@ -28,7 +29,7 @@ export const fetchUsers = createAsyncThunk<
 
         if (users.length > 0) {
 		    console.log('Users fetched successfully from Firestore:', users.length);
-            return users;
+            return makeSerializable(users);
         }
         
         console.log('Firebase returned 0 users.');

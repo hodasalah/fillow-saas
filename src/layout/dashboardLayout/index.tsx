@@ -1,7 +1,11 @@
+import { doc, onSnapshot } from 'firebase/firestore';
 import { useEffect } from 'react';
 import { Outlet } from 'react-router';
+import { db } from '../../firebase';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
+import { setUser } from '../../store/slices/authSlice';
 import { setChatboxOpen } from '../../store/slices/sidebarSlice';
+import { syncUserProfile } from '../../utils/profilePicture';
 import Chatbox from './mainParts/chatbox';
 import Footer from './mainParts/footer';
 import Header from './mainParts/header';
@@ -21,6 +25,47 @@ export const DashboardLayout = () => {
 			document.documentElement.classList.remove('dark');
 		}
 	}, [isDarkMode]);
+
+    const currentUser = useAppSelector((state) => state.auth.currentUser);
+
+    // Global Profile Sync and Listener
+    useEffect(() => {
+        if (!currentUser) return;
+
+        // 1. Initial Sync
+        syncUserProfile(currentUser.uid, dispatch);
+
+        // 2. Real-time Listener
+        const userRef = doc(db, 'userProfiles', currentUser.uid);
+        const unsubscribe = onSnapshot(userRef, (docSnap) => {
+            if (docSnap.exists()) {
+                const data = docSnap.data() as any;
+                
+                // Convert timestamps for Redux serialization
+                const serializedData = {
+                    ...data,
+                    name: data.displayName || currentUser.name,
+                    profilePicture: data.profilePictureBase64 || currentUser.profilePicture,
+                    updatedAt: data.updatedAt?.toMillis ? data.updatedAt.toMillis() : Date.now(),
+                    createdAt: data.createdAt?.toMillis ? data.createdAt.toMillis() : (currentUser.createdAt || Date.now()),
+                    lastSeen: data.lastSeen?.toMillis ? data.lastSeen.toMillis() : null,
+                    location: data.location || currentUser.location,
+                };
+
+                // Always dispatch latest data to ensure state is fresh
+                // Redux Toolkit will handle shallow equality for the state update
+                dispatch(setUser({
+                    ...currentUser,
+                    ...serializedData,
+                    name: serializedData.name, // Ensure explicit mapping
+                    profilePicture: serializedData.profilePicture
+                }));
+            }
+        });
+
+        return () => unsubscribe();
+    }, [currentUser?.uid, dispatch]);
+
 
 	return (
 		<div className="h-screen overflow-hidden flex flex-col bg-[var(--body-bg)]">

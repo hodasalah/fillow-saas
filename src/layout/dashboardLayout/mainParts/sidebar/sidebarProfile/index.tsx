@@ -2,6 +2,7 @@ import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useAppSelector } from '../../../../../hooks/hooks';
 import { User } from '../../../../../types';
+import { getProfilePictureUrl } from '../../../../../utils/profilePicture';
 import './sidebarProfile.css';
 
 const SidebarProfile = () => {
@@ -32,7 +33,7 @@ const SidebarProfile = () => {
 			<div className={`profile-wrapper ${mode === 'wide' ? '' : 'flex-col justify-center'}`}>
 				<div className={`side-bar-profile-img ${mode === 'wide' ? '' : '!w-10 !h-10 !mr-0'}`}>
 					<img
-						src={user?.profilePicture}
+						src={getProfilePictureUrl(user)}
 						alt={user?.name || 'Profile'}
 						onError={handleImageError}
                         className={`${mode === 'wide' ? '' : 'w-10 h-10 rounded-full'}`}

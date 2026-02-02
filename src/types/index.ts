@@ -9,6 +9,8 @@ export interface User {
 	email: string;
 	name: string;
 	profilePicture: string;
+	profilePictureBase64?: string;
+	hasBase64Image?: boolean;
 	createdAt?: string | number; // Change to Date or number
 	last_login?: string | number; // Change to Date or number
 	role: 'admin' | 'employee' | 'client' | 'user';
@@ -24,6 +26,14 @@ export interface User {
 	taskProgress: number;
 	teams: string[];
 	status: string;
+	location?: string;
+    website?: string;
+    birthDate?: string;
+    socialLinks?: {
+        github?: string;
+        linkedin?: string;
+        twitter?: string;
+    };
 	lastSeen?: string | number; // Change to Date or number
 }
 export interface Tag {
@@ -55,6 +65,15 @@ export interface Project {
 	endDate?: Date | null;
 	deadline: Date;
 	tags: Tag[];
+    image?: string;
+}
+
+// Story
+export interface Story {
+    id: string;
+    imageUrl: string;
+    title: string;
+    authorName: string;
 }
 
 // Team

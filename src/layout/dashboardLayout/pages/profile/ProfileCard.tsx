@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
 import { getOrCreateProfile, updateUserProfile, UserProfile } from '../../../../services/firebase/profile';
-import { uploadProfilePicture } from '../../../../services/firebase/storage';
 import { updateUserData } from '../../../../services/firebase/users';
 import { setUser } from '../../../../store/slices/authSlice';
-import { getImmediateProfilePictureUrl } from '../../../../utils/profilePicture';
+import { compressImage, convertToBase64 } from '../../../../utils/imageUtils';
+import { getProfilePictureUrl } from '../../../../utils/profilePicture';
 
 import { updateProfile } from 'firebase/auth';
 import { auth } from '../../../../firebase';
@@ -51,58 +51,56 @@ const ProfileCard: React.FC = () => {
         const file = e.target.files?.[0];
         if (!file) return;
         if (!currentUser) {
-            console.error('❌ Cannot upload: No currentUser in Redux state');
             alert('You must be logged in to update your profile picture.');
             return;
         }
 
         try {
             setUploading(true);
-            console.log('🚀 Starting profile picture upload to Firebase Storage...', file.name);
+            console.log('🚀 Processing profile picture (Base64 strategy)...');
             
-            // 1. Upload to Firebase Storage
-            const downloadURL = await uploadProfilePicture(currentUser.uid, file);
-            console.log('✅ Image uploaded to Storage. URL:', downloadURL);
+            // 1. Compress image (max 150KB)
+            const compressedFile = await compressImage(file, 150);
+            // 2. Convert to Base64
+            const base64Image = await convertToBase64(compressedFile);
 
-            // 2. Update Firestore Collections and Auth Profile
-            
-            if (!auth.currentUser) {
-                throw new Error('Firebase Auth user is missing despite being logged in.');
-            }
+            console.log('📝 Updating Firestore and Redux...');
+            const updateData = { 
+                photoURL: base64Image,
+                profilePictureBase64: base64Image,
+                hasBase64Image: true,
+                profilePictureUpdatedAt: new Date().toISOString()
+            };
 
-            console.log('📝 Updating Firestore and Auth Profile...');
             await Promise.all([
-                updateUserProfile(currentUser.uid, { photoURL: downloadURL }),
-                updateUserData(currentUser.uid, { photoURL: downloadURL }),
-                updateProfile(auth.currentUser, { photoURL: downloadURL })
+                updateUserProfile(currentUser.uid, updateData),
+                updateUserData(currentUser.uid, updateData),
+                updateProfile(auth.currentUser!, { photoURL: base64Image })
             ]);
 
-            // 3. Update Redux Auth State (so header updates too)
+            // 3. Update Redux Auth State
             dispatch(setUser({
                 ...currentUser,
-                profilePicture: downloadURL
+                profilePicture: base64Image,
+                profilePictureBase64: base64Image,
+                hasBase64Image: true
             }));
 
-            // 4. Update Local State
+            // 4. Cache in localStorage
+            localStorage.setItem(`user_${currentUser.uid}_profile`, base64Image);
+            localStorage.setItem(`user_${currentUser.uid}_profile_timestamp`, Date.now().toString());
+
+            // 5. Update Local State
             if (profile) {
-                setProfile({ ...profile, photoURL: downloadURL });
+                setProfile({ ...profile, ...updateData });
             }
             
-            console.log('✨ Profile picture sync complete!');
+            console.log('✨ Profile picture persistence complete!');
         } catch (error: any) {
             console.error('❌ Error updating profile picture:', error);
-            
-            let errorMessage = 'Failed to upload image.';
-            if (error.code === 'storage/unauthorized') {
-                errorMessage += ' Access denied. Please check your Firebase Storage security rules.';
-            } else if (error.message) {
-                errorMessage += ` ${error.message}`;
-            }
-            
-            alert(errorMessage);
+            alert('Failed to update image. ' + (error.message || ''));
         } finally {
             setUploading(false);
-            // Reset file input so same file can be selected again if needed
             if (fileInputRef.current) fileInputRef.current.value = '';
         }
     };
@@ -126,7 +124,7 @@ const ProfileCard: React.FC = () => {
 			{/* Profile Picture */}
 			<div className='mb-4 relative inline-block group cursor-pointer' onClick={handleImageClick}>
 				<img
-					src={currentUser?.profilePicture || getImmediateProfilePictureUrl(profile.photoURL, profile.displayName)}
+					src={getProfilePictureUrl(currentUser || profile)}
 					alt={profile.displayName}
 					className={`w-24 h-24 rounded-full border-4 border-white dark:border-[var(--border)] shadow-lg mx-auto object-cover transition-opacity ${uploading ? 'opacity-50' : ''}`}
 					onError={(e) => {
@@ -156,9 +154,18 @@ const ProfileCard: React.FC = () => {
 			<h2 className='text-2xl font-bold text-[var(--text-dark)] mb-1'>
 				{profile.displayName}
 			</h2>
-			<p className='text-[var(--text-gray)] text-sm mb-6'>
+			<p className='text-[var(--text-gray)] text-sm mb-2'>
 				{profile.title}
 			</p>
+            {profile.location && (
+                <p className='text-[var(--text-gray)] text-xs mb-6 flex items-center justify-center gap-1'>
+                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    {profile.location}
+                </p>
+            )}
 
 			{/* Stats */}
 			<div className='grid grid-cols-3 gap-4 mb-6'>

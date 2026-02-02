@@ -1,15 +1,16 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import {
-	collection,
-	doc,
-	getDoc,
-	getDocs,
-	query,
-	updateDoc,
-	where,
+    collection,
+    doc,
+    getDoc,
+    getDocs,
+    query,
+    updateDoc,
+    where,
 } from 'firebase/firestore';
 import { db } from '../firebase';
 import { User } from '../types';
+import { makeSerializable } from './dateUtils';
 
 export const fetchClients = async (): Promise<User[]> => {
 	try {
@@ -42,7 +43,7 @@ export const updateUser = createAsyncThunk<
 		// Fetch the updated user data to ensure consistency
 		const updatedUserDoc = await getDoc(userRef);
 		if (updatedUserDoc.exists()) {
-			return { ...updatedUserDoc.data(), uid: updatedUserDoc.id } as User;
+			return makeSerializable({ ...updatedUserDoc.data(), uid: updatedUserDoc.id } as User);
 		} else {
 			return rejectWithValue('User not found after update');
 		}

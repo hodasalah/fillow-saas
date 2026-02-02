@@ -1,13 +1,13 @@
 import React from 'react';
 
-interface Project {
+interface GalleryProject {
 	id: string;
 	imageUrl: string;
 	title: string;
 }
 
 interface ProjectsGalleryProps {
-	projects: Project[];
+	projects: GalleryProject[];
 }
 
 const ProjectsGallery: React.FC<ProjectsGalleryProps> = ({ projects }) => {

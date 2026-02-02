@@ -9,6 +9,7 @@ import { Link, useNavigate } from 'react-router';
 import { v4 as uuidv4 } from 'uuid';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { logoutUser } from '../../store/slices/authActions';
+import { getProfilePictureUrl } from '../../utils/profilePicture';
 
 const links = [
 	{
@@ -77,7 +78,7 @@ const ProfileDropdown = () => {
 				</div>
 				<div className="relative">
 					<img
-						src={user?.profilePicture}
+						src={getProfilePictureUrl(user)}
 						alt='profile'
 						className='w-[2.5rem] h-[2.5rem] rounded-full object-cover border-2 border-[var(--primary)] group-hover:scale-105 transition-transform'
 						onError={(e) => {

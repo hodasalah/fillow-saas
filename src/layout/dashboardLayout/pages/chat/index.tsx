@@ -14,8 +14,7 @@ import {
 import { UserData, getAllUsers } from '../../../../services/firebase/users';
 import { fetchUsers } from '../../../../utils/fetchUsers';
 import {
-    getImageLoadErrorHandler,
-    getImmediateProfilePictureUrl
+    getProfilePictureUrl
 } from '../../../../utils/profilePicture';
 import ChatList from './components/ChatList';
 import ChatWindow from './components/ChatWindow';
@@ -319,15 +318,9 @@ const ChatPage: React.FC = () => {
 									className='w-full text-left p-3 hover:bg-gray-100 rounded-lg flex items-center space-x-3'
 								>
 									<img
-										src={getImmediateProfilePictureUrl(
-											user.photoURL,
-											user.displayName,
-										)}
+										src={getProfilePictureUrl(user)}
 										alt={user.displayName}
 										className='w-10 h-10 rounded-full object-cover'
-										onError={getImageLoadErrorHandler(
-											user.displayName,
-										)}
 									/>
 									<div>
 										<p className='font-medium'>

@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { User } from '../../types';
+import { makeSerializable } from '../../utils/dateUtils';
 import { fetchUsers } from '../../utils/fetchUsers';
 import { updateUser } from '../../utils/userUtils';
 
@@ -40,7 +41,7 @@ const userSlice = createSlice({
 				state.status = 'succeeded';
 				// Ensure that the payload is an array of users
 				if (Array.isArray(action.payload)) {
-					state.users = action.payload; // Data is already normalized by fetchUsers
+					state.users = makeSerializable(action.payload); // Ensure serializability
 				} else {
 					console.error(
 						'fetchUsers.fulfilled: Payload is not an array:',

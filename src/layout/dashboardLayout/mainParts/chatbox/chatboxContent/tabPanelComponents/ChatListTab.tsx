@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../../../../hooks/hooks';
 import { initializeChatCollection } from '../../../../../../services/firebase/chats';
 import { setChatboxOpen } from '../../../../../../store/slices/sidebarSlice';
+import { getProfilePictureUrl } from '../../../../../../utils/profilePicture';
 
 const ChatListTab = () => {
     const dispatch = useAppDispatch();
@@ -70,7 +71,7 @@ const ChatListTab = () => {
                 name: user.name,
                 status: user.status || 'offline',
                 last_seen: lastSeenText,
-                img: user.profilePicture
+                img: getProfilePictureUrl(user)
             });
         });
 

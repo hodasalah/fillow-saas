@@ -12,18 +12,30 @@ import {
     where,
 } from 'firebase/firestore';
 import { db } from '../../firebase';
+import { makeSerializable } from '../../utils/dateUtils';
 
 export interface UserData {
 	uid: string;
 	email: string;
 	displayName: string;
 	photoURL?: string;
+	profilePictureBase64?: string;
+	hasBase64Image?: boolean;
 	status: 'online' | 'offline';
 	lastSeen: Date | null;
 	createdAt: Date;
+	profilePictureUpdatedAt?: string;
     bio?: string;
     title?: string;
     phone?: string;
+    location?: string;
+    website?: string;
+    birthDate?: string;
+    socialLinks?: {
+        github?: string;
+        linkedin?: string;
+        twitter?: string;
+    };
     isMock?: boolean;
 }
 
@@ -47,14 +59,14 @@ export const createUserDocument = async (user: User) => {
 
 		try {
 			await setDoc(userRef, userData);
-			return userData;
+			return makeSerializable(userData);
 		} catch (error) {
 			console.error('Error creating user document:', error);
 			throw error;
 		}
 	}
 
-	return userSnap.data() as UserData;
+	return makeSerializable(userSnap.data() as UserData);
 };
 
 export const updateUserStatus = async (uid: string, isOnline: boolean) => {
@@ -74,7 +86,7 @@ export const getUserData = async (userId: string): Promise<UserData | null> => {
 	try {
 		const userDoc = await getDoc(doc(db, 'users', userId));
 		if (userDoc.exists()) {
-			return { uid: userDoc.id, ...userDoc.data() } as UserData;
+			return makeSerializable({ uid: userDoc.id, ...userDoc.data() } as UserData);
 		}
 		return null;
 	} catch (error) {
@@ -111,19 +123,19 @@ export const getOnlineUsers = async () => {
 	const q = query(usersRef, where('status', '==', 'online'));
 	const querySnapshot = await getDocs(q);
 
-	return querySnapshot.docs.map((doc) => doc.data() as UserData);
+	return makeSerializable(querySnapshot.docs.map((doc) => doc.data() as UserData));
 };
 
 export const getAllUsers = async (): Promise<UserData[]> => {
 	try {
 		const usersSnapshot = await getDocs(collection(db, 'users'));
-		return usersSnapshot.docs.map(
+		return makeSerializable(usersSnapshot.docs.map(
 			(doc) =>
 				({
 					uid: doc.id,
 					...doc.data(),
 				} as UserData),
-		);
+		));
 	} catch (error) {
 		console.error('Error fetching all users:', error);
 		return [];

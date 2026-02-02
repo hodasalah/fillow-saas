@@ -10,6 +10,7 @@ import ProjectsGallery from './ProjectsGallery';
 import SkillsCard from './SkillsCard';
 import TeamCard from './TeamCard';
 
+import { Project, Story } from '../../../../types';
 import { fetchProjects } from '../../../../utils/fetchProjects';
 import { fetchStories } from '../../../../utils/fetchStories';
 
@@ -17,41 +18,40 @@ const Profile: React.FC = () => {
     const mode = useAppSelector((state) => state.sidebar.mode);
     const isMobileView = useAppSelector((state) => state.sidebar.isMobileView);
     const currentUser = useAppSelector((state) => state.auth.currentUser); // Get current user
-    const [stories, setStories] = React.useState<any[]>([]);
-    const [projects, setProjects] = React.useState<any[]>([]);
+    const [ stories, setStories ] = React.useState<Story[]>([]);
+    const [ projects, setProjects ] = React.useState<{ id: string, title: string, imageUrl: string }[]>([]);
 
     React.useEffect(() => {
         const loadData = async () => {
-             if (!currentUser?.uid) return; // Don't fetch if no user
+            if (!currentUser?.uid) return; // Don't fetch if no user
 
-             // Pass userId to fetch functions
-             
-             // Pass userId to fetch functions
-             const storiesData = await fetchStories(currentUser.uid);
-             setStories(storiesData);
+            // Pass userId to fetch functions
 
-             const projectsData = await fetchProjects(currentUser.uid);
-             // Map dashboard projects to profile gallery format
-             const galleryProjects = projectsData.map((p: any) => ({
-                 id: p.id,
-                 title: p.name,
-                 imageUrl: p.image || 'https://via.placeholder.com/600x400?text=Project'
-             }));
-             setProjects(galleryProjects);
+            // Pass userId to fetch functions
+            const storiesData = await fetchStories(currentUser.uid);
+            setStories(storiesData);
+
+            const projectsData = await fetchProjects(currentUser.uid);
+            // Map dashboard projects to profile gallery format
+            const galleryProjects = projectsData.map((p: Project) => ({
+                id: p.id,
+                title: p.name,
+                imageUrl: p.image || 'https://via.placeholder.com/600x400?text=Project'
+            }));
+            setProjects(galleryProjects);
         };
         loadData();
-    }, [currentUser?.uid]); // Add dependency
+    }, [ currentUser?.uid ]); // Add dependency
 
     return (
         <div
             className={`
-        ${
-            isMobileView
-                ? 'px-3'
-                : mode === 'wide'
-                ? 'pl-[var(--dz-sidebar-width)]'
-                : 'pl-[var(--dz-sidebar-width-mobile)]'
-        } w-full bg-body-bg text-[0.875rem] min-h-[calc(100vh-5.3rem)]  pt-[--dz-header-height]`}
+        ${isMobileView
+                    ? 'px-3'
+                    : mode === 'wide'
+                        ? 'pl-[var(--dz-sidebar-width)]'
+                        : 'pl-[var(--dz-sidebar-width-mobile)]'
+                } w-full bg-body-bg text-[0.875rem] min-h-[calc(100vh-5.3rem)]  pt-[--dz-header-height]`}
         >
             <div className='container mx-auto w-full p-6'>
                 <div className='w-full grid grid-cols-1 lg:grid-cols-[1fr_2fr_1fr] gap-6'>

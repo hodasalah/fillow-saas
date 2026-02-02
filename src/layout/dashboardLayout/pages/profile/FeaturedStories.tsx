@@ -5,19 +5,14 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState } from 'react';
 
-interface Story {
-	id: string;
-	imageUrl: string;
-	title: string;
-	authorName: string;
-}
+import { Story } from '../../../../types';
 
 interface FeaturedStoriesProps {
 	stories: Story[];
 }
 
 const FeaturedStories: React.FC<FeaturedStoriesProps> = ({ stories }) => {
-	const [currentSlide, setCurrentSlide] = useState(0);
+	const [ currentSlide, setCurrentSlide ] = useState(0);
 
 	const slidesCount = Math.ceil(stories.length / 4);
 
@@ -80,7 +75,7 @@ const FeaturedStories: React.FC<FeaturedStoriesProps> = ({ stories }) => {
 												alt={story.title || `Story ${slideIndex * 4 + index + 1}`}
 												className='w-full h-full object-cover transform group-hover:scale-105 transition-all duration-300'
 											/>
-											<div className='absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent'/>
+											<div className='absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent' />
 											<div className='absolute bottom-0 left-0 p-3 text-white'>
 												<h3 className='font-semibold text-sm line-clamp-1'>
 													{story.title || 'Story Title'}
@@ -102,11 +97,10 @@ const FeaturedStories: React.FC<FeaturedStoriesProps> = ({ stories }) => {
 					<button
 						key={index}
 						onClick={() => setCurrentSlide(index)}
-						className={`w-3 h-3 rounded-full ${
-							currentSlide === index
+						className={`w-3 h-3 rounded-full ${currentSlide === index
 								? 'bg-gray-800'
 								: 'bg-gray-300'
-						}`}
+							}`}
 					/>
 				))}
 			</div>

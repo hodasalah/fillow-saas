@@ -7,6 +7,7 @@ import {
     writeBatch
 } from 'firebase/firestore';
 import { db } from '../../firebase';
+import { makeSerializable } from '../../utils/dateUtils';
 
 export interface Activity {
   id: string;
@@ -30,6 +31,9 @@ export interface UserProfile {
   displayName: string;
   email: string;
   photoURL: string;
+  profilePictureBase64?: string;
+  hasBase64Image?: boolean;
+  profilePictureUpdatedAt?: string;
   bio: string;
   title: string;
   location: string;
@@ -74,26 +78,39 @@ const PROFILES_COLLECTION = 'userProfiles';
  */
 export const getUserProfile = async (userId: string): Promise<UserProfile | null> => {
   try {
-    const profileDoc = await getDoc(doc(db, PROFILES_COLLECTION, userId));
+    let profileDoc = await getDoc(doc(db, PROFILES_COLLECTION, userId));
     
+    // Fallback to 'users' collection if not in 'userProfiles'
+    if (!profileDoc.exists()) {
+      profileDoc = await getDoc(doc(db, 'users', userId));
+    }
+
     if (!profileDoc.exists()) {
       return null;
     }
 
     const data = profileDoc.data();
-    return {
+    const processedProfile = {
       ...data,
-      createdAt: data.createdAt?.toDate() || new Date(),
-      updatedAt: data.updatedAt?.toDate() || new Date(),
+      uid: userId,
+      createdAt: data.createdAt?.toDate ? data.createdAt.toDate() : new Date(data.createdAt || Date.now()),
+      updatedAt: data.updatedAt?.toDate ? data.updatedAt.toDate() : new Date(data.updatedAt || Date.now()),
       activities: data.activities?.map((a: any) => ({
         ...a,
-        timestamp: a.timestamp?.toDate() || new Date()
+        timestamp: a.timestamp?.toDate ? a.timestamp.toDate() : new Date(a.timestamp || Date.now())
       })) || [],
       achievements: data.achievements?.map((a: any) => ({
         ...a,
-        earnedAt: a.earnedAt?.toDate() || new Date()
+        earnedAt: a.earnedAt?.toDate ? a.earnedAt.toDate() : new Date(a.earnedAt || Date.now())
+      })) || [],
+      projects: data.projects?.map((p: any) => ({
+        ...p,
+        completionDate: p.completionDate?.toDate ? p.completionDate.toDate() : (p.completionDate instanceof Date ? p.completionDate : (p.completionDate ? new Date(p.completionDate) : undefined))
       })) || []
-    } as UserProfile;
+    };
+
+    return makeSerializable(processedProfile as UserProfile);
+
   } catch (error) {
     console.error('Error fetching user profile:', error);
     return null;
@@ -109,10 +126,16 @@ export const updateUserProfile = async (
 ): Promise<void> => {
   try {
     const profileRef = doc(db, PROFILES_COLLECTION, userId);
-    await setDoc(profileRef, {
+    const updateData = {
       ...data,
       updatedAt: serverTimestamp()
-    }, { merge: true });
+    };
+    
+    // Update both collections for maximum consistency
+    await Promise.all([
+        setDoc(profileRef, updateData, { merge: true }),
+        setDoc(doc(db, 'users', userId), updateData, { merge: true })
+    ]);
   } catch (error) {
     console.error('Error updating user profile:', error);
     throw error;
@@ -407,11 +430,11 @@ export const seedUserProfile = async (
         console.warn("Failed to seed stories collection:", err);
     }
 
-    return {
+    return makeSerializable({
       ...profileData,
       createdAt: new Date(),
       updatedAt: new Date()
-    };
+    } as UserProfile);
   } catch (error) {
     console.error('Error seeding user profile:', error);
     throw error;

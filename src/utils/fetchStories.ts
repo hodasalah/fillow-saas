@@ -1,12 +1,7 @@
 import { collection, getDocs, query, where } from 'firebase/firestore'; // Added query, where
 import { db } from '../firebase';
 
-export interface Story {
-    id: string;
-    imageUrl: string;
-    title?: string;
-    authorName?: string;
-}
+import { Story } from '../types';
 
 export const fetchStories = async (userId?: string): Promise<Story[]> => { // Added userId optional param
     try {

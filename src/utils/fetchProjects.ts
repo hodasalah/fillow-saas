@@ -2,6 +2,16 @@ import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../firebase';
 import { Project } from '../types';
 
+// Helper to add timeout to promises
+const withTimeout = <T,>(promise: Promise<T>, timeoutMs: number = 5000): Promise<T> => {
+	return Promise.race([
+		promise,
+		new Promise<T>((_, reject) =>
+			setTimeout(() => reject(new Error('Request timeout')), timeoutMs)
+		)
+	]);
+};
+
 export const fetchProjects = async (userId?: string) => {
 	try {
         let q;
@@ -11,7 +21,7 @@ export const fetchProjects = async (userId?: string) => {
             q = collection(db, 'projects');
         }
 
-        const querySnapshot = await getDocs(q);
+        const querySnapshot = await withTimeout(getDocs(q), 5000);
         const projectsData: Project[] = querySnapshot.docs.map((doc) => {
             const data = doc.data();
             const toDate = (val: any) => (val?.toDate ? val.toDate() : new Date(val));
@@ -25,7 +35,7 @@ export const fetchProjects = async (userId?: string) => {
         });
 		return projectsData;
 	} catch (error) {
-		console.log('Fetching from Firebase failed (likely rules not deployed), falling back to mock data.');
+		console.log('Fetching from Firebase failed (timeout or error), falling back to mock data.');
 		try {
             const res = await fetch('/datas/projects.json');
             const data = await res.json();

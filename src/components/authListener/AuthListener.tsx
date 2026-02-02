@@ -34,22 +34,23 @@ const AuthListener = ({ children }: AuthListenerProps) => {
                     userData = result || null;
                 }
 
-                dispatch(
-                    setUser(makeSerializable({
-                        uid: user.uid,
-                        email: user.email,
-                        name: userData?.displayName || user.displayName || 'User',
-                        profilePicture: userData?.photoURL || user.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.displayName || 'User')}&background=886cc0&color=fff`,
-                        bio: userData?.bio,
-                        title: userData?.title,
-                        phone: userData?.phone,
-                        role: 'user', // Default or from userData if you added role to UserData interface
-                        ...userData,
-                        createdAt: userData?.createdAt || Date.now(),
-                        lastSeen: userData?.lastSeen || null,
-                        last_login: Date.now()
-                    })),
-                );
+                const userPayload = {
+                    uid: user.uid,
+                    email: user.email,
+                    name: userData?.displayName || user.displayName || 'User',
+                    profilePicture: userData?.photoURL || user.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.displayName || 'User')}&background=886cc0&color=fff`,
+                    bio: userData?.bio,
+                    title: userData?.title,
+                    phone: userData?.phone,
+                    role: 'user', // Default or from userData if you added role to UserData interface
+                    ...userData, // Spread all userData properties (including projects)
+                    createdAt: userData?.createdAt || Date.now(),
+                    lastSeen: userData?.lastSeen || null,
+                    last_login: Date.now()
+                };
+
+                // Apply makeSerializable to the entire payload to convert all Timestamps
+                dispatch(setUser(makeSerializable(userPayload)));
             } else {
                 dispatch(setUser(null));
                 // Removed anonymous login to ensure users stay logged out

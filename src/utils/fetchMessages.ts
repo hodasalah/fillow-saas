@@ -2,9 +2,19 @@ import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
 import { Message } from '../types/dashboard'; // Utilizing shared type definition instead of component local type if possible, or correcting path
 
+// Helper to add timeout to promises
+const withTimeout = <T,>(promise: Promise<T>, timeoutMs: number = 5000): Promise<T> => {
+	return Promise.race([
+		promise,
+		new Promise<T>((_, reject) => 
+			setTimeout(() => reject(new Error('Request timeout')), timeoutMs)
+		)
+	]);
+};
+
 export const fetchMessages = async () => {
     try {
-        const querySnapshot = await getDocs(collection(db, 'messages'));
+        const querySnapshot = await withTimeout(getDocs(collection(db, 'messages')), 5000);
         const messagesData: Message[] = querySnapshot.docs.map((doc) => {
             const data = doc.data();
             const toDate = (val: any) => {
@@ -27,7 +37,7 @@ export const fetchMessages = async () => {
         });
         return messagesData.sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime());
     } catch (error) {
-        console.log('Fetching from Firebase failed (likely rules not deployed), falling back to mock data.');
+        console.log('Fetching from Firebase failed (timeout or error), falling back to mock data.');
         try {
             const res = await fetch('/datas/messages.json');
             const data = await res.json();

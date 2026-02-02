@@ -2,13 +2,13 @@ import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import DataSourceIndicator from '../../../../components/DataSourceIndicator';
 import { useAppSelector } from '../../../../hooks/hooks';
 import type {
-    DashboardData
+	DashboardData
 } from '../../../../types/dashboard';
 import {
-    fetchEmails,
-    fetchMessages,
-    fetchProjects,
-    fetchStatistics,
+	fetchEmails,
+	fetchMessages,
+	fetchProjects,
+	fetchStatistics,
 } from '../../../../utils/fetchData';
 import CompleteProject from './components/completeProject';
 import DognutArea from './components/dognutArea';
@@ -84,9 +84,9 @@ const initialDashboardData: DashboardData = {
 const DashboardHome = () => {
 	const mode = useAppSelector((state) => state.sidebar.mode);
 	const isMobileView = useAppSelector((state) => state.sidebar.isMobileView);
-	const [isLoading, setIsLoading] = useState(true);
-	const [error, setError] = useState<string | null>(null);
-	const [dashboardData, setDashboardData] =
+	const [ isLoading, setIsLoading ] = useState(true);
+	const [ error, setError ] = useState<string | null>(null);
+	const [ dashboardData, setDashboardData ] =
 		useState<DashboardData>(initialDashboardData);
 
 	const loadDashboardData = useCallback(async () => {
@@ -94,23 +94,29 @@ const DashboardHome = () => {
 		setError(null);
 
 		try {
-			const [messagesData, emailsData, projectsData, statisticsData] =
-				await Promise.all([
-					fetchMessages(),
-					fetchEmails(),
-					fetchProjects(),
-					fetchStatistics(),
-				]);
+			// Use allSettled to handle partial failures gracefully
+			const results = await Promise.allSettled([
+				fetchMessages(),
+				fetchEmails(),
+				fetchProjects(),
+				fetchStatistics(),
+			]);
 
-			// Since fetchProjects is an async thunk, we need to handle it differently
-			const projects = await projectsData;
+			// Extract successful results and handle failures
+			const [ messagesResult, emailsResult, projectsResult, statisticsResult ] = results;
 
 			setDashboardData({
-				messages: messagesData,
-				emails: emailsData,
-				projects,
-				statistics: statisticsData,
+				messages: messagesResult.status === 'fulfilled' ? messagesResult.value : [],
+				emails: emailsResult.status === 'fulfilled' ? emailsResult.value : [],
+				projects: projectsResult.status === 'fulfilled' ? projectsResult.value : [],
+				statistics: statisticsResult.status === 'fulfilled' ? statisticsResult.value : initialDashboardData.statistics,
 			});
+
+			// Check if any requests failed
+			const failures = results.filter(r => r.status === 'rejected');
+			if (failures.length > 0) {
+				console.warn(`${failures.length} dashboard data requests failed, using fallback data`);
+			}
 		} catch (error) {
 			console.error('Error loading dashboard data:', error);
 			setError('Failed to load dashboard data. Please try again later.');
@@ -121,20 +127,19 @@ const DashboardHome = () => {
 
 	useEffect(() => {
 		loadDashboardData();
-	}, [loadDashboardData]);
+	}, [ loadDashboardData ]);
 
 
 	const containerClassName = useMemo(
 		() =>
 			`
-        ${
-			isMobileView
+        ${isMobileView
 				? 'px-3'
 				: mode === 'wide'
-				? 'pl-[var(--dz-sidebar-width)]'
-				: 'pl-[var(--dz-sidebar-width-mobile)]'
-		} w-full bg-body-bg text-[0.875rem] min-h-[calc(100vh-5.3rem)]  pt-[--dz-header-height]`,
-		[isMobileView, mode],
+					? 'pl-[var(--dz-sidebar-width)]'
+					: 'pl-[var(--dz-sidebar-width-mobile)]'
+			} w-full bg-body-bg text-[0.875rem] min-h-[calc(100vh-5.3rem)]  pt-[--dz-header-height]`,
+		[ isMobileView, mode ],
 	);
 
 	if (isLoading) return <LoadingSpinner />;
@@ -150,7 +155,7 @@ const DashboardHome = () => {
 					<SecondColumn data={dashboardData} />
 				</div>
 			</div>
-            <DataSourceIndicator source={error ? 'Mock' : 'Firebase'} />
+			<DataSourceIndicator source={error ? 'Mock' : 'Firebase'} />
 		</div>
 	);
 };

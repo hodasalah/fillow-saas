@@ -8,11 +8,21 @@ import { fetchProjects } from './fetchProjects';
 // Re-export the fetch functions
 export { fetchEmails, fetchMessages, fetchProjects };
 
+// Helper to add timeout to promises
+const withTimeout = <T,>(promise: Promise<T>, timeoutMs: number = 5000): Promise<T> => {
+	return Promise.race([
+		promise,
+		new Promise<T>((_, reject) => 
+			setTimeout(() => reject(new Error('Request timeout')), timeoutMs)
+		)
+	]);
+};
+
 // Fetch statistics from Firestore
 export const fetchStatistics = async (): Promise<Statistics> => {
     try {
         const docRef = doc(db, 'statistics', 'dashboard_stats');
-        const docSnap = await getDoc(docRef);
+        const docSnap = await withTimeout(getDoc(docRef), 5000);
 
         if (docSnap.exists()) {
              return docSnap.data() as Statistics;
@@ -31,7 +41,7 @@ export const fetchStatistics = async (): Promise<Statistics> => {
             };
         }
     } catch (error) {
-        console.log('Fetching from Firebase failed (likely rules not deployed), falling back to mock data.');
+        console.log('Fetching from Firebase failed (timeout or error), falling back to mock data.');
         return {
             total: 12,
             ongoing: 5,

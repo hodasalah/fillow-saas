@@ -11,12 +11,12 @@ import { getStorage } from 'firebase/storage';
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_API_KEY,
-  authDomain: import.meta.env.VITE_AUTH_DOMAIN,
-  projectId: import.meta.env.VITE_PROJECT_ID,
-  storageBucket: import.meta.env.VITE_STORAGE_BUCKET,
-  messagingSenderId: import.meta.env.VITE_MESSAGING_SENDER_ID,
-  appId: import.meta.env.VITE_APP_ID
+  apiKey: "AIzaSyCxrbMJA2_N4uG64KZ2C39Iu68vm2Huc7M",
+  authDomain: "dashora-free.firebaseapp.com",
+  projectId: "dashora-free",
+  storageBucket: "dashora-free.firebasestorage.app",
+  messagingSenderId: "509710943641",
+  appId: "1:509710943641:web:b4fc26969823b0f24bff08"
 };
 
 // Initialize Firebase only if it hasn't been initialized already

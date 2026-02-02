@@ -19,24 +19,49 @@ const NavHeader = () => {
 		dispatch(toggleMobile());
 		console.log(isMobileOpen);
 	};
+	const isCompact = isMobileView || mode === 'mini';
+
 	return (
 		<div
-			className={`${
-				mode === 'wide' ? 'w-sidebar-wide' : 'w-sidebar-mini'
-			} nav-header fixed inline-block  top-0  h-[--dz-header-height]  transition-all duration-300 ease-in-out  bg-nav-headbg z-[2]`}
+			className={`${isCompact ? 'w-sidebar-mini' : 'w-sidebar-wide'
+				} nav-header fixed top-0 left-0 flex items-center h-[--dz-header-height] transition-all duration-300 ease-in-out bg-nav-headbg z-[2] ${isCompact ? 'justify-center' : 'justify-between px-4'
+				}`}
 		>
-			<div className='brand-logo'>
-				<MiniLogo />
-				{mode === 'wide' && !isMobileView && (
-					<div className='hidden lg:block brand-title'>
-						<Logo />
+			{isCompact ? (
+				<div className='flex items-center justify-center w-full gap-3'>
+					{/* Logo first */}
+					<div className='brand-logo'>
+						<MiniLogo />
 					</div>
-				)}
-			</div>
-			{isMobileView ? (
-				<HamburgerBtn onHandleClick={toggleSidebarOnMobile} />
+
+					{/* Hamburger after logo */}
+					<div className='flex items-center'>
+						{isMobileView ? (
+							<HamburgerBtn onHandleClick={toggleSidebarOnMobile} />
+						) : (
+							<HamburgerBtn onHandleClick={handleToggle} />
+						)}
+					</div>
+				</div>
 			) : (
-				<HamburgerBtn onHandleClick={handleToggle} />
+				<>
+					<div className='flex items-center gap-4'>
+						<div className='brand-logo'>
+							<MiniLogo />
+						</div>
+						<div className='brand-title'>
+							<Logo />
+						</div>
+					</div>
+
+					<div className='flex items-center gap-3'>
+						{isMobileView ? (
+							<HamburgerBtn onHandleClick={toggleSidebarOnMobile} />
+						) : (
+							<HamburgerBtn onHandleClick={handleToggle} />
+						)}
+					</div>
+				</>
 			)}
 		</div>
 	);

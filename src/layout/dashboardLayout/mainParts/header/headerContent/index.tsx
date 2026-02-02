@@ -1,4 +1,4 @@
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { faEllipsisVertical, faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router';
@@ -16,28 +16,30 @@ const HeaderContent = ({ setShowSlider }: HeaderContentProps) => {
 	const dispatch = useAppDispatch();
 	const mode = useAppSelector((state) => state.sidebar.mode);
 	const isMobileView = useAppSelector((state) => state.sidebar.isMobileView);
-    const currentUser = useAppSelector((state) => state.auth.currentUser);
-	const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+	const currentUser = useAppSelector((state) => state.auth.currentUser);
+	const [ activeDropdown, setActiveDropdown ] = useState<string | null>(null);
+	const [ showMobileMenu, setShowMobileMenu ] = useState(false);
 	const dropdownRefs = useRef<Record<string, HTMLLIElement | null>>({});
-    const [alerts, setAlerts] = useState<Alert[]>([]);
+	const [ alerts, setAlerts ] = useState<Alert[]>([]);
 
-    useEffect(() => {
-        if (!currentUser) return;
-        const unsubscribe = subscribeToAlerts(currentUser.uid, (data) => {
-            setAlerts(data);
-        });
-        return () => unsubscribe();
-    }, [currentUser]);
+	useEffect(() => {
+		if (!currentUser) return;
+		const unsubscribe = subscribeToAlerts(currentUser.uid, (data) => {
+			setAlerts(data);
+		});
+		return () => unsubscribe();
+	}, [ currentUser ]);
 
 	useEffect(() => {
 		setActiveDropdown(null);
-	}, [mode, isMobileView]);
+		setShowMobileMenu(false);
+	}, [ mode, isMobileView ]);
 
 	useEffect(() => {
 		if (!activeDropdown) return;
 
 		const handleClickOutside = (event: MouseEvent) => {
-			const dropdownEl = dropdownRefs.current[activeDropdown];
+			const dropdownEl = dropdownRefs.current[ activeDropdown ];
 			if (dropdownEl && !dropdownEl.contains(event.target as Node)) {
 				setActiveDropdown(null);
 			}
@@ -46,7 +48,7 @@ const HeaderContent = ({ setShowSlider }: HeaderContentProps) => {
 		document.addEventListener('mousedown', handleClickOutside);
 		return () =>
 			document.removeEventListener('mousedown', handleClickOutside);
-	}, [activeDropdown]);
+	}, [ activeDropdown ]);
 
 	const handleItemClick = (action: string) => {
 		setActiveDropdown((prev) => (prev === action ? null : action));
@@ -70,54 +72,59 @@ const HeaderContent = ({ setShowSlider }: HeaderContentProps) => {
 
 	return (
 		<header
-			className={`relative flex items-center ${
-				mode === 'wide' || !isMobileView
-					? 'pl-[4rem] md:pl-[5rem]'
-					: 'lg:pl-[8rem] md:pl-[1.875rem] sm:pl-[8rem]'
-			} pl-1 pr-1 sm:px-[1.875rem] h-full`}
+			className={`relative flex items-center ${mode === 'wide' || !isMobileView
+				? 'pl-[4rem] md:pl-[5rem]'
+				: 'pl-8'
+				} pr-2 sm:px-[1.875rem] h-full`}
 		>
-			<nav className='flex sm:justify-between justify-end items-center w-full'>
-				<div className='font-bold text-[1.25rem] text-[--text-dark] block'>
+			<nav className='flex justify-between items-center w-full'>
+				<div className='font-bold text-[1rem] sm:text-[1.25rem] text-[--text-dark] truncate max-w-[120px] md:max-w-none mr-2'>
 					{(() => {
-                        const segments = location.pathname.split('/').filter(Boolean);
-                        const lastSegment = segments[segments.length - 1];
-                        if (!lastSegment || lastSegment === 'dashboard') return 'Dashboard';
-                        return lastSegment.charAt(0).toUpperCase() + lastSegment.slice(1);
-                    })()}
+						const segments = location.pathname.split('/').filter(Boolean);
+						const lastSegment = segments[ segments.length - 1 ];
+						if (!lastSegment || lastSegment === 'dashboard') return 'Dashboard';
+						return lastSegment.charAt(0).toUpperCase() + lastSegment.slice(1);
+					})()}
 				</div>
 				<div className='nav-links flex items-center px-2 sm:px-5'>
 					<ul className='header-right w-full flex md:items-center justify-end'>
 						{items.map((item) => {
-                            // Dynamic Badge override
-                            let dynamicNum = item.num;
-                            if (item.action === 'notifications') {
-                                // dynamicNum = alerts.filter(a => !a.read).length; 
-                                dynamicNum = alerts.length;
-                            }
+							// Dynamic Badge override
+							let dynamicNum = item.num;
+							if (item.action === 'notifications') {
+								dynamicNum = alerts.length;
+							}
 
-							return item.icon === faSearch ? (
-								<li
-									key={item.action}
-									className='hidden lg:flex h-full items-center text-[1.25rem] gap-2'
-									onClick={() => handleItemClick(item.action)}
-								>
-									<div className='relative flex items-stretch w-full flex-wrap search-area rounded-[50%]'>
-										<input
-											type='text'
-											className='form-control relative flex-auto w-[1%] h-[3rem] border-[#eee] border-r-0 rounded-tl-[3.125rem] rounded-bl-[3.125rem] min-w-[3.125rem] flex justify-center font-[400] text-[.825rem] items-center text-[--bs-body-color] leading-6 focus:border-[#eee] px-[1.25rem] py-[0.3125rem] focus:outline-none'
-											placeholder='Search here...'
-										/>
-										<span className='input-group-text ml-[-1px] rounded-tl-none rounded-bl-none h-[3rem] rounded-[3.125rem] bg-white py-0 px-[0.625rem] sm:px-[1.25rem] border-[#e9e2f8] flex items-center justify-center text-[--bs-body-color]'>
-											<FontAwesomeIcon icon={item.icon} />
-										</span>
-									</div>
-								</li>
-							) : (
+							const isSearch = item.icon === faSearch;
+							const isSecondary = [ 'toggleTheme', 'relatedApps', 'cart' ].includes(item.action);
+
+							if (isSearch) {
+								return (
+									<li
+										key={item.action}
+										className='hidden md:flex h-full items-center text-[1.25rem] gap-2'
+										onClick={() => handleItemClick(item.action)}
+									>
+										<div className='relative flex items-stretch w-full flex-wrap search-area rounded-[50%]'>
+											<input
+												type='text'
+												className='form-control relative flex-auto w-[1%] h-[3rem] border-[#eee] border-r-0 rounded-tl-[3.125rem] rounded-bl-[3.125rem] min-w-[3.125rem] flex justify-center font-[400] text-[.825rem] items-center text-[--bs-body-color] leading-6 focus:border-[#eee] px-[1.25rem] py-[0.3125rem] focus:outline-none'
+												placeholder='Search here...'
+											/>
+											<span className='input-group-text ml-[-1px] rounded-tl-none rounded-bl-none h-[3rem] rounded-[3.125rem] bg-white py-0 px-[0.625rem] sm:px-[1.25rem] border-[#e9e2f8] flex items-center justify-center text-[--bs-body-color]'>
+												<FontAwesomeIcon icon={item.icon} />
+											</span>
+										</div>
+									</li>
+								);
+							}
+
+							return (
 								<li
 									ref={(el) =>
-										(dropdownRefs.current[item.action] = el)
+										(dropdownRefs.current[ item.action ] = el)
 									}
-									className='relative cursor-pointer text-[--text-gray] h-full flex items-center text-[1.125rem] sm:text-[1.25rem] px-[0.45rem] sm:px-[1.25rem]'
+									className={`relative cursor-pointer text-[--text-gray] h-full flex items-center text-[1.125rem] sm:text-[1.25rem] px-[0.45rem] sm:px-[1.25rem] ${isSecondary ? 'hidden lg:flex' : 'flex'}`}
 									key={item.action}
 									onClick={() => handleItemClick(item.action)}
 								>
@@ -136,13 +143,39 @@ const HeaderContent = ({ setShowSlider }: HeaderContentProps) => {
 								</li>
 							);
 						})}
-						<li className='h-full flex items-center'>
+						{/* Mobile More Menu */}
+						<li className='relative flex lg:hidden h-full items-center px-2 cursor-pointer text-[--text-gray] text-[1.125rem]'
+							onClick={() => setShowMobileMenu(!showMobileMenu)}
+						>
+							<div className='p-[0.625rem] rounded-[.625rem]'>
+								<FontAwesomeIcon icon={faEllipsisVertical} />
+							</div>
+							{showMobileMenu && (
+								<div className='absolute top-[100%] right-0 mt-2 bg-white dark:bg-gray-800 shadow-xl rounded-xl border border-gray-100 dark:border-gray-700 min-w-[150px] z-[100] overflow-hidden'>
+									{items.filter(item => [ 'toggleTheme', 'relatedApps', 'cart' ].includes(item.action)).map(item => (
+										<div
+											key={item.action}
+											className='flex items-center gap-3 px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors border-b last:border-0 border-gray-100 dark:border-gray-700'
+											onClick={(e) => {
+												e.stopPropagation();
+												handleItemClick(item.action);
+												setShowMobileMenu(false);
+											}}
+										>
+											<FontAwesomeIcon icon={item.icon} className='w-4' />
+											<span className='text-sm font-medium'>{item.action.replace(/([A-Z])/g, ' $1').trim()}</span>
+										</div>
+									))}
+								</div>
+							)}
+						</li>
+						<li className='h-full hidden lg:flex items-center'>
 							<ProfileDropdown />
 						</li>
 					</ul>
 				</div>
 			</nav>
-		</header>
+		</header >
 	);
 };
 

@@ -5,32 +5,33 @@
   position: fixed;
   right: -31.25rem;
   top: 0;
-  z-index: 3;
+  z-index: 1000;
   box-shadow: rgba(82, 63, 105, 0.15) 0 0 1.875rem 0;
   background: rgb(255, 255, 255);
-  transition: right 0.8s ease-in-out;
+  transition: right 0.4s ease-in-out;
 }
 
 .chatbox.active {
   right: 0;
-  transition: right 0.8s 0.8s ease-in-out;
-  /* Delay opening animation */
+  transition: right 0.4s ease-in-out;
 }
 
 .chatbox-overlay {
   position: fixed;
   top: 0;
-  right: -100vw;
+  right: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.1);
-  z-index: 3;
-  transition: right 0.8s 0.8s ease-in-out;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.4s ease-in-out, visibility 0.4s ease-in-out;
 }
 
 .chatbox-overlay.active {
-  right: 0;
-  transition: right 0.8s ease-in-out;
+  opacity: 1;
+  visibility: visible;
 }
 
 @media only screen and (max-width: 36rem) {

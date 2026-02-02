@@ -216,27 +216,12 @@ h6 {
 }
 
 .brand-logo {
-	display: flex;
-	height: 100%;
-	width: 100%;
-	justify-content: flex-start;
-	align-items: center;
-	font-size: 1.125rem;
 	color: #fff;
-	padding-left: 1.5rem;
-	padding-right: 1.5rem;
 	font-weight: 700;
 }
 
 .nav-header .brand-title {
 	margin-left: 0.4rem;
-	max-width: 8.75rem;
-	display: flex;
-	align-items: center;
-}
-
-.nav-header .logo-abbr {
-	max-width: 2.9375rem;
 }
 
 .logo-abbr path {
@@ -345,19 +330,6 @@ h6 {
 	.nav-header .logo-abbr {
 		width: 2.1875rem;
 		height: 2.1875rem;
-	}
-}
-
-@media only screen and (max-width: 47.9375rem) {
-	.nav-header {
-		width: 5rem;
-		background-color: transparent;
-	}
-
-	.nav-header .brand-logo {
-		padding-left: 0;
-		padding-right: 0;
-		justify-content: center;
 	}
 }
 

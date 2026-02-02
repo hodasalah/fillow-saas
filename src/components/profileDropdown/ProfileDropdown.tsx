@@ -1,7 +1,7 @@
 import {
-    faGear,
-    faRightFromBracket,
-    faUser,
+	faGear,
+	faRightFromBracket,
+	faUser,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useRef, useState } from 'react';
@@ -34,11 +34,14 @@ const links = [
 	},
 ];
 const ProfileDropdown = () => {
-	const [showDropdown, setShowDropdown] = useState(false);
+	const [ showDropdown, setShowDropdown ] = useState(false);
 	const dropdownMenuRef = useRef<HTMLDivElement>(null);
 	const dispatch = useAppDispatch();
 	const user = useAppSelector((state) => state.auth.currentUser);
 	const navigate = useNavigate();
+	const mode = useAppSelector((state) => state.sidebar.mode);
+	const isMobileView = useAppSelector((state) => state.sidebar.isMobileView);
+	const isCompact = isMobileView || mode === 'mini' || window.innerWidth < 1024;
 
 	useEffect(() => {
 		const closeMenu = (e: MouseEvent) => {
@@ -56,7 +59,7 @@ const ProfileDropdown = () => {
 		return () => {
 			document.removeEventListener('mousedown', closeMenu);
 		};
-	}, [showDropdown]);
+	}, [ showDropdown ]);
 
 	const ToggleMenu = () => {
 		setShowDropdown((prevState) => !prevState);
@@ -65,18 +68,22 @@ const ProfileDropdown = () => {
 		dispatch(logoutUser());
 		navigate('/login');
 	};
+
 	return (
 		<div
-			className='w-full relative'
-			onClick={ToggleMenu}
+			className='relative'
 			ref={dropdownMenuRef}
 		>
-			<div className='flex items-center w-full h-full relative gap-3 cursor-pointer group px-2 py-1 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors'>
-				<div className="flex flex-col items-end hidden sm:flex">
-					<span className="text-[var(--text-dark)] font-bold text-sm leading-tight group-hover:text-[var(--primary)] transition-colors">{user?.name}</span>
-					<span className="text-[var(--text-gray)] text-[10px] leading-tight font-medium opacity-70">Administrator</span>
-				</div>
-				<div className="relative">
+			<div className='flex items-center h-full relative gap-3 cursor-pointer group px-2 py-1 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors'
+				onClick={ToggleMenu}
+			>
+				{!isCompact && (
+					<div className="flex flex-col items-end hidden md:flex">
+						<span className="text-[var(--text-dark)] font-bold text-sm leading-tight group-hover:text-[var(--primary)] transition-colors">{user?.name}</span>
+						<span className="text-[var(--text-gray)] text-[10px] leading-tight font-medium opacity-70">Administrator</span>
+					</div>
+				)}
+				<div className='relative flex-shrink-0'>
 					<img
 						src={getProfilePictureUrl(user)}
 						alt='profile'
@@ -89,11 +96,10 @@ const ProfileDropdown = () => {
 				</div>
 			</div>
 			<div
-				className={`border-0 z-10 overflow-hidden rounded-xl shadow-[0_0_3.125rem_0_rgba(82,63,105,0.15)] bg-white min-w-40 py-2 px-0 text-[#9da1a5]  text-left ${
-					showDropdown
-						? 'block absolute left-auto  right-0 top-1/2 m-0 translate3d'
-						: 'hidden'
-				} `}
+				className={`border-0 z-10 overflow-hidden rounded-xl shadow-[0_0_3.125rem_0_rgba(82,63,105,0.15)] bg-white min-w-40 py-2 px-0 text-[#9da1a5]  text-left ${showDropdown
+					? 'block absolute left-auto  right-0 top-1/2 m-0 translate3d'
+					: 'hidden'
+					} `}
 			>
 				<ul className='w-full'>
 					{links.map((link) => (

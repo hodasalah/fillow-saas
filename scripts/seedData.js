@@ -6,9 +6,7 @@ import fs from 'fs/promises';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-// --- Configuration ---
 // Hardcoded config matching src/firebase.ts
-// In a real production environment, use environment variables.
 const firebaseConfig = {
 	apiKey: 'AIzaSyBqb7qzprO3JoeFmaZpBy_CmRfXv_4Df5A',
 	authDomain: 'fillow-73cc0.firebaseapp.com',
@@ -19,7 +17,6 @@ const firebaseConfig = {
 	measurementId: 'G-XW7DW6JG41',
 };
 
-// --- Initialization ---
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
@@ -28,7 +25,6 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const PROJECT_ROOT = path.resolve(__dirname, '..');
 
-// --- Helpers ---
 async function readJsonFile(filePath) {
 	try {
 		const data = await fs.readFile(filePath, 'utf8');
@@ -38,8 +34,6 @@ async function readJsonFile(filePath) {
 		throw error;
 	}
 }
-
-// --- Seeding Functions ---
 
 async function seedProjects() {
 	console.log('--- Seeding Projects ---');
@@ -52,9 +46,7 @@ async function seedProjects() {
 
 	for (const project of projects) {
 		const docRef = doc(projectsCollection); // Auto-generated ID
-		// Ensure dates are converted if necessary, or keep as strings if that's what the app expects.
-		// The app uses string dates in the JSON, so we keep them for now, 
-		// but ideally these should be timestamps. We'll strict to JSON structure for now.
+		// The app uses string dates in the JSON, so we keep them for now.
 		batch.set(docRef, project);
 	}
 
@@ -73,14 +65,11 @@ async function seedEmails() {
 
 	for (const email of emails) {
 		const docRef = doc(emailsCollection);
-        // Add a timestamp compatible with Firestore if needed, or keep existing fields
-		// The app expects `timestamp: Date` in types, but JSON likely has strings/nothing.
-        // Let's add a current timestamp if missing or parse if present.
-        const emailData = {
-            ...email,
-            timestamp: new Date().toISOString(), // Storing as ISO string for simplicity in JSON-like structure
-            isRead: false, // Default
-        };
+		const emailData = {
+			...email,
+			timestamp: new Date().toISOString(),
+			isRead: false,
+		};
 		batch.set(docRef, emailData);
 	}
 
@@ -101,8 +90,7 @@ async function seedMessages() {
 		const docRef = doc(messagesCollection);
         const messageData = {
             ...message,
-            // Ensure compatibility with Message interface
-            content: message.lastMessage, // Mapping lastMessage to content as per likely usage
+            content: message.lastMessage,
             timestamp: new Date(message.lastMessageTime || Date.now()).toISOString(),
             isRead: false
         };
@@ -141,7 +129,6 @@ async function main() {
         
         let signedIn = false;
 
-        // 1. Try Anonymous
         try {
             await signInAnonymously(auth);
             console.log('Signed in anonymously');
@@ -150,7 +137,6 @@ async function main() {
             console.log('Anonymous sign-in failed:', e.code, e.message);
         }
 
-        // 2. Try Email/Password if Anonymous failed
         if (!signedIn) {
              const { signInWithEmailAndPassword, createUserWithEmailAndPassword } = await import('firebase/auth');
              const email = 'temp_seeder@example.com';

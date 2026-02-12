@@ -7,9 +7,7 @@ export const seedDatabase = async () => {
         console.log('Starting seeding...');
         const currentUser = auth.currentUser;
         
-        // If not logged in, try to sign in (though user should be logged in from Edit Profile)
         if (!currentUser) {
-             console.log('Authenticating for seed...');
              await signInAnonymously(auth);
         }
         
@@ -18,7 +16,6 @@ export const seedDatabase = async () => {
 
 		const batch = writeBatch(db);
 
-		// 1. Seed Projects
 		const projectsRes = await fetch('/datas/projects.json');
 		const projectsData = await projectsRes.json();
 		const projectsCol = collection(db, 'projects');
@@ -27,21 +24,18 @@ export const seedDatabase = async () => {
 			batch.set(ref, p);
 		});
 
-		// 2. Seed Emails
 		const emailsRes = await fetch('/datas/emails.json');
 		const emailsData = await emailsRes.json();
 		const emailsCol = collection(db, 'emails');
 		emailsData.emailsData.forEach((e: any) => {
 			const ref = doc(emailsCol);
-			// Add timestamp
-			batch.set(ref, {
+		batch.set(ref, {
 				...e,
 				timestamp: new Date().toISOString(),
 				isRead: false,
 			});
 		});
 
-		// 3. Seed Messages
 		const messagesRes = await fetch('/datas/messages.json');
 		const messagesData = await messagesRes.json();
 		const messagesCol = collection(db, 'messages');
@@ -55,7 +49,6 @@ export const seedDatabase = async () => {
 			});
 		});
 
-		// 4. Seed Statistics
 		const statsRef = doc(db, 'statistics', 'dashboard_stats');
 		batch.set(statsRef, {
 			total: 12,
@@ -69,7 +62,6 @@ export const seedDatabase = async () => {
 			userId: userId,
 		});
 
-        // 4.5 Seed Users (for Chat)
         const usersCol = collection(db, 'users');
         const usersData = [
             { uid: 'user_1', name: 'Dr. Sultads', email: 'sultads@example.com', profilePicture: '/assets/1.jpg', status: 'online' },
@@ -80,7 +72,6 @@ export const seedDatabase = async () => {
             batch.set(ref, u);
         });
 
-        // 5. Seed Stories
         const storiesCol = collection(db, 'stories');
         const storiesData = [
             'https://source.unsplash.com/random/800x600?nature1',
@@ -95,7 +86,6 @@ export const seedDatabase = async () => {
             batch.set(ref, { imageUrl: url });
         });
 
-        // 6. Seed Notifications
         const notifCol = collection(db, 'notifications');
         const notificationsData = [
             {
@@ -135,7 +125,6 @@ export const seedDatabase = async () => {
             batch.set(ref, n);
         });
 
-        // 7. Seed Chats (Conversations)
         const conversationsCol = collection(db, 'conversations');
         // Chat 1
         const chat1Ref = doc(conversationsCol, 'chat_1');
@@ -158,7 +147,6 @@ export const seedDatabase = async () => {
              read: false
         });
 
-        // Chat 2
         const chat2Ref = doc(conversationsCol, 'chat_2');
         batch.set(chat2Ref, {
             participants: [userId, 'user_2'],
@@ -181,7 +169,6 @@ export const seedDatabase = async () => {
 
 
 
-        // 8. Seed Alerts
         const alertsCol = collection(db, 'alerts');
         const alertsData = [
             { category: 'System', code: 'SYS', message: 'Welcome to your new dashboard!', read: true, createdAt: serverTimestamp(), userId: userId },
@@ -193,7 +180,6 @@ export const seedDatabase = async () => {
             batch.set(ref, a);
         });
 
-        // 9. Seed Teams
         const teamsCol = collection(db, 'teams');
         const teamsData = [
             { name: 'Frontend Team', members: [userId, 'user_1'], projectCount: 5 },
@@ -204,7 +190,6 @@ export const seedDatabase = async () => {
             batch.set(ref, t);
         });
 
-        // 10. Seed UserProfiles (Mock for others)
          const profilesCol = collection(db, 'userProfiles');
          usersData.forEach(u => {
              const ref = doc(profilesCol, u.uid);
@@ -244,7 +229,6 @@ export const clearCollection = async (collectionPath: string) => {
 };
 
 export const resetDatabase = async () => {
-    // Safety check: Only run in development
     if (process.env.NODE_ENV === 'production') {
         console.error("Attempted to clear database in production! Aborting.");
         return;

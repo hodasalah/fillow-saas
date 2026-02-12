@@ -99,7 +99,6 @@ export interface Task {
 	status: 'todo' | 'in-progress' | 'done';
 	dueDate: Date;
 }
-// src/types.ts
 export interface InboxMessage {
 	id?: string; // Firestore auto-ID
 	senderId: string;

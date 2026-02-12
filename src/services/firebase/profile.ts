@@ -73,14 +73,10 @@ export interface UserProfile {
 
 const PROFILES_COLLECTION = 'userProfiles';
 
-/**
- * Get user profile from Firestore
- */
 export const getUserProfile = async (userId: string): Promise<UserProfile | null> => {
   try {
     let profileDoc = await getDoc(doc(db, PROFILES_COLLECTION, userId));
     
-    // Fallback to 'users' collection if not in 'userProfiles'
     if (!profileDoc.exists()) {
       profileDoc = await getDoc(doc(db, 'users', userId));
     }
@@ -117,9 +113,6 @@ export const getUserProfile = async (userId: string): Promise<UserProfile | null
   }
 };
 
-/**
- * Create or update user profile
- */
 export const updateUserProfile = async (
   userId: string, 
   data: Partial<UserProfile>
@@ -131,7 +124,7 @@ export const updateUserProfile = async (
       updatedAt: serverTimestamp()
     };
     
-    // Update both collections for maximum consistency
+    // Update both collections
     await Promise.all([
         setDoc(profileRef, updateData, { merge: true }),
         setDoc(doc(db, 'users', userId), updateData, { merge: true })
@@ -142,9 +135,6 @@ export const updateUserProfile = async (
   }
 };
 
-/**
- * Seed rich profile data for logged-in user
- */
 export const seedUserProfile = async (
   userId: string,
   userName: string,
@@ -367,14 +357,11 @@ export const seedUserProfile = async (
       updatedAt: serverTimestamp()
     });
 
-    // Seed Projects Collection (for Projects Gallery)
     try {
         const projectsBatch = writeBatch(db);
         
-        // Use the same projects we defined for the profile
         for (const proj of profileData.projects) {
             const projectRef = doc(collection(db, 'projects'));
-            // Map profile project structure to global projects collection structure
             projectsBatch.set(projectRef, {
                 name: proj.name,
                 description: proj.description,
@@ -388,7 +375,6 @@ export const seedUserProfile = async (
                      name: userName,
                      image: userPhoto || ''
                 },
-                // Fake dates based on status
                 startDate: new Date(Date.now() - 90 * 24 * 60 * 60 * 1000),
                 endDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
                 deadline: new Date(Date.now() + 60 * 24 * 60 * 60 * 1000),
@@ -403,7 +389,6 @@ export const seedUserProfile = async (
         console.warn("Failed to seed projects collection:", err);
     }
 
-    // Seed Stories Collection (for Featured Stories)
     try {
         const sBatch = writeBatch(db);
         const storyImages = [
@@ -441,9 +426,6 @@ export const seedUserProfile = async (
   }
 };
 
-/**
- * Get or create user profile (auto-seed if doesn't exist)
- */
 export const getOrCreateProfile = async (
   userId: string,
   userName: string,

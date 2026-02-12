@@ -3,7 +3,6 @@ import { getAuth, signInAnonymously } from 'firebase/auth';
 import { collection, doc, getDocs, getFirestore, writeBatch } from 'firebase/firestore';
 import { auth, db } from '../firebase';
 
-// Old Project Config (Fillow)
 const oldConfig = {
     apiKey: 'AIzaSyBqb7qzprO3JoeFmaZpBy_CmRfXv_4Df5A',
     authDomain: 'fillow-73cc0.firebaseapp.com',
@@ -13,7 +12,6 @@ const oldConfig = {
     appId: '1:863043103885:web:af46408e94b858a81186c4',
 };
 
-// Initialize the "Old" app separately
 const oldApp = initializeApp(oldConfig, 'oldApp');
 const oldDb = getFirestore(oldApp);
 const oldAuth = getAuth(oldApp);
@@ -22,8 +20,6 @@ export const migrateFromFillow = async () => {
     try {
         console.log("Starting Migration from Fillow...");
         
-        // Authenticate anonymously in the OLD app to get read permission
-        console.log("Authenticating with old project...");
         await signInAnonymously(oldAuth);
         console.log("Authenticated with old project.");
 
@@ -64,8 +60,6 @@ export const migrateFromFillow = async () => {
                 snapshot.forEach(oldDoc => {
                     const data = oldDoc.data();
                     
-                    // Smart Ownership: If the data belonged to an old user, assign it to YOU now.
-                    // Force overwrite userId for collections that need it to be visible
                      if (['projects', 'teams', 'alerts'].includes(colName) || data.userId) {
                         data.userId = currentUserId;
                     }

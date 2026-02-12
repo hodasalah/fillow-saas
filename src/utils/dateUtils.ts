@@ -1,4 +1,3 @@
-// Helper to convert Firestore Timestamp to Date
 export const toDate = (date: Date | number | { toDate: () => Date } | null | undefined): Date => {
 	// If it's already a Date, return it
 	if (date instanceof Date) {
@@ -136,10 +135,6 @@ export const isWithinLastWeek = (date: Date | number | { toDate: () => Date } | 
 	return dateObj > weekAgo;
 };
 
-/**
- * Recursively converts Dates and Firestore Timestamps to numeric timestamps (ms).
- * This ensures data dispatched to Redux is serializable.
- */
 export const makeSerializable = <T>(obj: T): T => {
 	if (obj === null || obj === undefined) {
 		return obj;

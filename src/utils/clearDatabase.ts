@@ -5,9 +5,6 @@ import {
 } from 'firebase/firestore';
 import { db } from '../firebase';
 
-/**
- * Clear all documents from a collection
- */
 const clearCollection = async (collectionName: string): Promise<number> => {
   console.log(`🗑️  Clearing collection: ${collectionName}`);
   const collectionRef = collection(db, collectionName);
@@ -39,9 +36,6 @@ const clearCollection = async (collectionName: string): Promise<number> => {
   return deletedCount;
 };
 
-/**
- * Clear messages subcollection from all conversations
- */
 const clearConversationMessages = async (): Promise<number> => {
   console.log(`🗑️  Clearing messages subcollections`);
   const conversationsRef = collection(db, 'conversations');
@@ -68,9 +62,6 @@ const clearConversationMessages = async (): Promise<number> => {
   return totalDeleted;
 };
 
-/**
- * Clear all data from Firebase
- */
 export const clearAllData = async (): Promise<void> => {
   try {
     console.log('🚀 Starting database clear...\n');

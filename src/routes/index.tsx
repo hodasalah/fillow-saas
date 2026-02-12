@@ -17,7 +17,6 @@ const WidgetsPage = lazy(() => import('../layout/dashboardLayout/pages/widgets/i
 const Login = lazy(() => import('../layout/publicLayout/AuthPages/Login'));
 const SignUp = lazy(() => import('../layout/publicLayout/AuthPages/SignUp'));
 
-// Loading component
 const LoadingSpinner = () => (
 	<div className='flex items-center justify-center min-h-screen'>
 		<div className='w-8 h-8 border-4 border-purple-600 rounded-full animate-spin border-t-transparent'></div>

@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useAppSelector } from '../../../../hooks/hooks';
 import { getUserProfile, UserProfile } from '../../../../services/firebase/profile';
+import { formatRelativeTime } from '../../../../utils/dateUtils';
 
 const ActivitiesCard: React.FC = () => {
 	const currentUser = useAppSelector((state) => state.auth.currentUser);
-	const [profile, setProfile] = useState<UserProfile | null>(null);
+	const [ profile, setProfile ] = useState<UserProfile | null>(null);
 
 	useEffect(() => {
 		const loadProfile = async () => {
@@ -14,19 +15,8 @@ const ActivitiesCard: React.FC = () => {
 			}
 		};
 		loadProfile();
-	}, [currentUser]);
+	}, [ currentUser ]);
 
-	const getTimeAgo = (date: Date) => {
-		const seconds = Math.floor((new Date().getTime() - date.getTime()) / 1000);
-		
-		if (seconds < 60) return `${seconds}s ago`;
-		const minutes = Math.floor(seconds / 60);
-		if (minutes < 60) return `${minutes}m ago`;
-		const hours = Math.floor(minutes / 60);
-		if (hours < 24) return `${hours}h ago`;
-		const days = Math.floor(hours / 24);
-		return `${days}d ago`;
-	};
 
 	const getActivityColor = (type: string) => {
 		switch (type) {
@@ -43,7 +33,7 @@ const ActivitiesCard: React.FC = () => {
 		return (
 			<div className='bg-white dark:bg-[var(--card)] rounded-xl shadow-sm p-6 animate-pulse'>
 				<div className='h-6 bg-gray-200 dark:bg-gray-700 rounded w-1/2 mb-4'></div>
-				{[1, 2, 3].map(i => (
+				{[ 1, 2, 3 ].map(i => (
 					<div key={i} className='flex items-center gap-3 mb-3'>
 						<div className='w-10 h-10 bg-gray-200 dark:bg-gray-700 rounded-full'></div>
 						<div className='flex-1'>
@@ -70,7 +60,7 @@ const ActivitiesCard: React.FC = () => {
 								{activity.description}
 							</p>
 							<span className='text-xs text-[var(--text-gray)] mt-1'>
-								{getTimeAgo(activity.timestamp)}
+								{formatRelativeTime(activity.timestamp)}
 							</span>
 						</div>
 					</div>

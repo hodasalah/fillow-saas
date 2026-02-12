@@ -4,13 +4,13 @@ import App from '../App';
 import ErrorPage from '../components/ErrorPage';
 import { NotFound } from '../components/errorPages';
 import PrivateRoute from '../components/privateRoute';
-import EditProfile from '../layout/dashboardLayout/pages/editProfile';
-import Profile from '../layout/dashboardLayout/pages/profile';
-import Projects from '../layout/dashboardLayout/pages/projects';
-import HomeRedirect from '../layout/publicLayout/HomeRedirect';
+const Projects = lazy(() => import('../layout/dashboardLayout/pages/projects'));
+const Profile = lazy(() => import('../layout/dashboardLayout/pages/profile'));
+const EditProfile = lazy(() => import('../layout/dashboardLayout/pages/editProfile'));
+const HomeRedirect = lazy(() => import('../layout/publicLayout/HomeRedirect'));
 
-import { DashboardLayout } from '../layout/dashboardLayout';
-import DashboardHome from '../layout/dashboardLayout/pages/home';
+const DashboardLayout = lazy(() => import('../layout/dashboardLayout').then(m => ({ default: m.DashboardLayout })));
+const DashboardHome = lazy(() => import('../layout/dashboardLayout/pages/home'));
 const ChatPage = lazy(() => import('../layout/dashboardLayout/pages/chat/index.tsx'));
 const ChartsPage = lazy(() => import('../layout/dashboardLayout/pages/charts/index.tsx'));
 const WidgetsPage = lazy(() => import('../layout/dashboardLayout/pages/widgets/index.tsx'));
@@ -32,7 +32,11 @@ export const router = createBrowserRouter([
 		children: [
 			{
 				path: '',
-				element: <HomeRedirect />,
+				element: (
+					<Suspense fallback={<LoadingSpinner />}>
+						<HomeRedirect />
+					</Suspense>
+				),
 			},
 			{
 				path: 'dashboard',
@@ -40,11 +44,19 @@ export const router = createBrowserRouter([
 				children: [
 					{
 						path: '',
-						element: <DashboardLayout />,
+						element: (
+							<Suspense fallback={<LoadingSpinner />}>
+								<DashboardLayout />
+							</Suspense>
+						),
 						children: [
 							{
 								index: true,
-								element: <DashboardHome />,
+								element: (
+									<Suspense fallback={<LoadingSpinner />}>
+										<DashboardHome />
+									</Suspense>
+								),
 							},
 							{
 								path: 'chat',
@@ -78,22 +90,22 @@ export const router = createBrowserRouter([
 									</Suspense>
 								),
 							},
-                            {
-                                path: 'charts',
-                                element: (
-                                    <Suspense fallback={<LoadingSpinner />}>
-                                        <ChartsPage />
-                                    </Suspense>
-                                ),
-                            },
-                             {
-                                path: 'widgets',
-                                element: (
-                                    <Suspense fallback={<LoadingSpinner />}>
-                                        <WidgetsPage />
-                                    </Suspense>
-                                ),
-                            },
+							{
+								path: 'charts',
+								element: (
+									<Suspense fallback={<LoadingSpinner />}>
+										<ChartsPage />
+									</Suspense>
+								),
+							},
+							{
+								path: 'widgets',
+								element: (
+									<Suspense fallback={<LoadingSpinner />}>
+										<WidgetsPage />
+									</Suspense>
+								),
+							},
 						],
 					},
 				],

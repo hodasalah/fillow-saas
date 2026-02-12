@@ -18,10 +18,12 @@ export default defineConfig({
 				chunkFileNames: 'assets/[name].js',
 				assetFileNames: 'assets/[name].[ext]',
 				manualChunks: {
-					vendor: ['react', 'react-dom', 'react-router-dom'],
+					vendor: ['react', 'react-dom', 'react-router-dom', 'react-redux', '@reduxjs/toolkit'],
 					firebase: ['firebase/app', 'firebase/auth', 'firebase/firestore', 'firebase/storage'],
 					charts: ['apexcharts', 'react-apexcharts'],
 					framer: ['framer-motion'],
+					icons: ['@fortawesome/fontawesome-svg-core', '@fortawesome/free-solid-svg-icons', '@fortawesome/react-fontawesome'],
+					utils: ['date-fns', 'uuid'],
 				},
 			},
 		},

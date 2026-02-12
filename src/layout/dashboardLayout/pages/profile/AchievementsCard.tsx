@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useAppSelector } from '../../../../hooks/hooks';
 import { getUserProfile, UserProfile } from '../../../../services/firebase/profile';
+import { formatRelativeTime } from '../../../../utils/dateUtils';
 
 const AchievementsCard: React.FC = () => {
 	const currentUser = useAppSelector((state) => state.auth.currentUser);
-	const [profile, setProfile] = useState<UserProfile | null>(null);
+	const [ profile, setProfile ] = useState<UserProfile | null>(null);
 
 	useEffect(() => {
 		const loadProfile = async () => {
@@ -14,16 +15,8 @@ const AchievementsCard: React.FC = () => {
 			}
 		};
 		loadProfile();
-	}, [currentUser]);
+	}, [ currentUser ]);
 
-	const getTimeAgo = (date: Date) => {
-		const days = Math.floor((new Date().getTime() - date.getTime()) / (1000 * 60 * 60 * 24));
-		if (days < 7) return `${days}d ago`;
-		const weeks = Math.floor(days / 7);
-		if (weeks < 4) return `${weeks}w ago`;
-		const months = Math.floor(days / 30);
-		return `${months}mo ago`;
-	};
 
 	if (!profile || !profile.achievements) {
 		return null;
@@ -52,7 +45,7 @@ const AchievementsCard: React.FC = () => {
 								{achievement.description}
 							</p>
 							<span className='text-xs text-[var(--text-gray)]'>
-								Earned {getTimeAgo(achievement.earnedAt)}
+								Earned {formatRelativeTime(achievement.earnedAt)}
 							</span>
 						</div>
 						<div className='absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity'>
